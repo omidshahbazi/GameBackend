@@ -1,0 +1,52 @@
+{
+	"Modules": [
+		"Mail",
+		"Database",
+		"Logic.1.0",
+		"Logic.1.1",
+		"Logger",
+		"Payment",
+		"Push",
+		"Reporter",
+		"Chat",
+		"Analytics"
+	],
+	"Server": {
+		"Sockets": [
+			{
+				"Host": "::1",
+				"Ports": [ 80, 81, 82 ],
+				"Protocol": "TCP"
+			}
+		]
+	},
+	"Admin": {
+		"Port": 80,
+		"Users": [
+			{
+				"Username": "Admin",
+				"Password": "123"
+			}
+		]
+	},
+	"Logger": {
+		"MinLevel": "Log",
+		"LoggerTypes": [
+			"Console"
+		]
+	},
+	"Payment": {
+		"AppStore": {
+			"PackageName": "",
+			"RSA": ""
+		}
+	},
+	"Push": {
+		"AppStore": {
+			"Token": ""
+		}
+	},
+	"Database": {
+
+	}
+}
