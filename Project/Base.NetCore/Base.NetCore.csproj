@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackageId>Base.NetCore</PackageId>
+    <Authors>Base.NetCore</Authors>
+    <Company>Base.NetCore</Company>
+    <Product>Base.NetCore</Product>
+    <AssemblyName>Base.NetCore</AssemblyName>
+    <RootNamespace>Base.NetCore</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\Binaries\Server\NetCore\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Source\Base\Configs\Server.cs" Link="Configs\Server.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Configs\" />
+  </ItemGroup>
+
+</Project>

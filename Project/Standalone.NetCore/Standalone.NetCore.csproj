@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackageId>Base.NetCore</PackageId>
+    <Authors>Base.NetCore</Authors>
+    <Company>Base.NetCore</Company>
+    <Product>Base.NetCore</Product>
+    <AssemblyName>Base.NetCore</AssemblyName>
+    <RootNamespace>Base.NetCore</RootNamespace>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\Binaries\Server\NetCore\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Source\Standalone\Program.cs" Link="Program.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core.NetCore\Core.NetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CommonManaged">
+      <HintPath>..\..\Libraries\CommonManaged.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

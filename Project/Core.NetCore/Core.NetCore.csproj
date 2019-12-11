@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageId>Backend.Core.NetCore</PackageId>
-    <Authors>Backend.Core.NetCore</Authors>
-    <Company>Backend.Core.NetCore</Company>
-    <Product>Backend.Core.NetCore</Product>
-    <AssemblyName>Backend.Core.NetCore</AssemblyName>
+    <PackageId>Backend.Core</PackageId>
+    <Authors>Backend.Core</Authors>
+    <Company>Backend.Core</Company>
+    <Product>Backend.Core</Product>
+    <AssemblyName>Backend.Core</AssemblyName>
     <RootNamespace>Backend.Core</RootNamespace>
   </PropertyGroup>
 
@@ -16,6 +16,20 @@
 
   <ItemGroup>
     <Compile Include="..\..\Source\Core\Application.cs" Link="Application.cs" />
+    <Compile Include="..\..\Source\Core\Configs.cs" Link="Configs.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Base.NetCore\Base.NetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ASCIISerializerManaged">
+      <HintPath>..\..\Libraries\ASCIISerializerManaged.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonManaged">
+      <HintPath>..\..\Libraries\CommonManaged.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

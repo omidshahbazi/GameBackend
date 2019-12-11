@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CDB4AB43-2C21-4AFA-9E69-4D586FD6AEEE}</ProjectGuid>
+    <ProjectGuid>{FACC0BA0-D424-46F7-98FD-A791DE500D4B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Backend.Core</RootNamespace>
-    <AssemblyName>Backend.Core</AssemblyName>
+    <RootNamespace>Base.NetFramework</RootNamespace>
+    <AssemblyName>Base.NetFramework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -34,28 +34,13 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ASCIISerializerManaged">
-      <HintPath>..\..\Libraries\ASCIISerializerManaged.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonManaged">
-      <HintPath>..\..\Libraries\CommonManaged.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Source\Core\Application.cs">
-      <Link>Application.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Source\Core\Configs.cs">
-      <Link>Configs.cs</Link>
+    <Compile Include="..\..\Source\Base\Configs\Server.cs">
+      <Link>Configs\Server.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Base.NetFramework\Base.NetFramework.csproj">
-      <Project>{FACC0BA0-D424-46F7-98FD-A791DE500D4B}</Project>
-      <Name>Base.NetFramework</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

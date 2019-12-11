@@ -1,0 +1,18 @@
+{
+	"Sockets": [
+		{
+			"Host": "::1",
+			"Ports": [ 80, 81 ],
+			"Protocol": "TCP"
+		}
+	],
+	"Modules": [
+		{ "FilePath": "xxx.dll" }
+	],
+	"Admins": [
+		{
+			"Username": "admin",
+			"Password": "pass"
+		}
+	]
+}
