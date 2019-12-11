@@ -30,6 +30,9 @@
     <Reference Include="CommonManaged">
       <HintPath>..\..\Libraries\CommonManaged.dll</HintPath>
     </Reference>
+    <Reference Include="NetworkingManaged.NetCore">
+      <HintPath>..\..\Libraries\NetworkingManaged.NetCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

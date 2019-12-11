@@ -2,7 +2,7 @@
 	"Sockets": [
 		{
 			"Host": "::1",
-			"Ports": [ 80, 81 ],
+			"Ports": [ 82, 81 ],
 			"Protocol": "TCP"
 		}
 	],
