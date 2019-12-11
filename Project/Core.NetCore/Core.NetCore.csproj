@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackageId>Backend.Core.NetCore</PackageId>
+    <Authors>Backend.Core.NetCore</Authors>
+    <Company>Backend.Core.NetCore</Company>
+    <Product>Backend.Core.NetCore</Product>
+    <AssemblyName>Backend.Core.NetCore</AssemblyName>
+    <RootNamespace>Backend.Core</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\Binaries\Server\NetCore\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Source\Core\Application.cs" Link="Application.cs" />
+  </ItemGroup>
+
+</Project>
