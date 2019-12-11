@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageId>Base.NetCore</PackageId>
-    <Authors>Base.NetCore</Authors>
-    <Company>Base.NetCore</Company>
-    <Product>Base.NetCore</Product>
-    <AssemblyName>Base.NetCore</AssemblyName>
+    <PackageId>Backend.Base.NetCore</PackageId>
+    <Authors>Backend.Base.NetCore</Authors>
+    <Company>Backend.Base.NetCore</Company>
+    <Product>Backend.Base.NetCore</Product>
+    <AssemblyName>Backend.Base.NetCore</AssemblyName>
     <RootNamespace>Base.NetCore</RootNamespace>
   </PropertyGroup>
 
@@ -16,10 +16,12 @@
 
   <ItemGroup>
     <Compile Include="..\..\Source\Base\Configs\Server.cs" Link="Configs\Server.cs" />
+    <Compile Include="..\..\Source\Base\Module\IModule.cs" Link="Module\IModule.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Configs\" />
+    <Folder Include="Module\" />
   </ItemGroup>
 
 </Project>

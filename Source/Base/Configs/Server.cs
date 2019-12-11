@@ -18,7 +18,13 @@ namespace Backend.Base.Configs
 
 		public struct Module
 		{
-			public string FilePath;
+			public struct File
+			{
+				public string Path;
+			}
+
+			public string LibrariesPath;
+			public File[] Files;
 		}
 
 		public struct Admin
@@ -28,7 +34,7 @@ namespace Backend.Base.Configs
 		}
 
 		public Socket[] Sockets;
-		public Module[] Modules;
+		public Module Modules;
 		public Admin[] Admins;
 	}
 }

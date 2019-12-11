@@ -15,9 +15,13 @@ namespace Backend.Core
 
 		public void Initialize()
 		{
+			//TODO: Log system is required to log anything
+
 			FileSystem.DataPath = Environment.CurrentDirectory + "/../";
 
 			Configs.Instance.Initialize();
+
+			Modules.Instance.Initialize();
 
 			Server serverInfo = Configs.Instance.Server;
 			for (int i = 0; i < serverInfo.Sockets.Length; ++i)

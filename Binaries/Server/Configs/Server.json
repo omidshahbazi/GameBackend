@@ -6,9 +6,12 @@
 			"Protocol": "TCP"
 		}
 	],
-	"Modules": [
-		{ "FilePath": "xxx.dll" }
-	],
+	"Modules": {
+		"LibrariesPath": "../Libraries/",
+		"Files": [
+			{ "Path": "xxx.dll" }
+		]
+	},
 	"Admins": [
 		{
 			"Username": "admin",

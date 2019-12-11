@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Base.NetFramework</RootNamespace>
-    <AssemblyName>Base.NetFramework</AssemblyName>
+    <AssemblyName>Backend.Base.NetFramework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -39,6 +39,9 @@
   <ItemGroup>
     <Compile Include="..\..\Source\Base\Configs\Server.cs">
       <Link>Configs\Server.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Source\Base\Module\IModule.cs">
+      <Link>Module\IModule.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
