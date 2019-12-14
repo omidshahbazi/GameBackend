@@ -26,5 +26,10 @@ namespace Backend.Core
 
 			Server = Creator.Create<Server>(data);
 		}
+
+		public void Save()
+		{
+			FileSystem.Write(FILE_PATH, Creator.Create<ISerializeObject>(Server).Content);
+		}
 	}
 }
