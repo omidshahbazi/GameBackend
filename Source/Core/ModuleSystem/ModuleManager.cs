@@ -9,13 +9,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace Backend.Core
+namespace Backend.Core.ModuleSystem
 {
-	class Modules : Singleton<Modules>, IService
+	class ModuleManager : Singleton<ModuleManager>, IService
 	{
 		private IModule[] modules = null;
 
-		private Modules()
+		private ModuleManager()
 		{
 		}
 
@@ -119,14 +119,14 @@ namespace Backend.Core
 					Application.Instance.Logger.WriteInfo("	|_Instance of type [{0}] initialized successfully", type.ToString());
 
 					Modules.Add(module);
+
+					Application.Instance.Logger.WriteInfo("Assembly [{0}] loaded successfully", FilePath);
 				}
 			}
 			catch (Exception e)
 			{
 				context.Logger.WriteException("Loading assembly [" + FilePath + "] failed", e);
 			}
-
-			Application.Instance.Logger.WriteInfo("Assembly [{0}] loaded successfully", FilePath);
 		}
 	}
 }

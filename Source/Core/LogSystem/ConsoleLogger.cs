@@ -63,6 +63,7 @@ namespace Backend.Core.LogSystem
 				return;
 
 			Console.WriteLine(Message);
+			Console.Write("	|_");
 			Console.WriteLine(E.ToString());
 		}
 	}

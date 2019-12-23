@@ -22,7 +22,7 @@
     <Compile Include="..\..\Source\Core\LogSystem\FileLogger.cs" Link="LogSystem\FileLogger.cs" />
     <Compile Include="..\..\Source\Core\LogSystem\IInternalLogger.cs" Link="LogSystem\IInternalLogger.cs" />
     <Compile Include="..\..\Source\Core\LogSystem\LogManager.cs" Link="LogSystem\LogManager.cs" />
-    <Compile Include="..\..\Source\Core\Modules.cs" Link="Modules.cs" />
+    <Compile Include="..\..\Source\Core\ModuleSystem\ModuleManager.cs" Link="ModuleSystem\ModuleManager.cs" />
     <Compile Include="..\..\Source\Core\NetworkSystem\NetworkManager.cs" Link="NetworkSystem\NetworkManager.cs" />
   </ItemGroup>
 
@@ -48,6 +48,7 @@
   <ItemGroup>
     <Folder Include="LogSystem\" />
     <Folder Include="NetworkSystem\" />
+    <Folder Include="ModuleSystem\" />
   </ItemGroup>
 
 </Project>

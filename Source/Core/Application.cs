@@ -2,6 +2,7 @@
 using Backend.Base;
 using Backend.Base.LogSystem;
 using Backend.Core.LogSystem;
+using Backend.Core.ModuleSystem;
 using GameFramework.Common.MemoryManagement;
 using System;
 using System.Collections.Generic;
@@ -26,21 +27,20 @@ namespace Backend.Core
 
 		private Application()
 		{
-			services = new List<IService>();
 		}
 
 		public void Initialize()
 		{
 			GameFramework.Common.FileLayer.FileSystem.DataPath = Environment.CurrentDirectory + "/../";
 
+			services = new List<IService>();
+
 			AddService(Configs.Instance);
-
 			AddService(LogManager.Instance);
-			Logger = LogManager.Instance;
-
 			AddService(NetworkManager.Instance);
+			AddService(ModuleManager.Instance);
 
-			AddService(Modules.Instance);
+			Logger = LogManager.Instance;
 
 			IsRunning = true;
 		}
@@ -51,6 +51,8 @@ namespace Backend.Core
 				services[i].Service();
 
 			services.Clear();
+
+			IsRunning = false;
 		}
 
 		public void Service()

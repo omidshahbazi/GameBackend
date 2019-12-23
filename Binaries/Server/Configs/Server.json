@@ -14,7 +14,7 @@
 	"Modules": {
 		"LibrariesPath": "Libraries/",
 		"Files": [
-			{ "Path": "xxx.dll" }
+			{ "Path": "Modules/xxx.dll" }
 		]
 	},
 	"Admins": [

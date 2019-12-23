@@ -71,8 +71,8 @@
     <Compile Include="..\..\Source\Core\LogSystem\LogManager.cs">
       <Link>LogSystem\LogManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\Source\Core\Modules.cs">
-      <Link>Modules.cs</Link>
+    <Compile Include="..\..\Source\Core\ModuleSystem\ModuleManager.cs">
+      <Link>ModuleSystem\ModuleManager.cs</Link>
     </Compile>
     <Compile Include="..\..\Source\Core\NetworkSystem\NetworkManager.cs">
       <Link>NetworkSystem\NetworkManager.cs</Link>
