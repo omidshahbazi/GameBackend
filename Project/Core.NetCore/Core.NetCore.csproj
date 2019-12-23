@@ -17,6 +17,10 @@
   <ItemGroup>
     <Compile Include="..\..\Source\Core\Application.cs" Link="Application.cs" />
     <Compile Include="..\..\Source\Core\Configs.cs" Link="Configs.cs" />
+    <Compile Include="..\..\Source\Core\LogSystem\ConsoleLogger.cs" Link="LogSystem\ConsoleLogger.cs" />
+    <Compile Include="..\..\Source\Core\LogSystem\FileLogger.cs" Link="LogSystem\FileLogger.cs" />
+    <Compile Include="..\..\Source\Core\LogSystem\IInternalLogger.cs" Link="LogSystem\IInternalLogger.cs" />
+    <Compile Include="..\..\Source\Core\LogSystem\LogManager.cs" Link="LogSystem\LogManager.cs" />
     <Compile Include="..\..\Source\Core\Modules.cs" Link="Modules.cs" />
   </ItemGroup>
 
@@ -34,6 +38,10 @@
     <Reference Include="NetworkingManaged.NetCore">
       <HintPath>..\..\Libraries\NetworkingManaged.NetCore.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="LogSystem\" />
   </ItemGroup>
 
 </Project>

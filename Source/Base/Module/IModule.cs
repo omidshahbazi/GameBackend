@@ -3,6 +3,6 @@ namespace Backend.Base.Module
 {
 	public interface IModule
 	{
-		void Initialize();
+		void Initialize(IContext Context);
 	}
 }

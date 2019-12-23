@@ -1,4 +1,5 @@
 // Copyright 2019. All Rights Reserved.
+using Backend.Base;
 using Backend.Base.Configs;
 using Backend.Base.Module;
 using GameFramework.Common.FileLayer;
@@ -45,6 +46,8 @@ namespace Backend.Core
 
 		private void LoadAssembly(string FilePath)
 		{
+			IContext context = Application.Instance;
+
 			try
 			{
 				Assembly assembly = Assembly.Load(FileSystem.ReadBytes(FilePath));
@@ -64,16 +67,17 @@ namespace Backend.Core
 
 					if (module == null)
 					{
-						//TODO: Log
+						context.Logger.WriteError("Couldn't create instance of type [" + type.ToString() + "] as IModule");
+
 						continue;
 					}
 
-					module.Initialize();
+					module.Initialize(context);
 				}
 			}
 			catch (Exception e)
 			{
-				//TODO: Log
+				context.Logger.WriteException(e);
 			}
 		}
 	}

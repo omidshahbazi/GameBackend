@@ -1,14 +1,22 @@
 // Copyright 2019. All Rights Reserved.
+using Backend.Base;
 using Backend.Base.Configs;
-using GameFramework.Common.FileLayer;
+using Backend.Base.LogSystem;
+using Backend.Core.LogSystem;
 using GameFramework.Common.MemoryManagement;
 using GameFramework.Networking;
 using System;
 
 namespace Backend.Core
 {
-	public class Application : Singleton<Application>
+	public class Application : Singleton<Application>, IContext
 	{
+		public ILogger Logger
+		{
+			get;
+			private set;
+		}
+
 		private Application()
 		{
 		}
@@ -17,9 +25,12 @@ namespace Backend.Core
 		{
 			//TODO: Log system is required to log anything
 
-			FileSystem.DataPath = Environment.CurrentDirectory + "/../";
+			GameFramework.Common.FileLayer.FileSystem.DataPath = Environment.CurrentDirectory + "/../";
 
 			Configs.Instance.Initialize();
+
+			LogManager.Instance.Initialize();
+			Logger = LogManager.Instance;
 
 			Modules.Instance.Initialize();
 

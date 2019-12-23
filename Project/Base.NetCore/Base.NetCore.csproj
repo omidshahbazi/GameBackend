@@ -16,11 +16,14 @@
 
   <ItemGroup>
     <Compile Include="..\..\Source\Base\Configs\Server.cs" Link="Configs\Server.cs" />
+    <Compile Include="..\..\Source\Base\IContext.cs" Link="IContext.cs" />
+    <Compile Include="..\..\Source\Base\LogSystem\ILogger.cs" Link="LogSystem\ILogger.cs" />
     <Compile Include="..\..\Source\Base\Module\IModule.cs" Link="Module\IModule.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Configs\" />
+    <Folder Include="LogSystem\" />
     <Folder Include="Module\" />
   </ItemGroup>
 
