@@ -5,25 +5,44 @@ using Backend.Base.Module;
 using GameFramework.Common.FileLayer;
 using GameFramework.Common.MemoryManagement;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
 namespace Backend.Core
 {
-	class Modules : Singleton<Modules>
+	class Modules : Singleton<Modules>, IService
 	{
+		private IModule[] modules = null;
+
 		private Modules()
 		{
 		}
 
 		public void Initialize()
 		{
-			LoadLibraries();
+			List<IModule> modulesList = new List<IModule>();
 
-			LoadModules();
+			LoadLibraries(modulesList);
+
+			LoadModules(modulesList);
+
+			modules = modulesList.ToArray();
 		}
 
-		private void LoadLibraries()
+		public void Shutdown()
+		{
+			for (int i = 0; i < modules.Length; ++i)
+				modules[i].Shutdown();
+		}
+
+		public void Service()
+		{
+			for (int i = 0; i < modules.Length; ++i)
+				modules[i].Service();
+		}
+
+		private void LoadLibraries(List<IModule> Modules)
 		{
 			string librariesPath = Configs.Instance.Server.Modules.LibrariesPath;
 			if (string.IsNullOrEmpty(librariesPath))
@@ -40,10 +59,10 @@ namespace Backend.Core
 			}
 
 			for (int i = 0; i < files.Length; ++i)
-				LoadAssembly(files[i]);
+				LoadAssembly(files[i], Modules);
 		}
 
-		private void LoadModules()
+		private void LoadModules(List<IModule> Modules)
 		{
 			Server.Module.File[] files = Configs.Instance.Server.Modules.Files;
 			if (files == null)
@@ -53,10 +72,10 @@ namespace Backend.Core
 			}
 
 			for (int i = 0; i < files.Length; ++i)
-				LoadAssembly(files[i].Path);
+				LoadAssembly(files[i].Path, Modules);
 		}
 
-		private void LoadAssembly(string FilePath)
+		private void LoadAssembly(string FilePath, List<IModule> Modules)
 		{
 			Application.Instance.Logger.WriteInfo("Loading assembly [{0}]", FilePath);
 
@@ -98,6 +117,8 @@ namespace Backend.Core
 					module.Initialize(context);
 
 					Application.Instance.Logger.WriteInfo("	|_Instance of type [{0}] initialized successfully", type.ToString());
+
+					Modules.Add(module);
 				}
 			}
 			catch (Exception e)

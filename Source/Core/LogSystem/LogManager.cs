@@ -7,9 +7,9 @@ using GameFramework.Common.MemoryManagement;
 
 namespace Backend.Core.LogSystem
 {
-	public class LogManager : Singleton<LogManager>, ILogger
+	public class LogManager : Singleton<LogManager>, ILogger, IService
 	{
-		private ILogger[] loggers = null;
+		private IInternalLogger[] loggers = null;
 
 		private LogManager()
 		{
@@ -27,7 +27,7 @@ namespace Backend.Core.LogSystem
 				return;
 			}
 
-			List<ILogger> loggerList = new List<ILogger>();
+			List<IInternalLogger> loggerList = new List<IInternalLogger>();
 
 			for (int i = 0; i < loggersConfig.Length; ++i)
 			{
@@ -57,6 +57,16 @@ namespace Backend.Core.LogSystem
 			}
 
 			loggers = loggerList.ToArray();
+		}
+
+		public void Shutdown()
+		{
+			for (int i = 0; i < loggers.Length; ++i)
+				loggers[i].Shutdown();
+		}
+
+		public void Service()
+		{
 		}
 
 		public void WriteInfo(string Format, params object[] Args)

@@ -17,6 +17,7 @@
   <ItemGroup>
     <Compile Include="..\..\Source\Core\Application.cs" Link="Application.cs" />
     <Compile Include="..\..\Source\Core\Configs.cs" Link="Configs.cs" />
+    <Compile Include="..\..\Source\Core\IService.cs" Link="IService.cs" />
     <Compile Include="..\..\Source\Core\LogSystem\ConsoleLogger.cs" Link="LogSystem\ConsoleLogger.cs" />
     <Compile Include="..\..\Source\Core\LogSystem\FileLogger.cs" Link="LogSystem\FileLogger.cs" />
     <Compile Include="..\..\Source\Core\LogSystem\IInternalLogger.cs" Link="LogSystem\IInternalLogger.cs" />
@@ -32,6 +33,9 @@
   <ItemGroup>
     <Reference Include="ASCIISerializerManaged">
       <HintPath>..\..\Libraries\ASCIISerializerManaged.dll</HintPath>
+    </Reference>
+    <Reference Include="BinarySerializerManaged">
+      <HintPath>..\..\Libraries\BinarySerializerManaged.dll</HintPath>
     </Reference>
     <Reference Include="CommonManaged">
       <HintPath>..\..\Libraries\CommonManaged.dll</HintPath>

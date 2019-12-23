@@ -37,6 +37,10 @@
     <Reference Include="ASCIISerializerManaged">
       <HintPath>..\..\Libraries\ASCIISerializerManaged.dll</HintPath>
     </Reference>
+    <Reference Include="BinarySerializerManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\BinarySerializerManaged.dll</HintPath>
+    </Reference>
     <Reference Include="CommonManaged">
       <HintPath>..\..\Libraries\CommonManaged.dll</HintPath>
     </Reference>
@@ -51,6 +55,9 @@
     </Compile>
     <Compile Include="..\..\Source\Core\Configs.cs">
       <Link>Configs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Source\Core\IService.cs">
+      <Link>IService.cs</Link>
     </Compile>
     <Compile Include="..\..\Source\Core\LogSystem\ConsoleLogger.cs">
       <Link>LogSystem\ConsoleLogger.cs</Link>

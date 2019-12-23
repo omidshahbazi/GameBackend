@@ -7,7 +7,7 @@ using System;
 
 namespace Backend.Core
 {
-	class Configs : Singleton<Configs>
+	class Configs : Singleton<Configs>, IService
 	{
 		private const string FILE_PATH = "Configs/Server.json";
 
@@ -27,9 +27,18 @@ namespace Backend.Core
 			Server = Creator.Create<Server>(data);
 		}
 
+		public void Shutdown()
+		{
+			Save();
+		}
+
+		public void Service()
+		{
+		}
+
 		public void Save()
 		{
-			FileSystem.Write(FILE_PATH, Creator.Create<ISerializeObject>(Server).Content);
+			FileSystem.Write(FILE_PATH, Creator.Serialize<ISerializeObject>(Server).Content);
 		}
 	}
 }

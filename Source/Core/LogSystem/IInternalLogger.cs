@@ -7,5 +7,6 @@ namespace Backend.Core.LogSystem
 	interface IInternalLogger : ILogger
 	{
 		void Initialize(Server.Logger Config);
+		void Shutdown();
 	}
 }

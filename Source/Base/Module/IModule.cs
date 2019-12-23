@@ -4,5 +4,8 @@ namespace Backend.Base.Module
 	public interface IModule
 	{
 		void Initialize(IContext Context);
+		void Shutdown();
+
+		void Service();
 	}
 }

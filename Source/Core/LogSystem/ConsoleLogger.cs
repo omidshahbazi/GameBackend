@@ -13,6 +13,10 @@ namespace Backend.Core.LogSystem
 			minLevel = Config.MinimumLevel;
 		}
 
+		public void Shutdown()
+		{
+		}
+
 		public void WriteInfo(string Format, params object[] Args)
 		{
 			if (minLevel > Server.Logger.Levels.Info)

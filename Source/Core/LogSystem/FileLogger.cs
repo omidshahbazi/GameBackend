@@ -10,6 +10,10 @@ namespace Backend.Core.LogSystem
 		{
 		}
 
+		public void Shutdown()
+		{
+		}
+
 		public void WriteInfo(string Format, params object[] Args)
 		{
 		}
