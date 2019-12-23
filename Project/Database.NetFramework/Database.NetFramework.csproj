@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CDB4AB43-2C21-4AFA-9E69-4D586FD6AEEE}</ProjectGuid>
+    <ProjectGuid>{E166DFB0-6588-4781-AFD7-40C6734C97B1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Backend.Core</RootNamespace>
-    <AssemblyName>Backend.Core.NetFramework</AssemblyName>
+    <RootNamespace>Backend.Database</RootNamespace>
+    <AssemblyName>Backend.Database.NetFramework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -34,48 +34,18 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ASCIISerializerManaged">
-      <HintPath>..\..\Libraries\ASCIISerializerManaged.dll</HintPath>
-    </Reference>
-    <Reference Include="BinarySerializerManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CommonManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\BinarySerializerManaged.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonManaged">
       <HintPath>..\..\Libraries\CommonManaged.dll</HintPath>
-    </Reference>
-    <Reference Include="NetworkingManaged.NetFramework">
-      <HintPath>..\..\Libraries\NetworkingManaged.NetFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Source\Core\Application.cs">
-      <Link>Application.cs</Link>
+    <Compile Include="..\..\Source\Database\DatabaseManager.cs">
+      <Link>DatabaseManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\Source\Core\ConfigSystem\ConfigManager.cs">
-      <Link>ConfigSystem\ConfigManager.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Source\Core\IService.cs">
-      <Link>IService.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Source\Core\LogSystem\ConsoleLogger.cs">
-      <Link>LogSystem\ConsoleLogger.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Source\Core\LogSystem\FileLogger.cs">
-      <Link>LogSystem\FileLogger.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Source\Core\LogSystem\IInternalLogger.cs">
-      <Link>LogSystem\IInternalLogger.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Source\Core\LogSystem\LogManager.cs">
-      <Link>LogSystem\LogManager.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Source\Core\ModuleSystem\ModuleManager.cs">
-      <Link>ModuleSystem\ModuleManager.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Source\Core\NetworkSystem\NetworkManager.cs">
-      <Link>NetworkSystem\NetworkManager.cs</Link>
+    <Compile Include="..\..\Source\Database\MySQL\MySQLConnection.cs">
+      <Link>MySQL\MySQLConnection.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

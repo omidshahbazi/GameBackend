@@ -1,5 +1,6 @@
 // Copyright 2019. All Rights Reserved.
-using Backend.Base.Configs;
+using Backend.Base.ConfigManager;
+using Backend.Core.ConfigSystem;
 using Backend.Core.LogSystem;
 using GameFramework.BinarySerializer;
 using GameFramework.Common.MemoryManagement;
@@ -44,7 +45,7 @@ namespace Backend.Core
 
 		private void CreateSockets()
 		{
-			Server.Socket[] socketsConfig = Configs.Instance.Server.Sockets;
+			Server.Socket[] socketsConfig = ConfigManager.Instance.Server.Sockets;
 			if (socketsConfig == null)
 			{
 				LogManager.Instance.WriteWarning("Sockets is empty, so ignore creating sockets");

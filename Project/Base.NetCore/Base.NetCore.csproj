@@ -7,7 +7,7 @@
     <Company>Backend.Base.NetCore</Company>
     <Product>Backend.Base.NetCore</Product>
     <AssemblyName>Backend.Base.NetCore</AssemblyName>
-    <RootNamespace>Base.NetCore</RootNamespace>
+    <RootNamespace>Backend.Base</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -15,16 +15,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\Source\Base\Configs\Server.cs" Link="Configs\Server.cs" />
+    <Compile Include="..\..\Source\Base\ConfigSystem\Server.cs" Link="ConfigSystem\Server.cs" />
+    <Compile Include="..\..\Source\Base\DatabaseSystem\IConnection.cs" Link="DatabaseSystem\IConnection.cs" />
+    <Compile Include="..\..\Source\Base\DatabaseSystem\IConnectionPool.cs" Link="DatabaseSystem\IConnectionPool.cs" />
     <Compile Include="..\..\Source\Base\IContext.cs" Link="IContext.cs" />
     <Compile Include="..\..\Source\Base\LogSystem\ILogger.cs" Link="LogSystem\ILogger.cs" />
-    <Compile Include="..\..\Source\Base\Module\IModule.cs" Link="Module\IModule.cs" />
+    <Compile Include="..\..\Source\Base\ModuleSystem\IModule.cs" Link="ModuleSystem\IModule.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configs\" />
+    <Folder Include="ConfigSystem\" />
     <Folder Include="LogSystem\" />
-    <Folder Include="Module\" />
+    <Folder Include="ModuleSystem\" />
+    <Folder Include="DatabaseSystem\" />
   </ItemGroup>
 
 </Project>

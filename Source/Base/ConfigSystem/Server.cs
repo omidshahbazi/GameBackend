@@ -1,5 +1,5 @@
 // Copyright 2019. All Rights Reserved.
-namespace Backend.Base.Configs
+namespace Backend.Base.ConfigManager
 {
 	public struct Server
 	{

@@ -1,13 +1,14 @@
 // Copyright 2019. All Rights Reserved.
 using System;
 using System.Collections.Generic;
-using Backend.Base.Configs;
+using Backend.Base.ConfigManager;
 using Backend.Base.LogSystem;
+using Backend.Core.ConfigSystem;
 using GameFramework.Common.MemoryManagement;
 
 namespace Backend.Core.LogSystem
 {
-	public class LogManager : Singleton<LogManager>, ILogger, IService
+	class LogManager : Singleton<LogManager>, ILogger, IService
 	{
 		private IInternalLogger[] loggers = null;
 
@@ -17,10 +18,10 @@ namespace Backend.Core.LogSystem
 
 		public void Initialize()
 		{
-			if (Configs.Instance.Server.Loggers == null)
+			if (ConfigManager.Instance.Server.Loggers == null)
 				return;
 
-			Server.Logger[] loggersConfig = Configs.Instance.Server.Loggers;
+			Server.Logger[] loggersConfig = ConfigManager.Instance.Server.Loggers;
 			if (loggersConfig == null)
 			{
 				Application.Instance.Logger.WriteWarning("Loggers is empty, so ignore creating loggers");

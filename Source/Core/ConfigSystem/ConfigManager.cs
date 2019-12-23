@@ -1,19 +1,19 @@
 // Copyright 2019. All Rights Reserved.
-using Backend.Base.Configs;
+using Backend.Base.ConfigManager;
 using GameFramework.ASCIISerializer;
 using GameFramework.Common.FileLayer;
 using GameFramework.Common.MemoryManagement;
 using System;
 
-namespace Backend.Core
+namespace Backend.Core.ConfigSystem
 {
-	class Configs : Singleton<Configs>, IService
+	class ConfigManager : Singleton<ConfigManager>, IService
 	{
 		private const string FILE_PATH = "Configs/Server.json";
 
 		public Server Server;
 
-		private Configs()
+		private ConfigManager()
 		{
 		}
 

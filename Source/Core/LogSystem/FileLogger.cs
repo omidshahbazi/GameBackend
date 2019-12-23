@@ -1,5 +1,5 @@
 // Copyright 2019. All Rights Reserved.
-using Backend.Base.Configs;
+using Backend.Base.ConfigManager;
 using System;
 
 namespace Backend.Core.LogSystem

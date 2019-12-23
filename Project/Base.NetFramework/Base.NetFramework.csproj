@@ -7,7 +7,7 @@
     <ProjectGuid>{FACC0BA0-D424-46F7-98FD-A791DE500D4B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Base.NetFramework</RootNamespace>
+    <RootNamespace>Backend.Base</RootNamespace>
     <AssemblyName>Backend.Base.NetFramework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -37,8 +37,14 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Source\Base\Configs\Server.cs">
-      <Link>Configs\Server.cs</Link>
+    <Compile Include="..\..\Source\Base\ConfigSystem\Server.cs">
+      <Link>ConfigSystem\Server.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Source\Base\DatabaseSystem\IConnection.cs">
+      <Link>DatabasSystem\IConnection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Source\Base\DatabaseSystem\IConnectionPool.cs">
+      <Link>DatabasSystem\IConnectionPool.cs</Link>
     </Compile>
     <Compile Include="..\..\Source\Base\IContext.cs">
       <Link>IContext.cs</Link>
@@ -46,10 +52,11 @@
     <Compile Include="..\..\Source\Base\LogSystem\ILogger.cs">
       <Link>LogSystem\ILogger.cs</Link>
     </Compile>
-    <Compile Include="..\..\Source\Base\Module\IModule.cs">
-      <Link>Module\IModule.cs</Link>
+    <Compile Include="..\..\Source\Base\ModuleSystem\IModule.cs">
+      <Link>ModuleSystem\IModule.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

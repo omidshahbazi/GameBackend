@@ -1,5 +1,5 @@
 // Copyright 2019. All Rights Reserved.
-namespace Backend.Base.Module
+namespace Backend.Base.ModuleSystem
 {
 	public interface IModule
 	{

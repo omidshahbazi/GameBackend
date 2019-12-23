@@ -1,6 +1,7 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base;
 using Backend.Base.LogSystem;
+using Backend.Core.ConfigSystem;
 using Backend.Core.LogSystem;
 using Backend.Core.ModuleSystem;
 using GameFramework.Common.MemoryManagement;
@@ -35,7 +36,7 @@ namespace Backend.Core
 
 			services = new List<IService>();
 
-			AddService(Configs.Instance);
+			AddService(ConfigManager.Instance);
 			AddService(LogManager.Instance);
 			AddService(NetworkManager.Instance);
 			AddService(ModuleManager.Instance);

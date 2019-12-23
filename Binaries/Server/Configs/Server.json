@@ -14,7 +14,7 @@
 	"Modules": {
 		"LibrariesPath": "Libraries/",
 		"Files": [
-			{ "Path": "Modules/xxx.dll" }
+			{ "Path": "NetFramework/Backend.Database.NetFramework.dll" }
 		]
 	},
 	"Admins": [

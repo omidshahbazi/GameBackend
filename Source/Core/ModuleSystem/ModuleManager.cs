@@ -1,7 +1,7 @@
 // Copyright 2019. All Rights Reserved.
-using Backend.Base;
-using Backend.Base.Configs;
-using Backend.Base.Module;
+using Backend.Base.ConfigManager;
+using Backend.Base.ModuleSystem;
+using Backend.Core.ConfigSystem;
 using Backend.Core.LogSystem;
 using GameFramework.Common.MemoryManagement;
 using System;
@@ -44,7 +44,7 @@ namespace Backend.Core.ModuleSystem
 
 		private void LoadLibraries(List<IModule> Modules)
 		{
-			string librariesPath = Configs.Instance.Server.Modules.LibrariesPath;
+			string librariesPath = ConfigManager.Instance.Server.Modules.LibrariesPath;
 			if (string.IsNullOrEmpty(librariesPath))
 			{
 				LogManager.Instance.WriteWarning("Libraries path is empty, so ignore loading libraries");
@@ -64,7 +64,7 @@ namespace Backend.Core.ModuleSystem
 
 		private void LoadModules(List<IModule> Modules)
 		{
-			Server.Module.File[] files = Configs.Instance.Server.Modules.Files;
+			Server.Module.File[] files = ConfigManager.Instance.Server.Modules.Files;
 			if (files == null)
 			{
 				LogManager.Instance.WriteError("Module files is empty, so ignore loading modules");
@@ -90,7 +90,7 @@ namespace Backend.Core.ModuleSystem
 
 				Assembly assembly = Assembly.Load(assemblyData);
 
-				Type[] types = assembly.GetExportedTypes();
+				Type[] types = assembly.GetTypes();
 
 				Type moduleInterfaceType = typeof(IModule);
 
@@ -101,7 +101,7 @@ namespace Backend.Core.ModuleSystem
 					if (!moduleInterfaceType.IsAssignableFrom(type))
 						continue;
 
-					LogManager.Instance.WriteInfo("|_Creating instance of type [{0}]", type.ToString());
+					LogManager.Instance.WriteInfo("	|_Creating instance of type [{0}]", type.ToString());
 
 					IModule module = (IModule)Activator.CreateInstance(type);
 
@@ -114,12 +114,12 @@ namespace Backend.Core.ModuleSystem
 
 					module.Initialize(Application.Instance);
 
-					LogManager.Instance.WriteInfo("	|_Instance of type [{0}] initialized successfully", type.ToString());
+					LogManager.Instance.WriteInfo("		|_Instance of type [{0}] initialized successfully", type.ToString());
 
 					Modules.Add(module);
-
-					LogManager.Instance.WriteInfo("Assembly [{0}] loaded successfully", FilePath);
 				}
+
+				LogManager.Instance.WriteInfo("Assembly [{0}] loaded successfully", FilePath);
 			}
 			catch (Exception e)
 			{
