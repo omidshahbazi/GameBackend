@@ -4,6 +4,11 @@
 			"Host": "::1",
 			"Ports": [ 82, 81 ],
 			"Protocol": "TCP"
+		},
+		{
+			"Host": "::1",
+			"Ports": [ 82, 81 ],
+			"Protocol": "UDP"
 		}
 	],
 	"Modules": {

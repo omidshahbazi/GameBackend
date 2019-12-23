@@ -18,7 +18,7 @@ namespace Backend.Core
 
 		public void Initialize()
 		{
-			CreateAndBindSockets();
+			CreateSockets();
 		}
 
 		public void Shutdown()
@@ -33,7 +33,7 @@ namespace Backend.Core
 				sockets[i].Service();
 		}
 
-		private void CreateAndBindSockets()
+		private void CreateSockets()
 		{
 			Server.Socket[] socketsConfig = Configs.Instance.Server.Sockets;
 			if (socketsConfig == null)
@@ -50,7 +50,7 @@ namespace Backend.Core
 
 				for (int j = 0; j < socketInfo.Ports.Length; ++j)
 				{
-					ServerSocket socket = CreateAndBindSocket(socketInfo.Protocol, socketInfo.Host, socketInfo.Ports[j]);
+					ServerSocket socket = CreateSocket(socketInfo.Protocol, socketInfo.Host, socketInfo.Ports[j]);
 					if (socket == null)
 						continue;
 
@@ -61,11 +61,11 @@ namespace Backend.Core
 			sockets = socketList.ToArray();
 		}
 
-		private ServerSocket CreateAndBindSocket(Server.Socket.ProtocolTypes Protocol, string Host, ushort Port)
+		private ServerSocket CreateSocket(Server.Socket.ProtocolTypes Protocol, string Host, ushort Port)
 		{
 			ServerSocket socket = null;
 
-			string ipPort = "[" + Host + "]:" + Port;
+			string ipPort = Protocol + " [" + Host + "]:" + Port;
 
 			try
 			{
