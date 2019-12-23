@@ -1,12 +1,12 @@
 {
 	"Sockets": [
 		{
-			"Host": "::1",
+			"Host": "::0",
 			"Ports": [ 82, 81 ],
 			"Protocol": "TCP"
 		},
 		{
-			"Host": "::1",
+			"Host": "::0",
 			"Ports": [ 82, 81 ],
 			"Protocol": "UDP"
 		}

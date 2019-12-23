@@ -2,7 +2,7 @@
 using Backend.Base;
 using Backend.Base.Configs;
 using Backend.Base.Module;
-using GameFramework.Common.FileLayer;
+using Backend.Core.LogSystem;
 using GameFramework.Common.MemoryManagement;
 using System;
 using System.Collections.Generic;
@@ -47,14 +47,14 @@ namespace Backend.Core.ModuleSystem
 			string librariesPath = Configs.Instance.Server.Modules.LibrariesPath;
 			if (string.IsNullOrEmpty(librariesPath))
 			{
-				Application.Instance.Logger.WriteWarning("Libraries path is empty, so ignore loading libraries");
+				LogManager.Instance.WriteWarning("Libraries path is empty, so ignore loading libraries");
 				return;
 			}
 
-			string[] files = FileSystem.GetFiles(librariesPath, "*.dll", SearchOption.AllDirectories);
+			string[] files = GameFramework.Common.FileLayer.FileSystem.GetFiles(librariesPath, "*.dll", SearchOption.AllDirectories);
 			if (files == null)
 			{
-				Application.Instance.Logger.WriteError("Directory [{0}] doesn't exsits", librariesPath);
+				LogManager.Instance.WriteError("Directory [{0}] doesn't exsits", librariesPath);
 				return;
 			}
 
@@ -67,7 +67,7 @@ namespace Backend.Core.ModuleSystem
 			Server.Module.File[] files = Configs.Instance.Server.Modules.Files;
 			if (files == null)
 			{
-				Application.Instance.Logger.WriteError("Module files is empty, so ignore loading modules");
+				LogManager.Instance.WriteError("Module files is empty, so ignore loading modules");
 				return;
 			}
 
@@ -77,16 +77,14 @@ namespace Backend.Core.ModuleSystem
 
 		private void LoadAssembly(string FilePath, List<IModule> Modules)
 		{
-			Application.Instance.Logger.WriteInfo("Loading assembly [{0}]", FilePath);
-
-			IContext context = Application.Instance;
+			LogManager.Instance.WriteInfo("Loading assembly [{0}]", FilePath);
 
 			try
 			{
-				byte[] assemblyData = FileSystem.ReadBytes(FilePath);
+				byte[] assemblyData = GameFramework.Common.FileLayer.FileSystem.ReadBytes(FilePath);
 				if (assemblyData == null)
 				{
-					Application.Instance.Logger.WriteError("Assembly [{0}] doesn't exsits", FilePath);
+					LogManager.Instance.WriteError("Assembly [{0}] doesn't exsits", FilePath);
 					return;
 				}
 
@@ -103,29 +101,29 @@ namespace Backend.Core.ModuleSystem
 					if (!moduleInterfaceType.IsAssignableFrom(type))
 						continue;
 
-					Application.Instance.Logger.WriteInfo("|_Creating instance of type [{0}]", type.ToString());
+					LogManager.Instance.WriteInfo("|_Creating instance of type [{0}]", type.ToString());
 
 					IModule module = (IModule)Activator.CreateInstance(type);
 
 					if (module == null)
 					{
-						context.Logger.WriteError("Couldn't create instance of type [{0}] as IModule", type.ToString());
+						LogManager.Instance.WriteError("Couldn't create instance of type [{0}] as IModule", type.ToString());
 
 						continue;
 					}
 
-					module.Initialize(context);
+					module.Initialize(Application.Instance);
 
-					Application.Instance.Logger.WriteInfo("	|_Instance of type [{0}] initialized successfully", type.ToString());
+					LogManager.Instance.WriteInfo("	|_Instance of type [{0}] initialized successfully", type.ToString());
 
 					Modules.Add(module);
 
-					Application.Instance.Logger.WriteInfo("Assembly [{0}] loaded successfully", FilePath);
+					LogManager.Instance.WriteInfo("Assembly [{0}] loaded successfully", FilePath);
 				}
 			}
 			catch (Exception e)
 			{
-				context.Logger.WriteException("Loading assembly [" + FilePath + "] failed", e);
+				LogManager.Instance.WriteException("Loading assembly [" + FilePath + "] failed", e);
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base.Configs;
+using Backend.Core.LogSystem;
 using GameFramework.BinarySerializer;
 using GameFramework.Common.MemoryManagement;
 using GameFramework.Networking;
@@ -24,7 +25,15 @@ namespace Backend.Core
 		public void Shutdown()
 		{
 			for (int i = 0; i < sockets.Length; ++i)
-				sockets[i].UnBind();
+			{
+				ServerSocket socket = sockets[i];
+
+				socket.OnClientConnected -= OnClientConnected;
+				socket.OnClientDisconnected -= OnClientDisconnected;
+				socket.OnBufferReceived -= OnBufferReceived;
+
+				socket.UnBind();
+			}
 		}
 
 		public void Service()
@@ -38,7 +47,7 @@ namespace Backend.Core
 			Server.Socket[] socketsConfig = Configs.Instance.Server.Sockets;
 			if (socketsConfig == null)
 			{
-				Application.Instance.Logger.WriteWarning("Sockets is empty, so ignore creating sockets");
+				LogManager.Instance.WriteWarning("Sockets is empty, so ignore creating sockets");
 				return;
 			}
 
@@ -69,7 +78,7 @@ namespace Backend.Core
 
 			try
 			{
-				Application.Instance.Logger.WriteInfo("Creating socket on {0}", ipPort);
+				LogManager.Instance.WriteInfo("Creating socket on {0}", ipPort);
 
 				if (Protocol == Server.Socket.ProtocolTypes.TCP)
 					socket = new TCPServerSocket();
@@ -77,7 +86,7 @@ namespace Backend.Core
 					socket = new UDPServerSocket();
 				else
 				{
-					Application.Instance.Logger.WriteError("Unknown protocol [{0}", Protocol);
+					LogManager.Instance.WriteError("Unknown protocol [{0}", Protocol);
 					return null;
 				}
 
@@ -89,17 +98,17 @@ namespace Backend.Core
 
 				socket.Listen();
 
-				Application.Instance.Logger.WriteInfo("Socket on {0} created successfully", ipPort);
+				LogManager.Instance.WriteInfo("Socket on {0} created successfully", ipPort);
 			}
 			catch (Exception e)
 			{
-				Application.Instance.Logger.WriteException("Creating socket for " + ipPort + " failed", e);
+				LogManager.Instance.WriteException("Creating socket for " + ipPort + " failed", e);
 			}
 
 			return socket;
 		}
 
-		private void OnClientConnected(Client Sender)
+		private void OnClientConnected(Client Client)
 		{
 		}
 
@@ -107,8 +116,9 @@ namespace Backend.Core
 		{
 		}
 
-		private void OnBufferReceived(Client Client, BufferStream Buffer)
+		private void OnBufferReceived(Client Sender, BufferStream Buffer)
 		{
+
 		}
 	}
 }
