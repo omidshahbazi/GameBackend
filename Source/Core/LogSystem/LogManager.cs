@@ -1,5 +1,6 @@
 // Copyright 2019. All Rights Reserved.
 using System;
+using System.Collections.Generic;
 using Backend.Base.Configs;
 using Backend.Base.LogSystem;
 using GameFramework.Common.MemoryManagement;
@@ -19,28 +20,43 @@ namespace Backend.Core.LogSystem
 			if (Configs.Instance.Server.Loggers == null)
 				return;
 
-			int count = Configs.Instance.Server.Loggers.Length;
-
-			loggers = new ILogger[count];
-
-			for (int i = 0; i < count; ++i)
+			Server.Logger[] loggersConfig = Configs.Instance.Server.Loggers;
+			if (loggersConfig == null)
 			{
-				Server.Logger config = Configs.Instance.Server.Loggers[i];
+				Application.Instance.Logger.WriteWarning("Loggers is empty, so ignore creating loggers");
+				return;
+			}
 
-				Type type = Type.GetType(typeof(LogManager).Namespace + "." + config.Type + "Logger");
+			List<ILogger> loggerList = new List<ILogger>();
+
+			for (int i = 0; i < loggersConfig.Length; ++i)
+			{
+				Server.Logger config = loggersConfig[i];
+
+				string typeName = typeof(LogManager).Namespace + "." + config.Type + "Logger";
+
+				Type type = Type.GetType(typeName);
 				if (type == null)
+				{
+					Application.Instance.Logger.WriteError("Couldn't find type [{0}]", typeName);
 					continue;
+				}
 
 				object instance = Activator.CreateInstance(type);
 				if (instance == null)
+				{
+					Application.Instance.Logger.WriteError("Couldn't create instance of type [{0}]", typeName);
 					continue;
+				}
 
 				IInternalLogger logger = (IInternalLogger)instance;
 
 				logger.Initialize(config);
 
-				loggers[i] = logger;
+				loggerList.Add(logger);
 			}
+
+			loggers = loggerList.ToArray();
 		}
 
 		public void WriteInfo(string Format, params object[] Args)
@@ -88,13 +104,13 @@ namespace Backend.Core.LogSystem
 				loggers[i].WriteCritical(Format, Args);
 		}
 
-		public void WriteException(Exception E)
+		public void WriteException(string Message, Exception E)
 		{
 			if (loggers == null)
 				return;
 
 			for (int i = 0; i < loggers.Length; ++i)
-				loggers[i].WriteException(E);
+				loggers[i].WriteException(Message, E);
 		}
 	}
 }

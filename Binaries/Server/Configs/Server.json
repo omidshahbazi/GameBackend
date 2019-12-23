@@ -7,7 +7,7 @@
 		}
 	],
 	"Modules": {
-		"LibrariesPath": "../../Libraries/",
+		"LibrariesPath": "Libraries/",
 		"Files": [
 			{ "Path": "xxx.dll" }
 		]

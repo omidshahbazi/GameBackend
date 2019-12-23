@@ -53,11 +53,12 @@ namespace Backend.Core.LogSystem
 			Console.WriteLine(Format, Args);
 		}
 
-		public void WriteException(Exception E)
+		public void WriteException(string Message, Exception E)
 		{
 			if (minLevel > Server.Logger.Levels.Critical)
 				return;
 
+			Console.WriteLine(Message);
 			Console.WriteLine(E.ToString());
 		}
 	}

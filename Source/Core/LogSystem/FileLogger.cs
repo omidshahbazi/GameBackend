@@ -30,7 +30,7 @@ namespace Backend.Core.LogSystem
 		{
 		}
 
-		public void WriteException(Exception E)
+		public void WriteException(string Message, Exception E)
 		{
 		}
 	}

@@ -22,6 +22,7 @@
     <Compile Include="..\..\Source\Core\LogSystem\IInternalLogger.cs" Link="LogSystem\IInternalLogger.cs" />
     <Compile Include="..\..\Source\Core\LogSystem\LogManager.cs" Link="LogSystem\LogManager.cs" />
     <Compile Include="..\..\Source\Core\Modules.cs" Link="Modules.cs" />
+    <Compile Include="..\..\Source\Core\NetworkSystem\NetworkManager.cs" Link="NetworkSystem\NetworkManager.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +43,7 @@
 
   <ItemGroup>
     <Folder Include="LogSystem\" />
+    <Folder Include="NetworkSystem\" />
   </ItemGroup>
 
 </Project>

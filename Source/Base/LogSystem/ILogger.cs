@@ -10,6 +10,6 @@ namespace Backend.Base.LogSystem
 		void WriteError(string Format, params object[] Args);
 		void WriteDebug(string Format, params object[] Args);
 		void WriteCritical(string Format, params object[] Args);
-		void WriteException(Exception E);
+		void WriteException(string Message, Exception E);
 	}
 }
