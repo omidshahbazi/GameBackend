@@ -1,6 +1,7 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base.Utilities;
 using Backend.Core.LogSystem;
+using Backend.Core.NetworkSystem;
 using GameFramework.Common.MemoryManagement;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace Backend.Core
 {
 	class RequestManager : Singleton<RequestManager>
 	{
-		private class RequestMap : Dictionary<uint, Action<object>>
+		private class RequestMap : Dictionary<uint, Action<Client, object>>
 		{ }
 
 		private RequestMap requests = null;
@@ -19,21 +20,38 @@ namespace Backend.Core
 			requests = new RequestMap();
 		}
 
-		public void RegisterHandler<ArgT, ResT>(Func<ArgT, ResT> Handler)
+		public void RegisterHandler<ArgT, ResT>(Func<Client, ArgT, ResT> Handler)
 			where ArgT : class
 			where ResT : class
 		{
 			uint hash = NetworkUtilities.MakeHash<ArgT>();
 
-			requests[hash] = (Argument) =>
+			requests[hash] = (Client, Argument) =>
 			{
-				ResT res = Handler((ArgT)Argument);
+				ResT res = Handler(Client, (ArgT)Argument);
 
+				byte[] buffer = null;//res to byte[]
 
+				Client.WriteBuffer(buffer);
 			};
 		}
 
-		public void InvokeHandler<ArgT>(ArgT Argument)
+		public void RegisterHandler<ArgT>(Action<Client, ArgT> Handler)
+			where ArgT : class
+		{
+			uint hash = NetworkUtilities.MakeHash<ArgT>();
+
+			requests[hash] = (Client, Argument) =>
+			{
+				Handler(Client, (ArgT)Argument);
+
+				byte[] buffer = null;//just ack
+
+				Client.WriteBuffer(buffer);
+			};
+		}
+
+		public void InvokeHandler<ArgT>(Client Client, ArgT Argument)
 		{
 			uint hash = NetworkUtilities.MakeHash<ArgT>();
 
@@ -43,7 +61,7 @@ namespace Backend.Core
 				return;
 			}
 
-			requests[hash](Argument);
+			requests[hash](Client, Argument);
 		}
 	}
 }

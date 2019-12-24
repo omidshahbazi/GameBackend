@@ -75,7 +75,7 @@ namespace Backend.Core
 		{
 			req r = new req();
 			r.a = 203;
-			RequestManager.Instance.InvokeHandler(r);
+			RequestManager.Instance.InvokeHandler(null, r);
 
 			for (int i = 0; i < services.Count; ++i)
 				services[i].Service();
@@ -101,7 +101,7 @@ namespace Backend.Core
 			public string c;
 		}
 
-		private res handler(req r)
+		private res handler(NetworkSystem.Client c, req r)
 		{
 			res re = new res();
 			re.b = r.a;
