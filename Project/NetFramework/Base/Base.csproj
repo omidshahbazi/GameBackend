@@ -59,9 +59,6 @@
     <Compile Include="..\..\..\Source\Base\ModuleSystem\IModule.cs">
       <Link>ModuleSystem\IModule.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Source\Base\Utilities\NetworkUtilities.cs">
-      <Link>Utilities\NetworkUtilities.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
