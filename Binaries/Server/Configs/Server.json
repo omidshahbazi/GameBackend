@@ -12,9 +12,8 @@
 		}
 	],
 	"Modules": {
-		"LibrariesPath": "Libraries/",
+		"LibrariesPath": "Libraries/NetFramework/",
 		"Files": [
-			{ "Path": "NetFramework/Backend.Database.NetFramework.dll" }
 		]
 	},
 	"Admins": [

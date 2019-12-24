@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\Binaries\Server\NetCore\</OutputPath>
+    <OutputPath>..\..\Binaries\Server\Libraries\NetCore\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
