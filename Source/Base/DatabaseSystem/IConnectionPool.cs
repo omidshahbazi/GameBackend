@@ -3,6 +3,6 @@ namespace Backend.Base.ConnectionManager
 {
 	public interface IConnectionPool
 	{
-
+		IConnection Acquire();
 	}
 }

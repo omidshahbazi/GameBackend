@@ -11,16 +11,16 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\Binaries\Server\NetCore\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Server\NetCore\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\Source\Base\ConfigSystem\Server.cs" Link="ConfigSystem\Server.cs" />
-    <Compile Include="..\..\Source\Base\DatabaseSystem\IConnection.cs" Link="DatabaseSystem\IConnection.cs" />
-    <Compile Include="..\..\Source\Base\DatabaseSystem\IConnectionPool.cs" Link="DatabaseSystem\IConnectionPool.cs" />
-    <Compile Include="..\..\Source\Base\IContext.cs" Link="IContext.cs" />
-    <Compile Include="..\..\Source\Base\LogSystem\ILogger.cs" Link="LogSystem\ILogger.cs" />
-    <Compile Include="..\..\Source\Base\ModuleSystem\IModule.cs" Link="ModuleSystem\IModule.cs" />
+    <Compile Include="..\..\..\Source\Base\ConfigSystem\Server.cs" Link="ConfigSystem\Server.cs" />
+    <Compile Include="..\..\..\Source\Base\DatabaseSystem\IConnection.cs" Link="DatabaseSystem\IConnection.cs" />
+    <Compile Include="..\..\..\Source\Base\DatabaseSystem\IConnectionPool.cs" Link="DatabaseSystem\IConnectionPool.cs" />
+    <Compile Include="..\..\..\Source\Base\IContext.cs" Link="IContext.cs" />
+    <Compile Include="..\..\..\Source\Base\LogSystem\ILogger.cs" Link="LogSystem\ILogger.cs" />
+    <Compile Include="..\..\..\Source\Base\ModuleSystem\IModule.cs" Link="ModuleSystem\IModule.cs" />
   </ItemGroup>
 
   <ItemGroup>

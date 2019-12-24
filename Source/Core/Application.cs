@@ -1,5 +1,6 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base;
+using Backend.Base.ConnectionManager;
 using Backend.Base.LogSystem;
 using Backend.Core.ConfigSystem;
 using Backend.Core.LogSystem;
@@ -24,6 +25,12 @@ namespace Backend.Core
 		{
 			get;
 			private set;
+		}
+
+		public IConnectionPool Database
+		{
+			get;
+			set;
 		}
 
 		private Application()

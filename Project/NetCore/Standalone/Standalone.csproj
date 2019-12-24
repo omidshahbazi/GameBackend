@@ -14,20 +14,20 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\Binaries\Server\NetCore\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Server\NetCore\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\Source\Standalone\Program.cs" Link="Program.cs" />
+    <Compile Include="..\..\..\Source\Standalone\Program.cs" Link="Program.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core.NetCore\Core.NetCore.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="CommonManaged">
-      <HintPath>..\..\Libraries\CommonManaged.dll</HintPath>
+      <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
     </Reference>
   </ItemGroup>
 
