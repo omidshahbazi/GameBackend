@@ -34,6 +34,10 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +58,9 @@
     </Compile>
     <Compile Include="..\..\..\Source\Base\ModuleSystem\IModule.cs">
       <Link>ModuleSystem\IModule.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Base\Utilities\NetworkUtilities.cs">
+      <Link>Utilities\NetworkUtilities.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -43,14 +43,22 @@ namespace Backend.Core
 
 			services = new List<IService>();
 
+			Logger = LogManager.Instance;
+
 			AddService(ConfigManager.Instance);
 			AddService(LogManager.Instance);
 			AddService(NetworkManager.Instance);
 			AddService(ModuleManager.Instance);
 
-			Logger = LogManager.Instance;
-
 			IsRunning = true;
+
+
+
+
+
+
+
+			RequestManager.Instance.RegisterHandler<req, res>(handler);
 		}
 
 		public void Shutdown()
@@ -65,6 +73,10 @@ namespace Backend.Core
 
 		public void Service()
 		{
+			req r = new req();
+			r.a = 203;
+			RequestManager.Instance.InvokeHandler(r);
+
 			for (int i = 0; i < services.Count; ++i)
 				services[i].Service();
 		}
@@ -74,6 +86,28 @@ namespace Backend.Core
 			Service.Initialize();
 
 			services.Add(Service);
+		}
+
+
+
+		class req
+		{
+			public int a;
+		}
+
+		class res
+		{
+			public int b;
+			public string c;
+		}
+
+		private res handler(req r)
+		{
+			res re = new res();
+			re.b = r.a;
+			re.c = "omid";
+
+			return re;
 		}
 	}
 }

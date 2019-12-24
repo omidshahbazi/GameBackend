@@ -12,6 +12,10 @@ namespace Backend.Database
 		public void Initialize(IContext Context)
 		{
 			Application.Instance.Database = this;
+
+
+
+			Context.Logger.WriteInfo("Database initialized successfully");
 		}
 
 		public void Shutdown()
