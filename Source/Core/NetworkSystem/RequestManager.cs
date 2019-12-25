@@ -1,10 +1,8 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Common.NetworkSystem;
 using Backend.Core.LogSystem;
-using Backend.Core.NetworkSystem;
 using GameFramework.BinarySerializer;
 using GameFramework.Common.MemoryManagement;
-using GameFramework.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,23 +30,16 @@ namespace Backend.Core.NetworkSystem
 
 			requests[typeID] = (Client, Argument) =>
 			{
-				try
-				{
-					ResT res = Handler(Client, (ArgT)Argument);
+				ResT res = Handler(Client, (ArgT)Argument);
 
-					if (res == null)
-						return;
+				if (res == null)
+					return;
 
-					BufferStream buffer = new BufferStream(new MemoryStream());
-					if (!MessageCreator.Instance.Serialize(res, buffer))
-						return;
+				BufferStream buffer = new BufferStream(new MemoryStream());
+				if (!MessageCreator.Instance.Serialize(res, buffer))
+					return;
 
-					Client.WriteBuffer(buffer.Buffer);
-				}
-				catch (Exception e)
-				{
-					LogManager.Instance.WriteException("RequestManager", e);
-				}
+				Client.WriteBuffer(buffer.Buffer);
 			};
 		}
 
@@ -59,18 +50,11 @@ namespace Backend.Core.NetworkSystem
 
 			requests[typeID] = (Client, Argument) =>
 			{
-				try
-				{
-					Handler(Client, (ArgT)Argument);
+				Handler(Client, (ArgT)Argument);
 
-					byte[] buffer = null;//just ack
+				byte[] buffer = null;//just ack
 
-					Client.WriteBuffer(buffer);
-				}
-				catch (Exception e)
-				{
-					LogManager.Instance.WriteException("RequestManager", e);
-				}
+				Client.WriteBuffer(buffer);
 			};
 		}
 
@@ -82,7 +66,14 @@ namespace Backend.Core.NetworkSystem
 
 			uint typeID = MessageCreator.GenerateTypeID(obj.GetType());
 
-			requests[typeID](Client, obj);
+			try
+			{
+				requests[typeID](Client, obj);
+			}
+			catch (Exception e)
+			{
+				LogManager.Instance.WriteException("RequestManager", e);
+			}
 		}
 	}
 }

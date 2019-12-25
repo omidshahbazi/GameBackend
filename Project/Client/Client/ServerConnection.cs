@@ -1,7 +1,9 @@
 ﻿// Copyright 2019. All Rights Reserved.
 using Backend.Common;
+using Backend.Common.NetworkSystem;
 using GameFramework.BinarySerializer;
 using GameFramework.Networking;
+using System;
 
 namespace Backend.Client
 {
@@ -9,9 +11,15 @@ namespace Backend.Client
 	{
 		private ClientSocket socket = null;
 
+		public RequestManager RequestManager
+		{
+			get;
+			private set;
+		}
+
 		public ServerConnection()
 		{
-
+			RequestManager = new RequestManager(this);
 		}
 
 		public void Connect(ProtocolTypes Protocol, string Host, ushort Port)
@@ -51,6 +59,15 @@ namespace Backend.Client
 
 		private void Socket_OnBufferReceived(BufferStream Buffer)
 		{
+			RequestManager.DispatchBuffer(Buffer);
+		}
+
+		public void WriteBuffer(byte[] Buffer)
+		{
+			if (socket is TCPClientSocket)
+				((TCPClientSocket)socket).Send(Buffer);
+			else if (socket is UDPClientSocket)
+				((UDPClientSocket)socket).Send(Buffer);
 		}
 	}
 }
