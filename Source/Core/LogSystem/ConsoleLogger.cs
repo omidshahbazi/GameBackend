@@ -22,6 +22,8 @@ namespace Backend.Core.LogSystem
 			if (minLevel > Server.Logger.Levels.Info)
 				return;
 
+			Console.ForegroundColor = ConsoleColor.Gray;
+
 			Console.WriteLine(Format, Args);
 		}
 
@@ -29,6 +31,8 @@ namespace Backend.Core.LogSystem
 		{
 			if (minLevel > Server.Logger.Levels.Warning)
 				return;
+
+			Console.ForegroundColor = ConsoleColor.Yellow;
 
 			Console.WriteLine(Format, Args);
 		}
@@ -38,6 +42,8 @@ namespace Backend.Core.LogSystem
 			if (minLevel > Server.Logger.Levels.Error)
 				return;
 
+			Console.ForegroundColor = ConsoleColor.DarkRed;
+
 			Console.WriteLine(Format, Args);
 		}
 
@@ -45,6 +51,8 @@ namespace Backend.Core.LogSystem
 		{
 			if (minLevel > Server.Logger.Levels.Debug)
 				return;
+
+			Console.ForegroundColor = ConsoleColor.Cyan;
 
 			Console.WriteLine(Format, Args);
 		}
@@ -54,6 +62,8 @@ namespace Backend.Core.LogSystem
 			if (minLevel > Server.Logger.Levels.Critical)
 				return;
 
+			Console.ForegroundColor = ConsoleColor.Red;
+
 			Console.WriteLine(Format, Args);
 		}
 
@@ -61,6 +71,8 @@ namespace Backend.Core.LogSystem
 		{
 			if (minLevel > Server.Logger.Levels.Critical)
 				return;
+
+			Console.ForegroundColor = ConsoleColor.Red;
 
 			Console.WriteLine(Message);
 			Console.Write("	|_");
