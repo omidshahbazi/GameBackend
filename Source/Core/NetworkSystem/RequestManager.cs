@@ -11,14 +11,27 @@ namespace Backend.Core.NetworkSystem
 {
 	public class RequestManager : Singleton<RequestManager>
 	{
-		private class RequestMap : Dictionary<uint, Action<Client, object>>
+		private class RequestMap : Dictionary<uint, Action<Client, uint, object>>
 		{ }
 
-		private RequestMap requests = null;
+		private RequestMap handlers = null;
 
 		private RequestManager()
 		{
-			requests = new RequestMap();
+			handlers = new RequestMap();
+		}
+
+		public void RegisterHandler<ArgT>(Action<Client, ArgT> Handler)
+			where ArgT : class
+		{
+			uint typeID = MessageCreator.Instance.Register<ArgT>();
+
+			handlers[typeID] = (Client, ID, Argument) =>
+			{
+				Handler(Client, (ArgT)Argument);
+
+				//respond if ID != 0 with SendInternal
+			};
 		}
 
 		public void RegisterHandler<ArgT, ResT>(Func<Client, ArgT, ResT> Handler)
@@ -28,43 +41,34 @@ namespace Backend.Core.NetworkSystem
 			uint typeID = MessageCreator.Instance.Register<ArgT>();
 			MessageCreator.Instance.Register<ResT>();
 
-			requests[typeID] = (Client, Argument) =>
+			handlers[typeID] = (Client, ID, Argument) =>
 			{
 				ResT res = Handler(Client, (ArgT)Argument);
 
 				if (res == null)
 					return;
 
-				Send(Client, res);
+				SendInternal(Client, ID, res);
 			};
 		}
 
-		public void RegisterHandler<ArgT>(Action<Client, ArgT> Handler)
-			where ArgT : class
+		public void Send<T>(Client Client, T Argument)
+			where T : class
 		{
-			uint typeID = MessageCreator.Instance.Register<ArgT>();
-
-			requests[typeID] = (Client, Argument) =>
-			{
-				Handler(Client, (ArgT)Argument);
-
-				byte[] buffer = null;//just ack
-
-				Client.WriteBuffer(buffer, 0, (uint)buffer.Length);
-			};
+			SendInternal(Client, 0, Argument);
 		}
 
 		public void DispatchBuffer(Client Client, BufferStream Buffer)
 		{
-			object obj = MessageCreator.Instance.Deserialize(Buffer);
+			uint id;
+			uint typeID;
+			object obj = MessageCreator.Instance.Deserialize(Buffer, out id, out typeID);
 			if (obj == null)
 				return;
 
-			uint typeID = MessageCreator.GenerateTypeID(obj.GetType());
-
 			try
 			{
-				requests[typeID](Client, obj);
+				handlers[typeID](Client, id, obj);
 			}
 			catch (Exception e)
 			{
@@ -72,12 +76,13 @@ namespace Backend.Core.NetworkSystem
 			}
 		}
 
-		public void Send<ArgT>(Client Client, ArgT Argument)
+		private void SendInternal<T>(Client Client, uint ID, T Argument)
+			where T : class
 		{
-			MessageCreator.Instance.Register<ArgT>();
+			MessageCreator.Instance.Register<T>();
 
 			BufferStream buffer = new BufferStream(new MemoryStream());
-			if (!MessageCreator.Instance.Serialize(Argument, buffer))
+			if (!MessageCreator.Instance.Serialize(ID, Argument, buffer))
 				return;
 
 			Client.WriteBuffer(buffer.Buffer, 0, buffer.Size);

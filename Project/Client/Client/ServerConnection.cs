@@ -2,6 +2,7 @@
 using Backend.Common;
 using GameFramework.BinarySerializer;
 using GameFramework.Networking;
+using System;
 
 namespace Backend.Client
 {
@@ -38,9 +39,23 @@ namespace Backend.Client
 				socket.Service();
 		}
 
-		public void Send<ArgT>(ArgT Argument)
+		public void RegisterHandler<ArgT>(Action<ArgT> Handler)
+			where ArgT : class
 		{
-			requestManager.Send(Argument);
+			requestManager.RegisterHandler(Handler);
+		}
+
+		public void Send<ArgT>(ArgT Argument, Action OnComplete = null)
+			where ArgT : class
+		{
+			requestManager.Send(Argument, OnComplete);
+		}
+
+		public void Send<ArgT, ResT>(ArgT Argument, Action<ResT> OnComplete = null)
+			where ArgT : class
+			where ResT : class
+		{
+			requestManager.Send(Argument, OnComplete);
 		}
 
 		public void WriteBuffer(byte[] Buffer, uint Index, uint Length)

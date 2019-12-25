@@ -12,13 +12,16 @@ namespace Backend.Client
 		private class RequestMap : Dictionary<uint, Action<object>>
 		{ }
 
+		private uint lastID = 0;
 		private ServerConnection connection = null;
-		private RequestMap requests = null;
+		private RequestMap handlers = null;
+		private RequestMap callbacks = null;
 
 		public RequestManager(ServerConnection Connection)
 		{
 			connection = Connection;
-			requests = new RequestMap();
+			handlers = new RequestMap();
+			callbacks = new RequestMap();
 		}
 
 		public void RegisterHandler<ArgT>(Action<ArgT> Handler)
@@ -26,39 +29,75 @@ namespace Backend.Client
 		{
 			uint typeID = MessageCreator.Instance.Register<ArgT>();
 
-			requests[typeID] = (Argument) =>
+			handlers[typeID] = (arg) =>
 			{
-				Handler((ArgT)Argument);
+				Handler((ArgT)arg);
 			};
+		}
+
+		public void Send<ArgT>(ArgT Argument, Action OnCompleted = null)
+			where ArgT : class
+		{
+			++lastID;
+
+			MessageCreator.Instance.Register<ArgT>();
+
+			BufferStream buffer = new BufferStream(new MemoryStream());
+			if (!MessageCreator.Instance.Serialize(lastID, Argument, buffer))
+				return;
+
+			connection.WriteBuffer(buffer.Buffer, 0, buffer.Size);
+
+			if (OnCompleted != null)
+				callbacks[lastID] = (arg) =>
+				{
+					OnCompleted();
+				};
+		}
+
+		public void Send<ArgT, ResT>(ArgT Argument, Action<ResT> OnCompleted = null)
+			where ArgT : class
+			where ResT : class
+		{
+			++lastID;
+
+			MessageCreator.Instance.Register<ArgT>();
+
+			BufferStream buffer = new BufferStream(new MemoryStream());
+			if (!MessageCreator.Instance.Serialize(lastID, Argument, buffer))
+				return;
+
+			connection.WriteBuffer(buffer.Buffer, 0, buffer.Size);
+
+			if (OnCompleted != null)
+				callbacks[lastID] = (arg) =>
+				{
+					OnCompleted((ResT)arg);
+				};
 		}
 
 		public void DispatchBuffer(BufferStream Buffer)
 		{
-			object obj = MessageCreator.Instance.Deserialize(Buffer);
-			if (obj == null)
-				return;
+			uint id;
+			uint typeID;
+			object obj = MessageCreator.Instance.Deserialize(Buffer, out id, out typeID);
 
-			uint typeID = MessageCreator.GenerateTypeID(obj.GetType());
+			bool isReply = (id != 0);
+
+			if (!isReply && obj == null)
+				return;
 
 			try
 			{
-				requests[typeID](obj);
+				if (isReply)
+					callbacks[id](obj);
+				else
+					handlers[typeID](obj);
 			}
 			catch (Exception e)
 			{
 				throw e;
 			}
-		}
-
-		public void Send<ArgT>(ArgT Argument, Action OnCompleted)
-		{
-			MessageCreator.Instance.Register<ArgT>();
-
-			BufferStream buffer = new BufferStream(new MemoryStream());
-			if (!MessageCreator.Instance.Serialize(Argument, buffer))
-				return;
-
-			connection.WriteBuffer(buffer.Buffer, 0, buffer.Size);
 		}
 	}
 }

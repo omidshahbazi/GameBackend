@@ -1,5 +1,6 @@
 ﻿// Copyright 2019. All Rights Reserved.
 using Backend.Common;
+using System;
 using System.Threading;
 
 namespace Backend.Client
@@ -11,7 +12,7 @@ namespace Backend.Client
 			ServerConnection connection = new ServerConnection();
 			connection.Connect(ProtocolTypes.TCP, "::1", 81);
 
-			connection.RegisterHandler<args, args>(handler);
+			connection.RegisterHandler<args>(handler);
 
 			while (true)
 			{
@@ -19,13 +20,16 @@ namespace Backend.Client
 
 				Thread.Sleep(1000);
 
-				//connection.Send(new args() { doIt = 1586 });
+				connection.Send<args, args>(new args() { doIt = 1586 }, (res) =>
+				{
+					Console.WriteLine("respond" + res.doIt);
+				});
 			}
 		}
 
 		private static void handler(args res)
 		{
-
+			Console.WriteLine("handler" + res.doIt);
 		}
 	}
 }

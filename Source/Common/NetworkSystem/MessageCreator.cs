@@ -28,27 +28,29 @@ namespace Backend.Common.NetworkSystem
 			return typeID;
 		}
 
-		public bool Serialize(object Instance, BufferStream Buffer)
+		public bool Serialize(uint ID, object Instance, BufferStream Buffer)
 		{
 			if (Instance == null)
 				return false;
 
 			uint typeID = GenerateTypeID(Instance.GetType());
 
+			Buffer.WriteUInt32(ID);
 			Buffer.WriteUInt32(typeID);
 			Serializer.Serialize(Instance, Buffer);
 
 			return true;
 		}
 
-		public object Deserialize(BufferStream Buffer)
+		public object Deserialize(BufferStream Buffer, out uint ID, out uint TypeID)
 		{
-			uint typeID = Buffer.ReadUInt32();
+			ID = Buffer.ReadUInt32();
+			TypeID = Buffer.ReadUInt32();
 
-			if (!types.ContainsKey(typeID))
+			if (!types.ContainsKey(TypeID))
 				return null;
 
-			return Serializer.Deserialize(types[typeID], Buffer);
+			return Serializer.Deserialize(types[TypeID], Buffer);
 		}
 
 		public static uint GenerateTypeID(Type Type)

@@ -84,7 +84,9 @@ namespace Backend.Core
 			args ar = new args();
 			ar.doIt += r.doIt + 10;
 
-			return null;
+			RequestManager.Instance.Send(c, r);
+
+			return ar;
 		}
 	}
 }
