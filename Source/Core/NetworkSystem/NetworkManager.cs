@@ -2,17 +2,18 @@
 using Backend.Base.ConfigManager;
 using Backend.Core.ConfigSystem;
 using Backend.Core.LogSystem;
+using Backend.Common;
 using GameFramework.BinarySerializer;
 using GameFramework.Common.MemoryManagement;
 using System;
 using System.Collections.Generic;
+using System.Text;
+using GameFramework.Common.Utilities;
 
 using ServerSocket = GameFramework.Networking.ServerSocket;
 using TCPServerSocket = GameFramework.Networking.TCPServerSocket;
 using UDPServerSocket = GameFramework.Networking.UDPServerSocket;
 using NativeClient = GameFramework.Networking.Client;
-using GameFramework.Common.Utilities;
-using System.Text;
 
 namespace Backend.Core.NetworkSystem
 {
@@ -75,7 +76,7 @@ namespace Backend.Core.NetworkSystem
 			sockets = socketList.ToArray();
 		}
 
-		private ServerSocket CreateSocket(Server.Socket.ProtocolTypes Protocol, string Host, ushort Port)
+		private ServerSocket CreateSocket(ProtocolTypes Protocol, string Host, ushort Port)
 		{
 			ServerSocket socket = null;
 
@@ -85,9 +86,9 @@ namespace Backend.Core.NetworkSystem
 			{
 				LogManager.Instance.WriteInfo("Creating socket on {0}", ipPort);
 
-				if (Protocol == Server.Socket.ProtocolTypes.TCP)
+				if (Protocol == ProtocolTypes.TCP)
 					socket = new TCPServerSocket();
-				else if (Protocol == Server.Socket.ProtocolTypes.UDP)
+				else if (Protocol == ProtocolTypes.UDP)
 					socket = new UDPServerSocket();
 				else
 				{
@@ -97,7 +98,7 @@ namespace Backend.Core.NetworkSystem
 
 				socket.OnClientConnected += (Client) => { OnClientConnected(socket, Client); };
 				socket.OnClientDisconnected += (Client) => { OnClientDisconnected(socket, Client); };
-				socket.OnBufferReceived += (Client, Buffer) => { OnBufferReceived(socket, Client, Buffer); }; ;
+				socket.OnBufferReceived += (Client, Buffer) => { OnBufferReceived(socket, Client, Buffer); };
 
 				socket.Bind(Host, Port);
 

@@ -49,7 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
+    <ProjectReference Include="..\Core\Core.NetFramework.csproj">
       <Project>{cdb4ab43-2c21-4afa-9e69-4d586fd6aeee}</Project>
       <Name>Core.NetFramework</Name>
     </ProjectReference>

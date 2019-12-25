@@ -1,16 +1,12 @@
 // Copyright 2019. All Rights Reserved.
+using Backend.Common;
+
 namespace Backend.Base.ConfigManager
 {
 	public struct Server
 	{
 		public struct Socket
 		{
-			public enum ProtocolTypes
-			{
-				TCP,
-				UDP
-			}
-
 			public string Host;
 			public ushort[] Ports;
 			public ProtocolTypes Protocol;

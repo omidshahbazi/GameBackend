@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackageId>Backend.Common.NetCore</PackageId>
+    <Authors>Backend.Common.NetCore</Authors>
+    <Company>Backend.Common.NetCore</Company>
+    <Product>Backend.Common.NetCore</Product>
+    <AssemblyName>Backend.Common.NetCore</AssemblyName>
+    <RootNamespace>Backend.Common</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\Binaries\Server\NetCore\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ConfigSystem\**" />
+    <Compile Remove="DatabaseSystem\**" />
+    <Compile Remove="LogSystem\**" />
+    <Compile Remove="ModuleSystem\**" />
+    <EmbeddedResource Remove="ConfigSystem\**" />
+    <EmbeddedResource Remove="DatabaseSystem\**" />
+    <EmbeddedResource Remove="LogSystem\**" />
+    <EmbeddedResource Remove="ModuleSystem\**" />
+    <None Remove="ConfigSystem\**" />
+    <None Remove="DatabaseSystem\**" />
+    <None Remove="LogSystem\**" />
+    <None Remove="ModuleSystem\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\Source\Common\Enums.cs" Link="Enums.cs" />
+  </ItemGroup>
+
+</Project>
