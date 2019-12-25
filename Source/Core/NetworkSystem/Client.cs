@@ -17,6 +17,11 @@ namespace Backend.Core.NetworkSystem
 			client = Client;
 		}
 
+		public void Disconnect()
+		{
+			socket.DisconnectClient(client);
+		}
+
 		public void WriteBuffer(byte[] Buffer, uint Index, uint Length)
 		{
 			if (socket is TCPServerSocket)

@@ -57,11 +57,23 @@ namespace Backend.Core.NetworkSystem
 
 		public void DispatchBuffer(Client Client, BufferStream Buffer)
 		{
-			uint id;
-			uint typeID;
-			object obj = MessageCreator.Instance.Deserialize(Buffer, out id, out typeID);
+			uint id = 0;
+			uint typeID = 0;
+			object obj = null;
+			try
+			{
+				obj = MessageCreator.Instance.Deserialize(Buffer, out id, out typeID);
+			}
+			catch
+			{
+			}
+
 			if (obj == null)
+			{
+				Client.Disconnect();
+
 				return;
+			}
 
 			try
 			{
