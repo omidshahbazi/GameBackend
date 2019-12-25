@@ -9,7 +9,7 @@ namespace ServerTest
 	{
 		public void Initialize(IContext Context)
 		{
-			Context.RequestManager.RegisterHandler<GetInitialDataReq, GetInitialDataRes>(GetInitialData);
+			//Context.RequestManager.RegisterHandler<GetInitialDataReq, GetInitialDataRes>(GetInitialData);
 
 			Context.Logger.WriteInfo("ServerTest initialized successfully");
 		}

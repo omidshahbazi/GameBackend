@@ -10,7 +10,7 @@ using System.IO;
 
 namespace Backend.Core.NetworkSystem
 {
-	class RequestManager : Singleton<RequestManager>, IRequestManager
+	class RequestManager : Singleton<RequestManager>, IRequestManager, IService
 	{
 		private class RequestMap : Dictionary<uint, Action<Client, uint, object>>
 		{ }
@@ -19,7 +19,19 @@ namespace Backend.Core.NetworkSystem
 
 		private RequestManager()
 		{
+		}
+
+		public void Initialize()
+		{
 			handlers = new RequestMap();
+		}
+
+		public void Shutdown()
+		{
+		}
+
+		public void Service()
+		{
 		}
 
 		public void RegisterHandler<ArgT>(Action<Client, ArgT> Handler)

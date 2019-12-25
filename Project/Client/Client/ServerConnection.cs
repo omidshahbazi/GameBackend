@@ -6,10 +6,16 @@ using System;
 
 namespace Backend.Client
 {
+	public delegate void ConnectionEventHandler(ServerConnection Connection);
+
 	public class ServerConnection
 	{
 		private ClientSocket socket = null;
 		private RequestManager requestManager = null;
+
+		public event ConnectionEventHandler OnConnected;
+		public event ConnectionEventHandler OnConnectionFailed;
+		public event ConnectionEventHandler OnDisconnected;
 
 		public ServerConnection()
 		{
@@ -31,6 +37,16 @@ namespace Backend.Client
 			socket.OnBufferReceived += Socket_OnBufferReceived;
 
 			socket.Connect(Host, Port);
+		}
+
+		public void Disconnect()
+		{
+			socket.Disconnect();
+
+			socket.OnConnected -= Socket_OnConnected;
+			socket.OnConnectionFailed -= Socket_OnConnectionFailed;
+			socket.OnDisconnected -= Socket_OnDisconnected;
+			socket.OnBufferReceived -= Socket_OnBufferReceived;
 		}
 
 		public void Service()
@@ -68,14 +84,20 @@ namespace Backend.Client
 
 		private void Socket_OnConnected()
 		{
+			if (OnConnected != null)
+				OnConnected(this);
 		}
 
 		private void Socket_OnConnectionFailed()
 		{
+			if (OnConnectionFailed != null)
+				OnConnectionFailed(this);
 		}
 
 		private void Socket_OnDisconnected()
 		{
+			if (OnDisconnected != null)
+				OnDisconnected(this);
 		}
 
 		private void Socket_OnBufferReceived(BufferStream Buffer)

@@ -57,6 +57,7 @@ namespace Backend.Core
 			AddService(ConfigManager.Instance);
 			AddService(LogManager.Instance);
 			AddService(NetworkManager.Instance);
+			AddService(NetworkSystem.RequestManager.Instance);
 			AddService(ModuleManager.Instance);
 
 			IsRunning = true;
