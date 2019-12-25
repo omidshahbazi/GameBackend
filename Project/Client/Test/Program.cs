@@ -11,7 +11,7 @@ namespace Backend.Client
 			ServerConnection connection = new ServerConnection();
 			connection.Connect(ProtocolTypes.TCP, "::1", 81);
 
-			connection.RequestManager.RegisterHandler<args, args>(handler);
+			connection.RegisterHandler<args, args>(handler);
 
 			while (true)
 			{
@@ -19,7 +19,7 @@ namespace Backend.Client
 
 				Thread.Sleep(1000);
 
-				connection.RequestManager.Request(new args() { doIt = 1586 });
+				//connection.Send(new args() { doIt = 1586 });
 			}
 		}
 

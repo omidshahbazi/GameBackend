@@ -8,16 +8,11 @@ namespace Backend.Client
 	public class ServerConnection
 	{
 		private ClientSocket socket = null;
-
-		public RequestManager RequestManager
-		{
-			get;
-			private set;
-		}
+		private RequestManager requestManager = null;
 
 		public ServerConnection()
 		{
-			RequestManager = new RequestManager(this);
+			requestManager = new RequestManager(this);
 		}
 
 		public void Connect(ProtocolTypes Protocol, string Host, ushort Port)
@@ -43,6 +38,19 @@ namespace Backend.Client
 				socket.Service();
 		}
 
+		public void Send<ArgT>(ArgT Argument)
+		{
+			requestManager.Send(Argument);
+		}
+
+		public void WriteBuffer(byte[] Buffer, uint Index, uint Length)
+		{
+			if (socket is TCPClientSocket)
+				((TCPClientSocket)socket).Send(Buffer, Index, Length);
+			else if (socket is UDPClientSocket)
+				((UDPClientSocket)socket).Send(Buffer, Index, Length);
+		}
+
 		private void Socket_OnConnected()
 		{
 		}
@@ -57,15 +65,7 @@ namespace Backend.Client
 
 		private void Socket_OnBufferReceived(BufferStream Buffer)
 		{
-			RequestManager.DispatchBuffer(Buffer);
-		}
-
-		public void WriteBuffer(byte[] Buffer)
-		{
-			if (socket is TCPClientSocket)
-				((TCPClientSocket)socket).Send(Buffer);
-			else if (socket is UDPClientSocket)
-				((UDPClientSocket)socket).Send(Buffer);
+			requestManager.DispatchBuffer(Buffer);
 		}
 	}
 }

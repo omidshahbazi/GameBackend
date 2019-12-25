@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Backend.Client
 {
-	public class RequestManager
+	class RequestManager
 	{
 		private class RequestMap : Dictionary<uint, Action<object>>
 		{ }
@@ -21,27 +21,14 @@ namespace Backend.Client
 			requests = new RequestMap();
 		}
 
-		public void RegisterHandler<ArgT, ResT>(Action<ArgT> Handler)
+		public void RegisterHandler<ArgT>(Action<ArgT> Handler)
 			where ArgT : class
-			where ResT : class
 		{
 			uint typeID = MessageCreator.Instance.Register<ArgT>();
-			MessageCreator.Instance.Register<ResT>();
 
 			requests[typeID] = (Argument) =>
 			{
 				Handler((ArgT)Argument);
-
-				//ResT res = Handler((ArgT)Argument);
-
-				//if (res == null)
-				//	return;
-
-				//BufferStream buffer = new BufferStream(new MemoryStream());
-				//if (!MessageCreator.Instance.Serialize(res, buffer))
-				//	return;
-
-				//connection.WriteBuffer(buffer.Buffer);
 			};
 		}
 
@@ -63,13 +50,15 @@ namespace Backend.Client
 			}
 		}
 
-		public void Request<ArgT>(ArgT Argument)
+		public void Send<ArgT>(ArgT Argument, Action OnCompleted)
 		{
+			MessageCreator.Instance.Register<ArgT>();
+
 			BufferStream buffer = new BufferStream(new MemoryStream());
 			if (!MessageCreator.Instance.Serialize(Argument, buffer))
 				return;
 
-			connection.WriteBuffer(buffer.Buffer);
+			connection.WriteBuffer(buffer.Buffer, 0, buffer.Size);
 		}
 	}
 }

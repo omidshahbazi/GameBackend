@@ -17,12 +17,12 @@ namespace Backend.Core.NetworkSystem
 			client = Client;
 		}
 
-		public void WriteBuffer(byte[] Buffer)
+		public void WriteBuffer(byte[] Buffer, uint Index, uint Length)
 		{
 			if (socket is TCPServerSocket)
-				((TCPServerSocket)socket).Send(client, Buffer);
+				((TCPServerSocket)socket).Send(client, Buffer, Index, Length);
 			else if (socket is UDPServerSocket)
-				((UDPServerSocket)socket).Send(client, Buffer);
+				((UDPServerSocket)socket).Send(client, Buffer, Index, Length);
 		}
 	}
 }

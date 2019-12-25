@@ -9,7 +9,7 @@ using System.IO;
 
 namespace Backend.Core.NetworkSystem
 {
-	class RequestManager : Singleton<RequestManager>
+	public class RequestManager : Singleton<RequestManager>
 	{
 		private class RequestMap : Dictionary<uint, Action<Client, object>>
 		{ }
@@ -35,11 +35,7 @@ namespace Backend.Core.NetworkSystem
 				if (res == null)
 					return;
 
-				BufferStream buffer = new BufferStream(new MemoryStream());
-				if (!MessageCreator.Instance.Serialize(res, buffer))
-					return;
-
-				Client.WriteBuffer(buffer.Buffer);
+				Send(Client, res);
 			};
 		}
 
@@ -54,7 +50,7 @@ namespace Backend.Core.NetworkSystem
 
 				byte[] buffer = null;//just ack
 
-				Client.WriteBuffer(buffer);
+				Client.WriteBuffer(buffer, 0, (uint)buffer.Length);
 			};
 		}
 
@@ -74,6 +70,17 @@ namespace Backend.Core.NetworkSystem
 			{
 				LogManager.Instance.WriteException("RequestManager", e);
 			}
+		}
+
+		public void Send<ArgT>(Client Client, ArgT Argument)
+		{
+			MessageCreator.Instance.Register<ArgT>();
+
+			BufferStream buffer = new BufferStream(new MemoryStream());
+			if (!MessageCreator.Instance.Serialize(Argument, buffer))
+				return;
+
+			Client.WriteBuffer(buffer.Buffer, 0, buffer.Size);
 		}
 	}
 }
