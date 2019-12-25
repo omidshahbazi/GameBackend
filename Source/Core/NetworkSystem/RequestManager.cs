@@ -30,7 +30,7 @@ namespace Backend.Core.NetworkSystem
 			{
 				Handler(Client, (ArgT)Argument);
 
-				//respond if ID != 0 with SendInternal
+				SendInternal(Client, ID, (object)null);
 			};
 		}
 
@@ -44,9 +44,6 @@ namespace Backend.Core.NetworkSystem
 			handlers[typeID] = (Client, ID, Argument) =>
 			{
 				ResT res = Handler(Client, (ArgT)Argument);
-
-				if (res == null)
-					return;
 
 				SendInternal(Client, ID, res);
 			};
@@ -82,6 +79,7 @@ namespace Backend.Core.NetworkSystem
 			MessageCreator.Instance.Register<T>();
 
 			BufferStream buffer = new BufferStream(new MemoryStream());
+
 			if (!MessageCreator.Instance.Serialize(ID, Argument, buffer))
 				return;
 

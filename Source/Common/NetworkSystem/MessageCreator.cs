@@ -30,14 +30,13 @@ namespace Backend.Common.NetworkSystem
 
 		public bool Serialize(uint ID, object Instance, BufferStream Buffer)
 		{
-			if (Instance == null)
-				return false;
-
-			uint typeID = GenerateTypeID(Instance.GetType());
+			uint typeID = Instance == null ? 0 : GenerateTypeID(Instance.GetType());
 
 			Buffer.WriteUInt32(ID);
 			Buffer.WriteUInt32(typeID);
-			Serializer.Serialize(Instance, Buffer);
+
+			if (Instance != null)
+				Serializer.Serialize(Instance, Buffer);
 
 			return true;
 		}
@@ -58,10 +57,4 @@ namespace Backend.Common.NetworkSystem
 			return ReflectionExtensions.MakeHash(Type);
 		}
 	}
-}
-
-
-public class args
-{
-	public int doIt;
 }

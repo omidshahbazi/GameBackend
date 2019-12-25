@@ -52,8 +52,6 @@ namespace Backend.Core
 			AddService(ModuleManager.Instance);
 
 			IsRunning = true;
-
-			RequestManager.Instance.RegisterHandler<args, args>(handler);
 		}
 
 		public void Shutdown()
@@ -77,16 +75,6 @@ namespace Backend.Core
 			Service.Initialize();
 
 			services.Add(Service);
-		}
-
-		private args handler(Client c, args r)
-		{
-			args ar = new args();
-			ar.doIt += r.doIt + 10;
-
-			RequestManager.Instance.Send(c, r);
-
-			return ar;
 		}
 	}
 }
