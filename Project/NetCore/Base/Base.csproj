@@ -21,7 +21,6 @@
     <Compile Include="..\..\..\Source\Base\IContext.cs" Link="IContext.cs" />
     <Compile Include="..\..\..\Source\Base\LogSystem\ILogger.cs" Link="LogSystem\ILogger.cs" />
     <Compile Include="..\..\..\Source\Base\ModuleSystem\IModule.cs" Link="ModuleSystem\IModule.cs" />
-    <Compile Include="..\..\..\Source\Base\Utilities\NetworkUtilities.cs" Link="Utilities\NetworkUtilities.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,7 +28,6 @@
     <Folder Include="LogSystem\" />
     <Folder Include="ModuleSystem\" />
     <Folder Include="DatabaseSystem\" />
-    <Folder Include="Utilities\" />
   </ItemGroup>
 
   <ItemGroup>

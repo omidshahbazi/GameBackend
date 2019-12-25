@@ -1,6 +1,4 @@
 // Copyright 2019. All Rights Reserved.
-using GameFramework.BinarySerializer;
-
 using ServerSocket = GameFramework.Networking.ServerSocket;
 using TCPServerSocket = GameFramework.Networking.TCPServerSocket;
 using UDPServerSocket = GameFramework.Networking.UDPServerSocket;

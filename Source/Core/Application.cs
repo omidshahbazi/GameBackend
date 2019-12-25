@@ -5,6 +5,7 @@ using Backend.Base.LogSystem;
 using Backend.Core.ConfigSystem;
 using Backend.Core.LogSystem;
 using Backend.Core.ModuleSystem;
+using Backend.Core.NetworkSystem;
 using GameFramework.Common.MemoryManagement;
 using System;
 using System.Collections.Generic;
@@ -52,12 +53,6 @@ namespace Backend.Core
 
 			IsRunning = true;
 
-
-
-
-
-
-
 			RequestManager.Instance.RegisterHandler<req, res>(handler);
 		}
 
@@ -73,10 +68,6 @@ namespace Backend.Core
 
 		public void Service()
 		{
-			req r = new req();
-			r.a = 203;
-			RequestManager.Instance.InvokeHandler(null, r);
-
 			for (int i = 0; i < services.Count; ++i)
 				services[i].Service();
 		}

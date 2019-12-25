@@ -1,66 +1,29 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Core.LogSystem;
 using Backend.Core.NetworkSystem;
+using GameFramework.BinarySerializer;
 using GameFramework.Common.MemoryManagement;
+using GameFramework.Common.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Backend.Core
 {
 	class RequestManager : Singleton<RequestManager>
 	{
-		//private static TypeMap types;
-
-		//public static void RegisterType<T>()
-		//{
-		//	RegisterType(typeof(T));
-		//}
-
-		//public static bool RegisterType(Type Type)
-		//{
-		//	if (Type == null)
-		//		return false;
-
-		//	uint hash = Type.MakeHash();
-
-		//	if (types.ContainsKey(hash))
-		//		return true;
-
-		//	types[hash] = Type;
-
-		//	MemberInfo[] members = Type.GetMemberVariables(ReflectionExtensions.AllNonStaticFlags);
-		//	for (int i = 0; i < members.Length; ++i)
-		//	{
-		//		MemberInfo member = members[i];
-		//		Type type = null;
-
-		//		if (member is FieldInfo)
-		//			type = ((FieldInfo)member).FieldType;
-		//		else if (member is PropertyInfo)
-		//			type = ((PropertyInfo)member).PropertyType;
-
-		//		if (type.IsPrimitive || type.IsEnum || type == typeof(string))
-		//			continue;
-
-		//		if (type.IsArray)
-		//			type = type.GetElementType();
-
-		//		if (!RegisterType(type))
-		//			return false;
-		//	}
-
-		//	return true;
-		//}
-
-
+		private class TypeMap : Dictionary<uint, Type>
+		{ }
 
 		private class RequestMap : Dictionary<uint, Action<Client, object>>
 		{ }
 
+		private TypeMap types = null;
 		private RequestMap requests = null;
 
 		private RequestManager()
 		{
+			types = new TypeMap();
 			requests = new RequestMap();
 		}
 
@@ -68,22 +31,27 @@ namespace Backend.Core
 			where ArgT : class
 			where ResT : class
 		{
-			uint hash = NetworkUtilities.MakeHash<ArgT>();
+			uint hash = ReflectionExtensions.MakeHash<ArgT>();
+
+			types[hash] = typeof(ArgT);
 
 			requests[hash] = (Client, Argument) =>
 			{
 				ResT res = Handler(Client, (ArgT)Argument);
+				hash = ReflectionExtensions.MakeHash<ResT>();
 
-				byte[] buffer = null;//res to byte[]
+				BufferStream buffer = new BufferStream(new MemoryStream());
+				buffer.WriteUInt32(hash);
+				Serializer.Serialize(res, buffer);
 
-				Client.WriteBuffer(buffer);
+				Client.WriteBuffer(buffer.Buffer);
 			};
 		}
 
 		public void RegisterHandler<ArgT>(Action<Client, ArgT> Handler)
 			where ArgT : class
 		{
-			uint hash = NetworkUtilities.MakeHash<ArgT>();
+			uint hash = ReflectionExtensions.MakeHash<ArgT>();
 
 			requests[hash] = (Client, Argument) =>
 			{
@@ -95,13 +63,28 @@ namespace Backend.Core
 			};
 		}
 
-		public void InvokeHandler<ArgT>(Client Client, ArgT Argument)
+		public object InstantiateArgument(BufferStream Buffer)
 		{
-			uint hash = NetworkUtilities.MakeHash<ArgT>();
+			uint hash = Buffer.ReadUInt32();
+
+			if (!types.ContainsKey(hash))
+				return null;
+
+			return Serializer.Deserialize(types[hash], Buffer);
+		}
+
+		public void InvokeHandler(Client Client, object Argument)
+		{
+			Type argType = Argument.GetType();
+
+			uint hash = ReflectionExtensions.MakeHash(argType);
+
+			if (!types.ContainsKey(hash))
+				return;
 
 			if (!requests.ContainsKey(hash))
 			{
-				LogManager.Instance.WriteWarning("Request arguments [{0}] not recognized", typeof(ArgT).Name);
+				LogManager.Instance.WriteWarning("Request arguments [{0}] not recognized", argType.Name);
 				return;
 			}
 
