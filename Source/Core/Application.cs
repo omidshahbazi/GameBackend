@@ -2,6 +2,7 @@
 using Backend.Base;
 using Backend.Base.ConnectionManager;
 using Backend.Base.LogSystem;
+using Backend.Base.NetworkSystem;
 using Backend.Core.ConfigSystem;
 using Backend.Core.LogSystem;
 using Backend.Core.ModuleSystem;
@@ -20,6 +21,12 @@ namespace Backend.Core
 		{
 			get;
 			private set;
+		}
+
+		public IRequestManager RequestManager
+		{
+			get;
+			set;
 		}
 
 		public ILogger Logger
@@ -44,6 +51,7 @@ namespace Backend.Core
 
 			services = new List<IService>();
 
+			RequestManager = NetworkSystem.RequestManager.Instance;
 			Logger = LogManager.Instance;
 
 			AddService(ConfigManager.Instance);

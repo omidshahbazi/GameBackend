@@ -1,4 +1,5 @@
 // Copyright 2019. All Rights Reserved.
+using Backend.Base.NetworkSystem;
 using Backend.Common.NetworkSystem;
 using Backend.Core.LogSystem;
 using GameFramework.BinarySerializer;
@@ -9,7 +10,7 @@ using System.IO;
 
 namespace Backend.Core.NetworkSystem
 {
-	public class RequestManager : Singleton<RequestManager>
+	class RequestManager : Singleton<RequestManager>, IRequestManager
 	{
 		private class RequestMap : Dictionary<uint, Action<Client, uint, object>>
 		{ }

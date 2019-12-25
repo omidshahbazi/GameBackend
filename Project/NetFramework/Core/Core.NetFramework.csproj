@@ -74,9 +74,6 @@
     <Compile Include="..\..\..\Source\Core\ModuleSystem\ModuleManager.cs">
       <Link>ModuleSystem\ModuleManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Source\Core\NetworkSystem\Client.cs">
-      <Link>NetworkSystem\Client.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\Source\Core\NetworkSystem\NetworkManager.cs">
       <Link>NetworkSystem\NetworkManager.cs</Link>
     </Compile>

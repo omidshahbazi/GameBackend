@@ -14,6 +14,7 @@
 	"Modules": {
 		"LibrariesPath": "Libraries/NetFramework/",
 		"Files": [
+			{ "Path": "../Test/ServerTest.dll" }
 		]
 	},
 	"Admins": [

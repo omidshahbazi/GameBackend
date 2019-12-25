@@ -21,6 +21,8 @@
     <Compile Include="..\..\..\Source\Base\IContext.cs" Link="IContext.cs" />
     <Compile Include="..\..\..\Source\Base\LogSystem\ILogger.cs" Link="LogSystem\ILogger.cs" />
     <Compile Include="..\..\..\Source\Base\ModuleSystem\IModule.cs" Link="ModuleSystem\IModule.cs" />
+    <Compile Include="..\..\..\Source\Base\NetworkSystem\Client.cs" Link="NetoworSystem\Client.cs" />
+    <Compile Include="..\..\..\Source\Base\NetworkSystem\IRequestManager.cs" Link="NetoworSystem\IRequestManager.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +30,7 @@
     <Folder Include="LogSystem\" />
     <Folder Include="ModuleSystem\" />
     <Folder Include="DatabaseSystem\" />
+    <Folder Include="NetoworSystem\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +40,9 @@
   <ItemGroup>
     <Reference Include="CommonManaged">
       <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
+    </Reference>
+    <Reference Include="NetworkingManaged.NetCore">
+      <HintPath>..\..\..\Libraries\NetworkingManaged.NetCore.dll</HintPath>
     </Reference>
   </ItemGroup>
 

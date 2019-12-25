@@ -1,23 +1,18 @@
 ﻿// Copyright 2019. All Rights Reserved.
+using Backend.Client;
 using Backend.Common;
+using ServerTest;
+using System;
 using System.Threading;
 
-namespace Backend.Client
+namespace ClientTest
 {
 	public static class Program
 	{
-		class sss
-		{
-			public int a;
-		}
-
 		public static void Main(string[] Args)
 		{
 			ServerConnection connection = new ServerConnection();
 			connection.Connect(ProtocolTypes.TCP, "::1", 81);
-
-			sss s = new sss();
-			s.a = 102;
 
 			while (true)
 			{
@@ -25,7 +20,10 @@ namespace Backend.Client
 
 				Thread.Sleep(1000);
 
-				connection.Send(s);
+				connection.Send<GetInitialDataReq, GetInitialDataRes>(new GetInitialDataReq(), (res) =>
+				{
+					Console.WriteLine("respond");
+				});
 			}
 		}
 	}
