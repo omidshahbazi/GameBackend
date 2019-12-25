@@ -38,4 +38,13 @@
     <Folder Include="NetworkSystem\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="BinarySerializerManaged">
+      <HintPath>..\..\..\..\Backend\Libraries\BinarySerializerManaged.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonManaged">
+      <HintPath>..\..\..\..\backend\Libraries\CommonManaged.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

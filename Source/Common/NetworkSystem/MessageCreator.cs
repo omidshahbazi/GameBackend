@@ -1,6 +1,7 @@
 // Copyright 2019. All Rights Reserved.
 using GameFramework.BinarySerializer;
 using GameFramework.Common.MemoryManagement;
+using GameFramework.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,10 +48,7 @@ namespace Backend.Common.NetworkSystem
 			uint typeID = Buffer.ReadUInt32();
 
 			if (!types.ContainsKey(typeID))
-			{
-				LogManager.Instance.WriteWarning("Request arguments [{0}] not recognized", typeID);
 				return null;
-			}
 
 			return Serializer.Deserialize(types[typeID], Buffer);
 		}

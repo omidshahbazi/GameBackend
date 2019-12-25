@@ -1,4 +1,5 @@
 // Copyright 2019. All Rights Reserved.
+using Backend.Common.NetworkSystem;
 using Backend.Core.LogSystem;
 using Backend.Core.NetworkSystem;
 using GameFramework.BinarySerializer;
@@ -35,18 +36,18 @@ namespace Backend.Core.NetworkSystem
 				{
 					ResT res = Handler(Client, (ArgT)Argument);
 
+					if (res == null)
+						return;
+
 					BufferStream buffer = new BufferStream(new MemoryStream());
 					if (!MessageCreator.Instance.Serialize(res, buffer))
-					{
-						LogManager.Instance.WriteWarning("Instance cannot be null");
 						return;
-					}
 
 					Client.WriteBuffer(buffer.Buffer);
 				}
-				catch (Exception E)
+				catch (Exception e)
 				{
-					LogManager.Instance.WriteException("RequestManager", E);
+					LogManager.Instance.WriteException("RequestManager", e);
 				}
 			};
 		}
@@ -66,9 +67,9 @@ namespace Backend.Core.NetworkSystem
 
 					Client.WriteBuffer(buffer);
 				}
-				catch (Exception E)
+				catch (Exception e)
 				{
-					LogManager.Instance.WriteException("RequestManager", E);
+					LogManager.Instance.WriteException("RequestManager", e);
 				}
 			};
 		}
