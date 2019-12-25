@@ -34,11 +34,22 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BinarySerializerManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\BinarySerializerManaged.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\Source\Common\Enums.cs">
       <Link>Enums.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Common\NetworkSystem\MessageCreator.cs">
+      <Link>NetworkSystem\MessageCreator.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

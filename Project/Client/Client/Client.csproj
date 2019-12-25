@@ -34,6 +34,10 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BinarySerializerManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\BinarySerializerManaged.dll</HintPath>
+    </Reference>
     <Reference Include="NetworkingManaged.NetFramework">
       <HintPath>..\..\..\Libraries\NetworkingManaged.NetFramework.dll</HintPath>
     </Reference>
@@ -44,9 +48,9 @@
     <Compile Include="ServerConnection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NetFramework\Base\Base.NetFramework.csproj">
-      <Project>{FACC0BA0-D424-46F7-98FD-A791DE500D4B}</Project>
-      <Name>Base.NetFramework</Name>
+    <ProjectReference Include="..\..\NetFramework\Common\Common.NetFramework.csproj">
+      <Project>{ed3f4c47-2abf-43d5-85fe-e54d15924899}</Project>
+      <Name>Common.NetFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -151,11 +151,7 @@ namespace Backend.Core.NetworkSystem
 
 			Client client = clients[hash];
 
-			object argument = RequestManager.Instance.InstantiateArgument(Buffer);
-			if (argument == null)
-				LogManager.Instance.WriteError("Sent buffer is invalid");
-
-			RequestManager.Instance.InvokeHandler(client, argument);
+			RequestManager.Instance.DispatchBuffer(client, Buffer);
 		}
 
 		private static uint GetHash(ServerSocket Socket, NativeClient Client)

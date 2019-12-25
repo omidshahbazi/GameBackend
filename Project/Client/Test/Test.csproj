@@ -44,6 +44,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NetFramework\Common\Common.NetFramework.csproj">
+      <Project>{ED3F4C47-2ABF-43D5-85FE-E54D15924899}</Project>
+      <Name>Common.NetFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Client\Client.csproj">
       <Project>{2c9b4367-62f4-4fdc-bb82-81ed4de8e5bf}</Project>
       <Name>Client</Name>

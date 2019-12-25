@@ -8,22 +8,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Backend.Core
+namespace Backend.Core.NetworkSystem
 {
 	class RequestManager : Singleton<RequestManager>
 	{
-		private class TypeMap : Dictionary<uint, Type>
-		{ }
-
 		private class RequestMap : Dictionary<uint, Action<Client, object>>
 		{ }
 
-		private TypeMap types = null;
 		private RequestMap requests = null;
 
 		private RequestManager()
 		{
-			types = new TypeMap();
 			requests = new RequestMap();
 		}
 
@@ -31,64 +26,62 @@ namespace Backend.Core
 			where ArgT : class
 			where ResT : class
 		{
-			uint hash = ReflectionExtensions.MakeHash<ArgT>();
+			uint typeID = MessageCreator.Instance.Register<ArgT>();
+			MessageCreator.Instance.Register<ResT>();
 
-			types[hash] = typeof(ArgT);
-
-			requests[hash] = (Client, Argument) =>
+			requests[typeID] = (Client, Argument) =>
 			{
-				ResT res = Handler(Client, (ArgT)Argument);
-				hash = ReflectionExtensions.MakeHash<ResT>();
+				try
+				{
+					ResT res = Handler(Client, (ArgT)Argument);
 
-				BufferStream buffer = new BufferStream(new MemoryStream());
-				buffer.WriteUInt32(hash);
-				Serializer.Serialize(res, buffer);
+					BufferStream buffer = new BufferStream(new MemoryStream());
+					if (!MessageCreator.Instance.Serialize(res, buffer))
+					{
+						LogManager.Instance.WriteWarning("Instance cannot be null");
+						return;
+					}
 
-				Client.WriteBuffer(buffer.Buffer);
+					Client.WriteBuffer(buffer.Buffer);
+				}
+				catch (Exception E)
+				{
+					LogManager.Instance.WriteException("RequestManager", E);
+				}
 			};
 		}
 
 		public void RegisterHandler<ArgT>(Action<Client, ArgT> Handler)
 			where ArgT : class
 		{
-			uint hash = ReflectionExtensions.MakeHash<ArgT>();
+			uint typeID = MessageCreator.Instance.Register<ArgT>();
 
-			requests[hash] = (Client, Argument) =>
+			requests[typeID] = (Client, Argument) =>
 			{
-				Handler(Client, (ArgT)Argument);
+				try
+				{
+					Handler(Client, (ArgT)Argument);
 
-				byte[] buffer = null;//just ack
+					byte[] buffer = null;//just ack
 
-				Client.WriteBuffer(buffer);
+					Client.WriteBuffer(buffer);
+				}
+				catch (Exception E)
+				{
+					LogManager.Instance.WriteException("RequestManager", E);
+				}
 			};
 		}
 
-		public object InstantiateArgument(BufferStream Buffer)
+		public void DispatchBuffer(Client Client, BufferStream Buffer)
 		{
-			uint hash = Buffer.ReadUInt32();
-
-			if (!types.ContainsKey(hash))
-				return null;
-
-			return Serializer.Deserialize(types[hash], Buffer);
-		}
-
-		public void InvokeHandler(Client Client, object Argument)
-		{
-			Type argType = Argument.GetType();
-
-			uint hash = ReflectionExtensions.MakeHash(argType);
-
-			if (!types.ContainsKey(hash))
+			object obj = MessageCreator.Instance.Deserialize(Buffer);
+			if (obj == null)
 				return;
 
-			if (!requests.ContainsKey(hash))
-			{
-				LogManager.Instance.WriteWarning("Request arguments [{0}] not recognized", argType.Name);
-				return;
-			}
+			uint typeID = MessageCreator.GenerateTypeID(obj.GetType());
 
-			requests[hash](Client, Argument);
+			requests[typeID](Client, obj);
 		}
 	}
 }
