@@ -53,7 +53,7 @@ namespace Backend.Core
 
 			IsRunning = true;
 
-			RequestManager.Instance.RegisterHandler<req, res>(handler);
+			RequestManager.Instance.RegisterHandler<args, args>(handler);
 		}
 
 		public void Shutdown()
@@ -79,26 +79,12 @@ namespace Backend.Core
 			services.Add(Service);
 		}
 
-
-
-		class req
+		private args handler(Client c, args r)
 		{
-			public int a;
-		}
+			args ar = new args();
+			ar.doIt += r.doIt + 10;
 
-		class res
-		{
-			public int b;
-			public string c;
-		}
-
-		private res handler(NetworkSystem.Client c, req r)
-		{
-			res re = new res();
-			re.b = r.a;
-			re.c = "omid";
-
-			return re;
+			return null;
 		}
 	}
 }

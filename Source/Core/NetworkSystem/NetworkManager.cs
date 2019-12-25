@@ -96,6 +96,10 @@ namespace Backend.Core.NetworkSystem
 					return null;
 				}
 
+				//socket.MultithreadedCallbacks = false;
+				//socket.MultithreadedReceive = false;
+				//socket.MultithreadedSend = false;
+
 				socket.OnClientConnected += (Client) => { OnClientConnected(socket, Client); };
 				socket.OnClientDisconnected += (Client) => { OnClientDisconnected(socket, Client); };
 				socket.OnBufferReceived += (Client, Buffer) => { OnBufferReceived(socket, Client, Buffer); };

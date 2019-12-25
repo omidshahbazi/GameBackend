@@ -4,7 +4,6 @@ using GameFramework.Common.MemoryManagement;
 using GameFramework.Common.Utilities;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace Backend.Common.NetworkSystem
 {
@@ -36,9 +35,8 @@ namespace Backend.Common.NetworkSystem
 
 			uint typeID = GenerateTypeID(Instance.GetType());
 
-			BufferStream buffer = new BufferStream(new MemoryStream());
-			buffer.WriteUInt32(typeID);
-			Serializer.Serialize(Instance, buffer);
+			Buffer.WriteUInt32(typeID);
+			Serializer.Serialize(Instance, Buffer);
 
 			return true;
 		}
@@ -58,4 +56,10 @@ namespace Backend.Common.NetworkSystem
 			return ReflectionExtensions.MakeHash(Type);
 		}
 	}
+}
+
+
+public class args
+{
+	public int doIt;
 }

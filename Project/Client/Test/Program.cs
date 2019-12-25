@@ -11,12 +11,21 @@ namespace Backend.Client
 			ServerConnection connection = new ServerConnection();
 			connection.Connect(ProtocolTypes.TCP, "::1", 81);
 
+			connection.RequestManager.RegisterHandler<args, args>(handler);
+
 			while (true)
 			{
 				connection.Service();
 
-				Thread.Sleep(100);
+				Thread.Sleep(1000);
+
+				connection.RequestManager.Request(new args() { doIt = 1586 });
 			}
+		}
+
+		private static void handler(args res)
+		{
+
 		}
 	}
 }

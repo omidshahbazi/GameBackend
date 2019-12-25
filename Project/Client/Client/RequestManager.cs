@@ -21,7 +21,7 @@ namespace Backend.Client
 			requests = new RequestMap();
 		}
 
-		public void RegisterHandler<ArgT, ResT>(Func<ArgT, ResT> Handler)
+		public void RegisterHandler<ArgT, ResT>(Action<ArgT> Handler)
 			where ArgT : class
 			where ResT : class
 		{
@@ -30,16 +30,18 @@ namespace Backend.Client
 
 			requests[typeID] = (Argument) =>
 			{
-				ResT res = Handler((ArgT)Argument);
+				Handler((ArgT)Argument);
 
-				if (res == null)
-					return;
+				//ResT res = Handler((ArgT)Argument);
 
-				BufferStream buffer = new BufferStream(new MemoryStream());
-				if (!MessageCreator.Instance.Serialize(res, buffer))
-					return;
+				//if (res == null)
+				//	return;
 
-				connection.WriteBuffer(buffer.Buffer);
+				//BufferStream buffer = new BufferStream(new MemoryStream());
+				//if (!MessageCreator.Instance.Serialize(res, buffer))
+				//	return;
+
+				//connection.WriteBuffer(buffer.Buffer);
 			};
 		}
 
@@ -59,6 +61,15 @@ namespace Backend.Client
 			{
 				throw e;
 			}
+		}
+
+		public void Request<ArgT>(ArgT Argument)
+		{
+			BufferStream buffer = new BufferStream(new MemoryStream());
+			if (!MessageCreator.Instance.Serialize(Argument, buffer))
+				return;
+
+			connection.WriteBuffer(buffer.Buffer);
 		}
 	}
 }

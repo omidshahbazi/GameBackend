@@ -1,9 +1,7 @@
 ﻿// Copyright 2019. All Rights Reserved.
 using Backend.Common;
-using Backend.Common.NetworkSystem;
 using GameFramework.BinarySerializer;
 using GameFramework.Networking;
-using System;
 
 namespace Backend.Client
 {
