@@ -9,7 +9,7 @@ namespace ServerTest
 	{
 		public void Initialize(IContext Context)
 		{
-			//Context.RequestManager.RegisterHandler<GetInitialDataReq, GetInitialDataRes>(GetInitialData);
+			Context.RequestManager.RegisterHandler<GetInitialDataReq, GetInitialDataRes>(GetInitialData);
 
 			Context.Logger.WriteInfo("ServerTest initialized successfully");
 		}
@@ -24,7 +24,7 @@ namespace ServerTest
 
 		private GetInitialDataRes GetInitialData(Client Client, GetInitialDataReq Arg)
 		{
-			return null;
+			return new GetInitialDataRes() { Data = "asdhkuhushdkbskbvabdsvdskjdskjnkcdasnnsckjdnkasjdnkcjnsakjcndskcnksdnckjdncjsdnkjcsnkjsdnckjsdnjcnwenoiejijdeoiwjdoiejwiiiiiijjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj22" };
 		}
 	}
 }

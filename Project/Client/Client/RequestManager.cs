@@ -62,6 +62,7 @@ namespace Backend.Client
 			++lastID;
 
 			MessageCreator.Instance.Register<ArgT>();
+			MessageCreator.Instance.Register<ResT>();
 
 			BufferStream buffer = new BufferStream(new MemoryStream());
 			if (!MessageCreator.Instance.Serialize(lastID, Argument, buffer))

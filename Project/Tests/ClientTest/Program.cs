@@ -19,13 +19,13 @@ namespace ClientTest
 			connection.OnConnectionFailed += Connection_OnConnectionFailed;
 			connection.OnDisconnected += Connection_OnDisconnected;
 
-			connection.Connect(ProtocolTypes.TCP, "::1", 81);
+			connection.Connect(ProtocolTypes.UDP, "::1", 82);
 
 			while (true)
 			{
 				connection.Service();
 
-				Thread.Sleep(1000);
+				Thread.Sleep(10);
 			}
 		}
 
@@ -33,10 +33,7 @@ namespace ClientTest
 		{
 			Console.WriteLine("Connected");
 
-			connection.Send<GetInitialDataReq, GetInitialDataRes>(new GetInitialDataReq(), (res) =>
-			{
-				Console.WriteLine("respond");
-			});
+			connection.Send<GetInitialDataReq, GetInitialDataRes>(new GetInitialDataReq(), OnGetInitialData);
 		}
 
 		private static void Connection_OnConnectionFailed(ServerConnection Connection)
@@ -47,6 +44,13 @@ namespace ClientTest
 		private static void Connection_OnDisconnected(ServerConnection Connection)
 		{
 			Console.WriteLine("Disconnected");
+		}
+
+		private static void OnGetInitialData(GetInitialDataRes Res)
+		{
+			Console.WriteLine("respond");
+
+			connection.Send<GetInitialDataReq, GetInitialDataRes>(new GetInitialDataReq(), OnGetInitialData);
 		}
 	}
 }
