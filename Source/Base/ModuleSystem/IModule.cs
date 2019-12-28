@@ -5,7 +5,7 @@ namespace Backend.Base.ModuleSystem
 {
 	public interface IModule
 	{
-		void Initialize(IContext Context, ISerializeData Config);
+		void Initialize(IContext Context, object Config);
 		void Shutdown();
 
 		void Service();

@@ -1,9 +1,7 @@
 ﻿// Copyright 2019. All Rights Reserved
 using Backend.Base;
-using Backend.Base.ConnectionManager;
 using Backend.Base.ModuleSystem;
 using Backend.Base.NetworkSystem;
-using GameFramework.ASCIISerializer;
 
 namespace ServerTest
 {
@@ -11,7 +9,7 @@ namespace ServerTest
 	{
 		private IContext context = null;
 
-		public void Initialize(IContext Context, ISerializeData Config)
+		public void Initialize(IContext Context, object Config)
 		{
 			context = Context;
 
@@ -28,15 +26,8 @@ namespace ServerTest
 
 		private GetInitialDataRes GetInitialData(Client Client, GetInitialDataReq Arg)
 		{
-			IConnection con = context.Database.Acquire();
 
-			ISerializeArray arr = con.ExeeecuteWithReturnDataTable("show tables");
-
-
-			con.Dispose();
-
-
-			return new GetInitialDataRes() { Data = arr.Content };
+			return new GetInitialDataRes() { Data = "xxxxxxxxxxxxxxxxxxxxxxxxxx" };
 		}
 	}
 }

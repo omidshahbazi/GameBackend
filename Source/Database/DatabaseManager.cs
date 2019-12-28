@@ -3,16 +3,15 @@ using Backend.Base;
 using Backend.Base.ConnectionManager;
 using Backend.Base.ModuleSystem;
 using Backend.Core;
-using GameFramework.ASCIISerializer;
 using GameFramework.Common.MemoryManagement;
 
 namespace Backend.Database
 {
 	class DatabaseManager : Singleton<DatabaseManager>, IModule, IConnectionPool
 	{
-		Base.ConfigSystem.Database config;
+		private Base.ConfigSystem.Database config;
 
-		public void Initialize(IContext Context, ISerializeData Config)
+		public void Initialize(IContext Context, object Config)
 		{
 			if (Config == null)
 			{
@@ -20,7 +19,7 @@ namespace Backend.Database
 				return;
 			}
 
-			config = Creator.Bind<Base.ConfigSystem.Database>(Config);
+			config = (Base.ConfigSystem.Database)Config;
 
 			if (!RunTest())
 			{

@@ -15,6 +15,7 @@ namespace Backend.Core.ModuleSystem
 	class ModuleManager : Singleton<ModuleManager>, IService
 	{
 		private const string DLL_EXTENSION = ".dll";
+		private const string CONFIG_STRUCT_TYPE_KEY_NAME = "ConfigStructType";
 
 		private List<IModule> modules = null;
 
@@ -93,10 +94,19 @@ namespace Backend.Core.ModuleSystem
 
 				Assembly assembly = Assembly.Load(assemblyData);
 
-				ISerializeData configData = null;
+				object configInstance = null;
 				string configFileContent = GameFramework.Common.FileLayer.FileSystem.Read(Path.ChangeExtension(FilePath, "json"));
 				if (!string.IsNullOrEmpty(configFileContent))
-					configData = Creator.Create<ISerializeData>(configFileContent);
+				{
+					ISerializeObject configData = Creator.Create<ISerializeObject>(configFileContent);
+
+					if (configData.Contains(CONFIG_STRUCT_TYPE_KEY_NAME))
+					{
+						Type configType = Type.GetType(configData.Get<string>(CONFIG_STRUCT_TYPE_KEY_NAME), true, true);
+						if (configType != null)
+							configInstance = Creator.Bind(configType, configData);
+					}
+				}
 
 				Type[] types = assembly.GetTypes();
 
@@ -118,7 +128,7 @@ namespace Backend.Core.ModuleSystem
 						continue;
 					}
 
-					module.Initialize(Application.Instance, configData);
+					module.Initialize(Application.Instance, configInstance);
 
 					LogManager.Instance.WriteInfo("An instance of type [{0}] initialized successfully", type.ToString());
 
