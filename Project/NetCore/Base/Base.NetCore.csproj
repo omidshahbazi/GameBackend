@@ -15,6 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\..\Source\Base\ConfigSystem\Database.cs" Link="ConfigSystem\Database.cs" />
     <Compile Include="..\..\..\Source\Base\ConfigSystem\Server.cs" Link="ConfigSystem\Server.cs" />
     <Compile Include="..\..\..\Source\Base\DatabaseSystem\IConnection.cs" Link="DatabaseSystem\IConnection.cs" />
     <Compile Include="..\..\..\Source\Base\DatabaseSystem\IConnectionPool.cs" Link="DatabaseSystem\IConnectionPool.cs" />
@@ -38,6 +39,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="ASCIISerializerManaged">
+      <HintPath>..\..\..\Libraries\ASCIISerializerManaged.dll</HintPath>
+    </Reference>
     <Reference Include="CommonManaged">
       <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
     </Reference>

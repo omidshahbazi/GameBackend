@@ -1,5 +1,5 @@
 // Copyright 2019. All Rights Reserved.
-using Backend.Base.ConfigManager;
+using Backend.Base.ConfigSystem;
 using GameFramework.Common.FileLayer;
 using System;
 using System.IO;

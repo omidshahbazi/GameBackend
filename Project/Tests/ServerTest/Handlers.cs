@@ -2,16 +2,15 @@
 using Backend.Base;
 using Backend.Base.ModuleSystem;
 using Backend.Base.NetworkSystem;
+using GameFramework.ASCIISerializer;
 
 namespace ServerTest
 {
 	public class Handlers : IModule
 	{
-		public void Initialize(IContext Context)
+		public void Initialize(IContext Context, ISerializeData Config)
 		{
 			Context.RequestManager.RegisterHandler<GetInitialDataReq, GetInitialDataRes>(GetInitialData);
-
-			Context.Logger.WriteInfo("ServerTest initialized successfully");
 		}
 
 		public void Service()

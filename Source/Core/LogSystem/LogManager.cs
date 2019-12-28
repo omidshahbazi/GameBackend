@@ -1,7 +1,7 @@
 // Copyright 2019. All Rights Reserved.
 using System;
 using System.Collections.Generic;
-using Backend.Base.ConfigManager;
+using Backend.Base.ConfigSystem;
 using Backend.Base.LogSystem;
 using Backend.Core.ConfigSystem;
 using GameFramework.Common.MemoryManagement;

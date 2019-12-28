@@ -1,8 +1,9 @@
 // Copyright 2019. All Rights Reserved.
-using Backend.Base.ConfigManager;
+using Backend.Base.ConfigSystem;
 using Backend.Base.ModuleSystem;
 using Backend.Core.ConfigSystem;
 using Backend.Core.LogSystem;
+using GameFramework.ASCIISerializer;
 using GameFramework.Common.MemoryManagement;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,9 @@ namespace Backend.Core.ModuleSystem
 {
 	class ModuleManager : Singleton<ModuleManager>, IService
 	{
-		private IModule[] modules = null;
+		private const string DLL_EXTENSION = ".dll";
+
+		private List<IModule> modules = null;
 
 		private ModuleManager()
 		{
@@ -21,28 +24,30 @@ namespace Backend.Core.ModuleSystem
 
 		public void Initialize()
 		{
-			List<IModule> modulesList = new List<IModule>();
+			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-			LoadLibraries(modulesList);
+			modules = new List<IModule>();
 
-			LoadModules(modulesList);
+			LoadLibraries();
 
-			modules = modulesList.ToArray();
+			LoadModules();
+
+			AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
 		}
 
 		public void Shutdown()
 		{
-			for (int i = 0; i < modules.Length; ++i)
+			for (int i = 0; i < modules.Count; ++i)
 				modules[i].Shutdown();
 		}
 
 		public void Service()
 		{
-			for (int i = 0; i < modules.Length; ++i)
+			for (int i = 0; i < modules.Count; ++i)
 				modules[i].Service();
 		}
 
-		private void LoadLibraries(List<IModule> Modules)
+		private void LoadLibraries()
 		{
 			string librariesPath = ConfigManager.Instance.Server.Modules.LibrariesPath;
 			if (string.IsNullOrEmpty(librariesPath))
@@ -51,7 +56,7 @@ namespace Backend.Core.ModuleSystem
 				return;
 			}
 
-			string[] files = GameFramework.Common.FileLayer.FileSystem.GetFiles(librariesPath, "*.dll", SearchOption.AllDirectories);
+			string[] files = GameFramework.Common.FileLayer.FileSystem.GetFiles(librariesPath, "*" + DLL_EXTENSION, SearchOption.AllDirectories);
 			if (files == null)
 			{
 				LogManager.Instance.WriteError("Directory [{0}] doesn't exsits", librariesPath);
@@ -59,10 +64,10 @@ namespace Backend.Core.ModuleSystem
 			}
 
 			for (int i = 0; i < files.Length; ++i)
-				LoadAssembly(files[i], Modules);
+				LoadAssembly(files[i]);
 		}
 
-		private void LoadModules(List<IModule> Modules)
+		private void LoadModules()
 		{
 			Server.Module.File[] files = ConfigManager.Instance.Server.Modules.Files;
 			if (files == null)
@@ -72,23 +77,26 @@ namespace Backend.Core.ModuleSystem
 			}
 
 			for (int i = 0; i < files.Length; ++i)
-				LoadAssembly(files[i].FilePath, Modules);
+				LoadAssembly(files[i].FilePath);
 		}
 
-		private void LoadAssembly(string FilePath, List<IModule> Modules)
+		private Assembly LoadAssembly(string FilePath)
 		{
-			LogManager.Instance.WriteInfo("Loading assembly [{0}]", FilePath);
-
 			try
 			{
 				byte[] assemblyData = GameFramework.Common.FileLayer.FileSystem.ReadBytes(FilePath);
 				if (assemblyData == null)
 				{
 					LogManager.Instance.WriteError("Assembly [{0}] doesn't exsits", FilePath);
-					return;
+					return null;
 				}
 
 				Assembly assembly = Assembly.Load(assemblyData);
+
+				ISerializeData configData = null;
+				string configFileContent = GameFramework.Common.FileLayer.FileSystem.Read(Path.ChangeExtension(FilePath, "json"));
+				if (!string.IsNullOrEmpty(configFileContent))
+					configData = Creator.Create<ISerializeData>(configFileContent);
 
 				Type[] types = assembly.GetTypes();
 
@@ -101,30 +109,42 @@ namespace Backend.Core.ModuleSystem
 					if (!moduleInterfaceType.IsAssignableFrom(type))
 						continue;
 
-					LogManager.Instance.WriteInfo("	|_Creating instance of type [{0}]", type.ToString());
-
 					IModule module = (IModule)Activator.CreateInstance(type);
 
 					if (module == null)
 					{
-						LogManager.Instance.WriteError("Couldn't create instance of type [{0}] as IModule", type.ToString());
+						LogManager.Instance.WriteError("Couldn't create an instance of type [{0}] as IModule", type.ToString());
 
 						continue;
 					}
 
-					module.Initialize(Application.Instance);
+					module.Initialize(Application.Instance, configData);
 
-					LogManager.Instance.WriteInfo("		|_Instance of type [{0}] initialized successfully", type.ToString());
+					LogManager.Instance.WriteInfo("An instance of type [{0}] initialized successfully", type.ToString());
 
-					Modules.Add(module);
+					modules.Add(module);
 				}
 
 				LogManager.Instance.WriteInfo("Assembly [{0}] loaded successfully", FilePath);
+
+				return assembly;
 			}
 			catch (Exception e)
 			{
 				LogManager.Instance.WriteException("Loading assembly [" + FilePath + "] failed", e);
 			}
+
+			return null;
+		}
+
+		private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+		{
+			string depFilePath = Path.GetDirectoryName(ConfigManager.Instance.Server.Modules.LibrariesPath).Replace('\\', '/') + "/" + args.Name.Split(',')[0] + DLL_EXTENSION;
+
+			if (!GameFramework.Common.FileLayer.FileSystem.FileExists(depFilePath))
+				return null;
+
+			return LoadAssembly(depFilePath);
 		}
 	}
 }

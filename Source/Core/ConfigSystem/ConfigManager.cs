@@ -1,5 +1,5 @@
 // Copyright 2019. All Rights Reserved.
-using Backend.Base.ConfigManager;
+using Backend.Base.ConfigSystem;
 using GameFramework.ASCIISerializer;
 using GameFramework.Common.FileLayer;
 using GameFramework.Common.MemoryManagement;
@@ -21,11 +21,7 @@ namespace Backend.Core.ConfigSystem
 			string data = FileSystem.Read(FILE_PATH);
 
 			if (string.IsNullOrEmpty(data))
-			{
 				BuildSampleConfig();
-
-
-			}
 			else
 				Server = Creator.Create<Server>(data);
 		}

@@ -44,8 +44,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="ASCIISerializerManaged">
+      <HintPath>..\..\..\Libraries\ASCIISerializerManaged.dll</HintPath>
+    </Reference>
     <Reference Include="CommonManaged">
       <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
+    </Reference>
+    <Reference Include="DatabaseManaged">
+      <HintPath>..\..\..\Libraries\DatabaseManaged.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\..\..\Libraries\MySql.Data.dll</HintPath>

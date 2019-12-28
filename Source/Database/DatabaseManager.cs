@@ -3,19 +3,32 @@ using Backend.Base;
 using Backend.Base.ConnectionManager;
 using Backend.Base.ModuleSystem;
 using Backend.Core;
+using GameFramework.ASCIISerializer;
 using GameFramework.Common.MemoryManagement;
 
 namespace Backend.Database
 {
 	class DatabaseManager : Singleton<DatabaseManager>, IModule, IConnectionPool
 	{
-		public void Initialize(IContext Context)
+		Base.ConfigSystem.Database config;
+
+		public void Initialize(IContext Context, ISerializeData Config)
 		{
+			if (Config == null)
+			{
+				Context.Logger.WriteWarning("DatabaseManager config is null, ignore initializing");
+				return;
+			}
+
+			config = Creator.Bind<Base.ConfigSystem.Database>(Config);
+
+			if (!RunTest())
+			{
+				Context.Logger.WriteInfo("DatabaseManager test query [{0}] failed");
+				return;
+			}
+
 			Application.Instance.Database = this;
-
-
-
-			Context.Logger.WriteInfo("Database Manager initialized successfully");
 		}
 
 		public void Shutdown()
@@ -28,7 +41,24 @@ namespace Backend.Database
 
 		public IConnection Acquire()
 		{
+			if (config.Type == Base.ConfigSystem.Database.DBMSTypes.MySQL)
+				return new MySQLConnection(config);
+
 			return null;
+		}
+
+		private bool RunTest()
+		{
+			if (string.IsNullOrEmpty(config.TestQuery))
+				return true;
+
+			IConnection con = Acquire();
+			if (con == null)
+				return false;
+
+			con.Execute(config.TestQuery);
+
+			return true;
 		}
 	}
 }
