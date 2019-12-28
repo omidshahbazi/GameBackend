@@ -1,4 +1,5 @@
 // Copyright 2019. All Rights Reserved.
+using GameFramework.ASCIISerializer;
 using System;
 using System.Data;
 
@@ -11,5 +12,7 @@ namespace Backend.Base.ConnectionManager
 		int ExecuteInsert(string Query, params object[] Parameters);
 
 		DataTable ExecuteWithReturnDataTable(string Query, params object[] Parameters);
+
+		ISerializeArray ExeeecuteWithReturnDataTable(string Query, params object[] Parameters);
 	}
 }

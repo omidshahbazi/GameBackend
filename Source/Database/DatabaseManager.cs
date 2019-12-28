@@ -58,6 +58,8 @@ namespace Backend.Database
 
 			con.Execute(config.TestQuery);
 
+			con.Dispose();
+
 			return true;
 		}
 	}

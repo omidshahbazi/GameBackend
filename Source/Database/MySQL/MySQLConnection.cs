@@ -1,5 +1,6 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base.ConnectionManager;
+using GameFramework.ASCIISerializer;
 using System.Data;
 using NativeConnection = GameFramework.DatabaseManaged.MySQLDatabase;
 
@@ -34,6 +35,11 @@ namespace Backend.Core
 		public DataTable ExecuteWithReturnDataTable(string Query, params object[] Parameters)
 		{
 			return connection.ExecuteWithReturnDataTable(Query, Parameters);
+		}
+
+		public ISerializeArray ExeeecuteWithReturnDataTable(string Query, params object[] Parameters)
+		{
+			return connection.ExecuteWithReturnISerializeArray(Query, Parameters);
 		}
 	}
 }
