@@ -29,5 +29,10 @@ namespace Backend.Base.NetworkSystem
 			else if (socket is UDPServerSocket)
 				((UDPServerSocket)socket).Send(client, Buffer, Index, Length);
 		}
+
+		public override string ToString()
+		{
+			return client.EndPoint.ToString() + "@" + socket.LocalEndPoint.Port;
+		}
 	}
 }

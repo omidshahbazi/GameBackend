@@ -16,7 +16,7 @@ namespace Backend.Base.ConfigManager
 		{
 			public struct File
 			{
-				public string Path;
+				public string FilePath;
 			}
 
 			public string LibrariesPath;
@@ -48,7 +48,7 @@ namespace Backend.Base.ConfigManager
 
 			public Types Type;
 			public Levels MinimumLevel;
-			public string FilePath;
+			public string Path;
 		}
 
 		public Socket[] Sockets;

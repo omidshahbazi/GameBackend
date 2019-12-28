@@ -15,7 +15,7 @@ namespace Backend.Database
 
 
 
-			Context.Logger.WriteInfo("Database initialized successfully");
+			Context.Logger.WriteInfo("Database Manager initialized successfully");
 		}
 
 		public void Shutdown()

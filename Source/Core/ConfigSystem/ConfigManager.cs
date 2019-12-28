@@ -57,6 +57,9 @@ namespace Backend.Core.ConfigSystem
 
 			Server.Modules = new Server.Module();
 			Server.Modules.LibrariesPath = "Libraries/";
+			Server.Modules.Files = new Server.Module.File[1];
+			Server.Modules.Files[0] = new Server.Module.File();
+			Server.Modules.Files[0].FilePath = "Sample.dll";
 
 			Server.Admins = new Server.Admin[1];
 			Server.Admins[0] = new Server.Admin();

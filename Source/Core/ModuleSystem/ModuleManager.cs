@@ -72,7 +72,7 @@ namespace Backend.Core.ModuleSystem
 			}
 
 			for (int i = 0; i < files.Length; ++i)
-				LoadAssembly(files[i].Path, Modules);
+				LoadAssembly(files[i].FilePath, Modules);
 		}
 
 		private void LoadAssembly(string FilePath, List<IModule> Modules)
