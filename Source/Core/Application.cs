@@ -60,7 +60,11 @@ namespace Backend.Core
 			AddService(NetworkSystem.RequestManager.Instance);
 			AddService(ModuleManager.Instance);
 
+			NetworkManager.Instance.StartListenening();
+
 			IsRunning = true;
+
+			LogManager.Instance.WriteInfo("Initialization completed");
 		}
 
 		public void Shutdown()

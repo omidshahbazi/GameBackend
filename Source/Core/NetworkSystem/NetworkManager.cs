@@ -49,6 +49,12 @@ namespace Backend.Core.NetworkSystem
 				sockets[i].Service();
 		}
 
+		public void StartListenening()
+		{
+			for (int i = 0; i < sockets.Length; ++i)
+				sockets[i].Listen();
+		}
+
 		private void CreateSockets()
 		{
 			Server.Socket[] socketsConfig = ConfigManager.Instance.Server.Sockets;
@@ -106,8 +112,6 @@ namespace Backend.Core.NetworkSystem
 				socket.OnBufferReceived += (Client, Buffer) => { OnBufferReceived(socket, Client, Buffer); };
 
 				socket.Bind(Host, Port);
-
-				socket.Listen();
 
 				LogManager.Instance.WriteInfo("Socket on {0} created successfully", ipPort);
 			}
