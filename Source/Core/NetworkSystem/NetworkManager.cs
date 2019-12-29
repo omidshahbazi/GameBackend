@@ -158,7 +158,7 @@ namespace Backend.Core.NetworkSystem
 
 			Client client = clients[hash];
 
-			RequestManager.Instance.DispatchBuffer(client, Buffer);
+			ServerRequestManager.Instance.DispatchBuffer(client, Buffer);
 		}
 
 		private static uint GetHash(ServerSocket Socket, NativeClient Client)

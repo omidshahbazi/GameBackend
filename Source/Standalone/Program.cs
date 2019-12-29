@@ -10,16 +10,19 @@ namespace Backend.Standalone
 		{
 			Application application = Application.Instance;
 
-			application.Initialize();
-
-			while (application.IsRunning)
+			while (application.Starting)
 			{
-				application.Service();
+				application.Initialize();
 
-				Thread.Sleep(10);
+				while (application.IsRunning)
+				{
+					application.Service();
+
+					Thread.Sleep(10);
+				}
+
+				application.Shutdown();
 			}
-
-			application.Shutdown();
 		}
 	}
 }

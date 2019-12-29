@@ -24,7 +24,7 @@
     <Compile Include="..\..\..\Source\Core\LogSystem\LogManager.cs" Link="LogSystem\LogManager.cs" />
     <Compile Include="..\..\..\Source\Core\ModuleSystem\ModuleManager.cs" Link="ModuleSystem\ModuleManager.cs" />
     <Compile Include="..\..\..\Source\Core\NetworkSystem\NetworkManager.cs" Link="NetworkSystem\NetworkManager.cs" />
-    <Compile Include="..\..\..\Source\Core\NetworkSystem\RequestManager.cs" Link="NetworkSystem\RequestManager.cs" />
+    <Compile Include="..\..\..\Source\Core\NetworkSystem\ServerRequestManager.cs" Link="NetworkSystem\ServerRequestManager.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,7 @@
 ﻿// Copyright 2019. All Rights Reserved.
 using Backend.Client;
 using Backend.Common;
+using Backend.Common.NetworkSystem;
 using ServerTest;
 using System;
 using System.Threading;
@@ -29,19 +30,19 @@ namespace ClientTest
 			}
 		}
 
-		private static void Connection_OnConnected(ServerConnection Connection)
+		private static void Connection_OnConnected(Connection Connection)
 		{
 			Console.WriteLine("Connected");
 
 			connection.Send<GetInitialDataReq, GetInitialDataRes>(new GetInitialDataReq(), OnGetInitialData);
 		}
 
-		private static void Connection_OnConnectionFailed(ServerConnection Connection)
+		private static void Connection_OnConnectionFailed(Connection Connection)
 		{
 			Console.WriteLine("Connection Failed");
 		}
 
-		private static void Connection_OnDisconnected(ServerConnection Connection)
+		private static void Connection_OnDisconnected(Connection Connection)
 		{
 			Console.WriteLine("Disconnected");
 		}

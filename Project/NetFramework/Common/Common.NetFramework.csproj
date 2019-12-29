@@ -42,11 +42,21 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
     </Reference>
+    <Reference Include="NetworkingManaged.NetFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\NetworkingManaged.NetFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\Source\Common\Enums.cs">
       <Link>Enums.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Common\NetworkSystem\ClientRequestManager.cs">
+      <Link>NetworkSystem\ClientRequestManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Common\NetworkSystem\Connection.cs">
+      <Link>NetworkSystem\Connection.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Source\Common\NetworkSystem\MessageCreator.cs">
       <Link>NetworkSystem\MessageCreator.cs</Link>

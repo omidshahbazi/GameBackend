@@ -17,6 +17,12 @@ namespace Backend.Core
 	{
 		private List<IService> services = null;
 
+		public bool Starting
+		{
+			get;
+			private set;
+		}
+
 		public bool IsRunning
 		{
 			get;
@@ -43,6 +49,8 @@ namespace Backend.Core
 
 		private Application()
 		{
+			Starting = true;
+			IsRunning = true;
 		}
 
 		public void Initialize()
@@ -51,18 +59,16 @@ namespace Backend.Core
 
 			services = new List<IService>();
 
-			RequestManager = NetworkSystem.RequestManager.Instance;
+			RequestManager = NetworkSystem.ServerRequestManager.Instance;
 			Logger = LogManager.Instance;
 
 			AddService(ConfigManager.Instance);
 			AddService(LogManager.Instance);
 			AddService(NetworkManager.Instance);
-			AddService(NetworkSystem.RequestManager.Instance);
+			AddService(NetworkSystem.ServerRequestManager.Instance);
 			AddService(ModuleManager.Instance);
 
 			NetworkManager.Instance.StartListenening();
-
-			IsRunning = true;
 
 			LogManager.Instance.WriteInfo("Initialization completed");
 		}
@@ -75,6 +81,8 @@ namespace Backend.Core
 			services.Clear();
 
 			IsRunning = false;
+
+			LogManager.Instance.WriteInfo("Shuting down completed");
 		}
 
 		public void Service()
