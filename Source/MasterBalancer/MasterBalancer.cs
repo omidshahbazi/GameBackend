@@ -18,7 +18,7 @@ namespace Backend.MasterBalancer
 
 			Configuration config = (Configuration)Config;
 
-			//Process.Start("Standalone.NetFramework.exe", config.NodeWorkingDirectory);
+			Process.Start("Standalone.NetFramework.exe", config.NodeWorkingDirectory);
 		}
 
 		public void Shutdown()
