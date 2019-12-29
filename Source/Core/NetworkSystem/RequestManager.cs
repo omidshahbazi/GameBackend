@@ -83,7 +83,7 @@ namespace Backend.Core.NetworkSystem
 
 			if (obj == null)
 			{
-				LogManager.Instance.WriteWarning("Client [{0}] sent an unkown packet, going to disconnect", Client.ToString());
+				LogManager.Instance.WriteWarning("Client [{0}] sent an unknown packet, going to disconnect", Client.ToString());
 
 				Client.Disconnect();
 
@@ -96,7 +96,7 @@ namespace Backend.Core.NetworkSystem
 			}
 			catch (Exception e)
 			{
-				LogManager.Instance.WriteException("Dispatching [" + obj.GetType() + "] failed", e);
+				LogManager.Instance.WriteException(e, "Dispatching [{0}] failed", obj.GetType());
 			}
 		}
 

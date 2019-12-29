@@ -32,7 +32,7 @@ namespace Backend.Base.NetworkSystem
 
 		public override string ToString()
 		{
-			return client.EndPoint.ToString() + "@" + socket.LocalEndPoint.Port;
+			return client.EndPoint.ToString() + "@" + (socket is TCPServerSocket ? "TCP" : "UDP") + socket.LocalEndPoint.Port;
 		}
 	}
 }

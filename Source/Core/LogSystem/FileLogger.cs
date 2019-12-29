@@ -70,14 +70,18 @@ namespace Backend.Core.LogSystem
 			writer.WriteLine(Format, Args);
 		}
 
-		public void WriteException(string Message, Exception E)
+		public void WriteException(Exception E, string Format, params object[] Args)
 		{
 			if (writer == null || minLevel > Server.Logger.Levels.Critical)
 				return;
 
-			writer.WriteLine(Message);
-			writer.Write("	|_");
-			writer.WriteLine(E.ToString());
+			writer.WriteLine(Format, Args);
+
+			if (E != null)
+			{
+				writer.Write("	|_");
+				writer.WriteLine(E.ToString());
+			}
 		}
 	}
 }

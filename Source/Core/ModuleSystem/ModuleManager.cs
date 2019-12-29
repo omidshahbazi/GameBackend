@@ -141,7 +141,7 @@ namespace Backend.Core.ModuleSystem
 			}
 			catch (Exception e)
 			{
-				LogManager.Instance.WriteException("Loading assembly [" + FilePath + "] failed", e);
+				LogManager.Instance.WriteException(e, "Loading assembly [{0}] failed", FilePath);
 			}
 
 			return null;

@@ -113,7 +113,7 @@ namespace Backend.Core.NetworkSystem
 			}
 			catch (Exception e)
 			{
-				LogManager.Instance.WriteException("Creating socket for " + ipPort + " failed", e);
+				LogManager.Instance.WriteException(e, "Creating socket for {0} failed", ipPort);
 			}
 
 			return socket;
@@ -124,13 +124,9 @@ namespace Backend.Core.NetworkSystem
 			uint hash = GetHash(Socket, Client);
 
 			if (clients.ContainsKey(hash))
-			{
-				LogManager.Instance.WriteError("Redundant client connected");
-			}
+				LogManager.Instance.WriteWarning("Redundant client [{0}] connected", Client.EndPoint);
 
-			Client client = new Client(Socket, Client);
-
-			clients[hash] = client;
+			clients[hash] = new Client(Socket, Client);
 		}
 
 		private void OnClientDisconnected(ServerSocket Socket, NativeClient Client)
@@ -138,9 +134,7 @@ namespace Backend.Core.NetworkSystem
 			uint hash = GetHash(Socket, Client);
 
 			if (!clients.ContainsKey(hash))
-			{
-				LogManager.Instance.WriteError("Not exists client disconnected");
-			}
+				LogManager.Instance.WriteWarning("Not listed client [{0}] disconnected", Client.EndPoint);
 
 			clients.Remove(hash);
 		}
@@ -151,7 +145,11 @@ namespace Backend.Core.NetworkSystem
 
 			if (!clients.ContainsKey(hash))
 			{
-				LogManager.Instance.WriteError("Not exists client Sent something, should disconnect");
+				LogManager.Instance.WriteError("Not listed client [{0}] Sent a packet, going to disconnect", Sender.EndPoint);
+
+				Socket.DisconnectClient(Sender);
+
+				return;
 			}
 
 			Client client = clients[hash];
