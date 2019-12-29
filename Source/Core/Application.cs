@@ -17,7 +17,7 @@ namespace Backend.Core
 	{
 		private List<IService> services = null;
 
-		public bool Starting
+		public bool IsStarting
 		{
 			get;
 			private set;
@@ -49,12 +49,13 @@ namespace Backend.Core
 
 		private Application()
 		{
-			Starting = true;
-			IsRunning = true;
+			IsStarting = true;
 		}
 
 		public void Initialize()
 		{
+			IsRunning = true;
+
 			GameFramework.Common.FileLayer.FileSystem.DataPath = Environment.CurrentDirectory + "/../";
 
 			services = new List<IService>();
@@ -89,6 +90,17 @@ namespace Backend.Core
 		{
 			for (int i = 0; i < services.Count; ++i)
 				services[i].Service();
+		}
+
+		public void Restart()
+		{
+			IsStarting = true;
+		}
+
+		public void Close()
+		{
+			IsStarting = false;
+			IsRunning = false;
 		}
 
 		private void AddService(IService Service)

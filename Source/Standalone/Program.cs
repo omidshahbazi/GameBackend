@@ -10,7 +10,7 @@ namespace Backend.Standalone
 		{
 			Application application = Application.Instance;
 
-			while (application.Starting)
+			while (application.IsStarting)
 			{
 				application.Initialize();
 
