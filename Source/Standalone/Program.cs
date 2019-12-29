@@ -10,6 +10,9 @@ namespace Backend.Standalone
 		{
 			Application application = Application.Instance;
 
+			if (Args != null && Args.Length != 0)
+				application.WorkingDirectory = Args[0];
+
 			while (application.IsStarting)
 			{
 				application.Initialize();

@@ -17,6 +17,12 @@ namespace Backend.Core
 	{
 		private List<IService> services = null;
 
+		public string WorkingDirectory
+		{
+			get { return GameFramework.Common.FileLayer.FileSystem.DataPath; }
+			set { GameFramework.Common.FileLayer.FileSystem.DataPath = (string.IsNullOrEmpty(value) ? Environment.CurrentDirectory + "/../" : value); }
+		}
+
 		public bool IsStarting
 		{
 			get;
@@ -50,23 +56,23 @@ namespace Backend.Core
 		private Application()
 		{
 			IsStarting = true;
+
+			WorkingDirectory = "";
 		}
 
 		public void Initialize()
 		{
 			IsRunning = true;
 
-			GameFramework.Common.FileLayer.FileSystem.DataPath = Environment.CurrentDirectory + "/../";
-
 			services = new List<IService>();
 
-			RequestManager = NetworkSystem.ServerRequestManager.Instance;
+			RequestManager = ServerRequestManager.Instance;
 			Logger = LogManager.Instance;
 
 			AddService(ConfigManager.Instance);
 			AddService(LogManager.Instance);
 			AddService(NetworkManager.Instance);
-			AddService(NetworkSystem.ServerRequestManager.Instance);
+			AddService(ServerRequestManager.Instance);
 			AddService(ModuleManager.Instance);
 
 			NetworkManager.Instance.StartListenening();

@@ -14,9 +14,13 @@ namespace Backend.Core.ModuleSystem
 {
 	class ModuleManager : Singleton<ModuleManager>, IService
 	{
+		private class AssemblyMap : Dictionary<string, Assembly>
+		{ }
+
 		private const string DLL_EXTENSION = ".dll";
 		private const string CONFIG_STRUCT_TYPE_KEY_NAME = "ConfigStructType";
 
+		private AssemblyMap assemblies = null;
 		private List<IModule> modules = null;
 
 		private ModuleManager()
@@ -25,9 +29,10 @@ namespace Backend.Core.ModuleSystem
 
 		public void Initialize()
 		{
-			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-
+			assemblies = new AssemblyMap();
 			modules = new List<IModule>();
+
+			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
 			LoadLibraries();
 
@@ -85,14 +90,12 @@ namespace Backend.Core.ModuleSystem
 		{
 			try
 			{
-				byte[] assemblyData = GameFramework.Common.FileLayer.FileSystem.ReadBytes(FilePath);
-				if (assemblyData == null)
+				Assembly assembly = LoadAssemblyFromFile(FilePath);
+				if (assembly == null)
 				{
 					LogManager.Instance.WriteError("Assembly [{0}] doesn't exsits", FilePath);
 					return null;
 				}
-
-				Assembly assembly = Assembly.Load(assemblyData);
 
 				object configInstance = null;
 				string configFileContent = GameFramework.Common.FileLayer.FileSystem.Read(Path.ChangeExtension(FilePath, "json"));
@@ -151,10 +154,35 @@ namespace Backend.Core.ModuleSystem
 		{
 			string depFilePath = Path.GetDirectoryName(ConfigManager.Instance.Server.Modules.LibrariesPath).Replace('\\', '/') + "/" + args.Name.Split(',')[0] + DLL_EXTENSION;
 
-			if (!GameFramework.Common.FileLayer.FileSystem.FileExists(depFilePath))
+			Assembly assembly = LoadAssemblyFromFile(depFilePath);
+			if (assembly == null)
+			{
+				LogManager.Instance.WriteError("Dependency assembly [{0}] doesn't exsits", depFilePath);
+				return null;
+			}
+
+			return assembly;
+
+			//if (!GameFramework.Common.FileLayer.FileSystem.FileExists(depFilePath))
+			//	return null;
+
+			//return LoadAssembly(depFilePath);
+		}
+
+		private Assembly LoadAssemblyFromFile(string FilePath)
+		{
+			if (assemblies.ContainsKey(FilePath))
+				return assemblies[FilePath];
+
+			byte[] assemblyData = GameFramework.Common.FileLayer.FileSystem.ReadBytes(FilePath);
+			if (assemblyData == null)
 				return null;
 
-			return LoadAssembly(depFilePath);
+			Assembly assembly = Assembly.Load(assemblyData);
+
+			assemblies[FilePath] = assembly;
+
+			return assembly;
 		}
 	}
 }

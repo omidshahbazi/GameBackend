@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E166DFB0-6588-4781-AFD7-40C6734C97B1}</ProjectGuid>
+    <ProjectGuid>{EBF1812B-F5B5-411F-B4A1-D5BA0CF98D67}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Backend.Database</RootNamespace>
-    <AssemblyName>Backend.Database.NetFramework</AssemblyName>
+    <RootNamespace>Backend.MasterBalancer</RootNamespace>
+    <AssemblyName>Backend.MasterBalancer.NetFramework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -34,25 +34,18 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ASCIISerializerManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Libraries\ASCIISerializerManaged.dll</HintPath>
-    </Reference>
     <Reference Include="CommonManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
     </Reference>
-    <Reference Include="DatabaseManaged">
-      <HintPath>..\..\..\Libraries\DatabaseManaged.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data" />
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Source\Database\DatabaseManager.cs">
-      <Link>DatabaseManager.cs</Link>
+    <Compile Include="..\..\..\Source\MasterBalancer\Configuration.cs">
+      <Link>Configuration.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Source\Database\MySQL\MySQLConnection.cs">
-      <Link>MySQL\MySQLConnection.cs</Link>
+    <Compile Include="..\..\..\Source\MasterBalancer\MasterBalancer.cs">
+      <Link>MasterBalancer.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
