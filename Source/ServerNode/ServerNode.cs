@@ -1,16 +1,21 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base;
 using Backend.Base.ModuleSystem;
-using Backend.Base.NetworkSystem;
-using GameFramework.Common.Utilities;
-using System.Diagnostics;
+using Backend.Common.NetworkSystem;
+using System.Net.Sockets;
 
 namespace Backend.MasterBalancer
 {
 	class ServerNode : IModule
 	{
+		private Connection connection = null;
+
 		public void Initialize(IContext Context, object Config)
 		{
+
+			connection = new Connection();
+			connection.Connect()
+
 			if (Config == null)
 			{
 				Context.Logger.WriteError("ServerNode config is null, ignore initializing");
@@ -18,13 +23,6 @@ namespace Backend.MasterBalancer
 			}
 
 			Configuration config = (Configuration)Config;
-
-			SocketInfo socket = Context.NetworkManager.Sockets[0];
-
-			ArgumentParser arguments = new ArgumentParser();
-			arguments.Set("directory", config.NodeWorkingDirectory);
-			arguments.Set("protocol", socket.Protocol);
-			arguments.Set("port", socket.LocalEndPoint.Port);
 		}
 
 		public void Shutdown()
