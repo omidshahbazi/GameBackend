@@ -8,6 +8,7 @@ using Backend.Core.LogSystem;
 using Backend.Core.ModuleSystem;
 using Backend.Core.NetworkSystem;
 using GameFramework.Common.MemoryManagement;
+using GameFramework.Common.Utilities;
 using System;
 using System.Collections.Generic;
 
@@ -15,6 +16,8 @@ namespace Backend.Core
 {
 	public class Application : Singleton<Application>, IContext, IService
 	{
+		private const string ARGUMENT_WORKING_DIRECTORY = "directory";
+
 		private List<IService> services = null;
 
 		public string WorkingDirectory
@@ -35,16 +38,22 @@ namespace Backend.Core
 			private set;
 		}
 
-		public INetworkManager NetworkManager
+		public ArgumentParser Arguments
 		{
 			get;
 			set;
 		}
 
+		public INetworkManager NetworkManager
+		{
+			get;
+			private set;
+		}
+
 		public IRequestManager RequestManager
 		{
 			get;
-			set;
+			private set;
 		}
 
 		public ILogger Logger
@@ -68,6 +77,9 @@ namespace Backend.Core
 
 		public void Initialize()
 		{
+			if (Arguments.Contains(ARGUMENT_WORKING_DIRECTORY))
+				WorkingDirectory = Arguments.Get<string>(ARGUMENT_WORKING_DIRECTORY);
+
 			IsRunning = true;
 
 			services = new List<IService>();

@@ -1,5 +1,6 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Core;
+using GameFramework.Common.Utilities;
 using System.Threading;
 
 namespace Backend.Standalone
@@ -10,8 +11,7 @@ namespace Backend.Standalone
 		{
 			Application application = Application.Instance;
 
-			if (Args != null && Args.Length != 0)
-				application.WorkingDirectory = Args[0];
+			application.Arguments = ArgumentParser.Parse(Args);
 
 			while (application.IsStarting)
 			{

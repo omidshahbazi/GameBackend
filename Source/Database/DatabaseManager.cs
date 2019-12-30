@@ -3,11 +3,10 @@ using Backend.Base;
 using Backend.Base.ConnectionManager;
 using Backend.Base.ModuleSystem;
 using Backend.Database.MySQL;
-using GameFramework.Common.MemoryManagement;
 
 namespace Backend.Database
 {
-	class DatabaseManager : Singleton<DatabaseManager>, IModule, IConnectionPool
+	class DatabaseManager : IModule, IConnectionPool
 	{
 		private Base.ConfigSystem.Database config;
 
