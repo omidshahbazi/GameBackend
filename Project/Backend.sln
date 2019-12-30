@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerTest", "Tests\ServerT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterBalancer.NetFramework", "NetFramework\MasterBalancer\MasterBalancer.NetFramework.csproj", "{EBF1812B-F5B5-411F-B4A1-D5BA0CF98D67}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerNode.NetFramework", "NetFramework\ServerNode\ServerNode.NetFramework.csproj", "{2DC5F6F3-A0B6-4B3F-9682-6F45080F3DF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{EBF1812B-F5B5-411F-B4A1-D5BA0CF98D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBF1812B-F5B5-411F-B4A1-D5BA0CF98D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBF1812B-F5B5-411F-B4A1-D5BA0CF98D67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DC5F6F3-A0B6-4B3F-9682-6F45080F3DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC5F6F3-A0B6-4B3F-9682-6F45080F3DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DC5F6F3-A0B6-4B3F-9682-6F45080F3DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DC5F6F3-A0B6-4B3F-9682-6F45080F3DF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -120,6 +126,7 @@ Global
 		{BE8448F4-75ED-42AB-8609-28CFBFC55B29} = {12536DFB-4732-4A74-8985-0B2AA11800A5}
 		{1A9D1AB1-CA13-43B8-BE04-2B8C1C969550} = {12536DFB-4732-4A74-8985-0B2AA11800A5}
 		{EBF1812B-F5B5-411F-B4A1-D5BA0CF98D67} = {7F47B2D3-0D8C-4E4A-A014-BC6936A7C91C}
+		{2DC5F6F3-A0B6-4B3F-9682-6F45080F3DF0} = {7F47B2D3-0D8C-4E4A-A014-BC6936A7C91C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3673F0D0-24A0-4FE0-A24A-90130693360C}

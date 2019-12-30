@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3EEF32E1-850F-4096-96F7-03898B2B57DB}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{2DC5F6F3-A0B6-4B3F-9682-6F45080F3DF0}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Standalone.NetFramework</RootNamespace>
-    <AssemblyName>Standalone.NetFramework</AssemblyName>
+    <RootNamespace>ServerNode.NetFramework</RootNamespace>
+    <AssemblyName>Backend.ServerNode.NetFramework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Binaries\Server\NetFramework\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Server\Nodes\Libraries\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Binaries\Server\NetFramework\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Server\Nodes\Libraries\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,22 +33,27 @@
   <PropertyGroup>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommonManaged">
+    <Reference Include="CommonManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Source\Standalone\Program.cs">
-      <Link>Program.cs</Link>
+    <Compile Include="..\..\..\Source\ServerNode\Configuration.cs">
+      <Link>Configuration.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\ServerNode\ServerNode.cs">
+      <Link>ServerNode.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Base\Base.NetFramework.csproj">
+      <Project>{FACC0BA0-D424-46F7-98FD-A791DE500D4B}</Project>
+      <Name>Base.NetFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.NetFramework.csproj">
       <Project>{cdb4ab43-2c21-4afa-9e69-4d586fd6aeee}</Project>
       <Name>Core.NetFramework</Name>
