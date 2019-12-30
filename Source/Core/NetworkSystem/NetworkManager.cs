@@ -8,17 +8,19 @@ using GameFramework.BinarySerializer;
 using GameFramework.Common.MemoryManagement;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using GameFramework.Common.Utilities;
+using System.Net.Sockets;
+using System.Text;
 
 using ServerSocket = GameFramework.Networking.ServerSocket;
 using TCPServerSocket = GameFramework.Networking.TCPServerSocket;
 using UDPServerSocket = GameFramework.Networking.UDPServerSocket;
 using NativeClient = GameFramework.Networking.Client;
+using NetworkingProtocol = GameFramework.Networking.Protocols;
 
 namespace Backend.Core.NetworkSystem
 {
-	class NetworkManager : Singleton<NetworkManager>, IService
+	class NetworkManager : Singleton<NetworkManager>, IService, INetworkManager
 	{
 		private class ClientMap : Dictionary<uint, Client>
 		{ }
@@ -26,6 +28,26 @@ namespace Backend.Core.NetworkSystem
 		private ServerSocket[] sockets = null;
 
 		private ClientMap clients = null;
+
+		public SocketInfo[] Sockets
+		{
+			get
+			{
+				if (sockets == null)
+					return null;
+
+				SocketInfo[] socketsInfo = new SocketInfo[sockets.Length];
+
+				for (int i = 0; i < sockets.Length; ++i)
+				{
+					ServerSocket socket = sockets[i];
+
+					socketsInfo[i] = new SocketInfo((socket.Type == NetworkingProtocol.TCP ? ProtocolType.Tcp : ProtocolType.Udp), socket.LocalEndPoint);
+				}
+
+				return socketsInfo;
+			}
+		}
 
 		private NetworkManager()
 		{

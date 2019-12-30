@@ -40,7 +40,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Base\Base.NetCore.csproj" />
-    <ProjectReference Include="..\Core\Core.NetCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

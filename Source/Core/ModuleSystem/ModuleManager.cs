@@ -32,13 +32,9 @@ namespace Backend.Core.ModuleSystem
 			assemblies = new AssemblyMap();
 			modules = new List<IModule>();
 
-			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-
 			LoadLibraries();
 
 			LoadModules();
-
-			AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
 		}
 
 		public void Shutdown()
@@ -88,13 +84,17 @@ namespace Backend.Core.ModuleSystem
 
 		private Assembly LoadAssembly(string FilePath)
 		{
+			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+
+			Assembly assembly = null;
+
 			try
 			{
-				Assembly assembly = LoadAssemblyFromFile(FilePath);
+				assembly = LoadAssemblyFromFile(FilePath);
 				if (assembly == null)
 				{
 					LogManager.Instance.WriteError("Assembly [{0}] doesn't exsits", FilePath);
-					return null;
+					goto FinishUp;
 				}
 
 				object configInstance = null;
@@ -140,14 +140,17 @@ namespace Backend.Core.ModuleSystem
 
 				LogManager.Instance.WriteInfo("Assembly [{0}] loaded successfully", FilePath);
 
-				return assembly;
+				goto FinishUp;
 			}
 			catch (Exception e)
 			{
 				LogManager.Instance.WriteException(e, "Loading assembly [{0}] failed", FilePath);
 			}
 
-			return null;
+		FinishUp:
+			AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+
+			return assembly;
 		}
 
 		private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
@@ -162,11 +165,6 @@ namespace Backend.Core.ModuleSystem
 			}
 
 			return assembly;
-
-			//if (!GameFramework.Common.FileLayer.FileSystem.FileExists(depFilePath))
-			//	return null;
-
-			//return LoadAssembly(depFilePath);
 		}
 
 		private Assembly LoadAssemblyFromFile(string FilePath)

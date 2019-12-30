@@ -1,6 +1,7 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base;
 using Backend.Base.ModuleSystem;
+using Backend.Base.NetworkSystem;
 using GameFramework.Common.MemoryManagement;
 using System.Diagnostics;
 
@@ -12,13 +13,15 @@ namespace Backend.MasterBalancer
 		{
 			if (Config == null)
 			{
-				Context.Logger.WriteWarning("MasterBalancer config is null, ignore initializing");
+				Context.Logger.WriteError("MasterBalancer config is null, ignore initializing");
 				return;
 			}
 
 			Configuration config = (Configuration)Config;
 
-			Process.Start("Standalone.NetFramework.exe", config.NodeWorkingDirectory);
+			SocketInfo socket = Context.NetworkManager.Sockets[0];
+
+			Process.Start("Standalone.NetFramework.exe", config.NodeWorkingDirectory + " " + socket.Protocol + " " + socket.LocalEndPoint.Port);
 		}
 
 		public void Shutdown()

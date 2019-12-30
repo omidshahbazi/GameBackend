@@ -23,6 +23,7 @@
     <Compile Include="..\..\..\Source\Base\LogSystem\ILogger.cs" Link="LogSystem\ILogger.cs" />
     <Compile Include="..\..\..\Source\Base\ModuleSystem\IModule.cs" Link="ModuleSystem\IModule.cs" />
     <Compile Include="..\..\..\Source\Base\NetworkSystem\Client.cs" Link="NetoworSystem\Client.cs" />
+    <Compile Include="..\..\..\Source\Base\NetworkSystem\INetworkManager.cs" Link="NetoworSystem\INetworkManager.cs" />
     <Compile Include="..\..\..\Source\Base\NetworkSystem\IRequestManager.cs" Link="NetoworSystem\IRequestManager.cs" />
   </ItemGroup>
 

@@ -61,10 +61,6 @@
       <Project>{FACC0BA0-D424-46F7-98FD-A791DE500D4B}</Project>
       <Name>Base.NetFramework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Core\Core.NetFramework.csproj">
-      <Project>{cdb4ab43-2c21-4afa-9e69-4d586fd6aeee}</Project>
-      <Name>Core.NetFramework</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

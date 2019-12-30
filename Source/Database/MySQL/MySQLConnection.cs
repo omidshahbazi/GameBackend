@@ -4,7 +4,7 @@ using GameFramework.ASCIISerializer;
 using System.Data;
 using NativeConnection = GameFramework.DatabaseManaged.MySQLDatabase;
 
-namespace Backend.Core
+namespace Backend.Database.MySQL
 {
 	class MySQLConnection : IConnection
 	{

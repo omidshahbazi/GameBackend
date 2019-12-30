@@ -2,7 +2,7 @@
 using Backend.Base;
 using Backend.Base.ConnectionManager;
 using Backend.Base.ModuleSystem;
-using Backend.Core;
+using Backend.Database.MySQL;
 using GameFramework.Common.MemoryManagement;
 
 namespace Backend.Database
@@ -27,7 +27,7 @@ namespace Backend.Database
 				return;
 			}
 
-			Application.Instance.Database = this;
+			Context.Database = this;
 		}
 
 		public void Shutdown()

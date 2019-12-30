@@ -7,6 +7,11 @@ namespace Backend.Base
 {
 	public interface IContext
 	{
+		INetworkManager NetworkManager
+		{
+			get;
+		}
+
 		IRequestManager RequestManager
 		{
 			get;
@@ -20,6 +25,7 @@ namespace Backend.Base
 		IConnectionPool Database
 		{
 			get;
+			set;
 		}
 	}
 }

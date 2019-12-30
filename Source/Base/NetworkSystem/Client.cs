@@ -3,6 +3,7 @@ using ServerSocket = GameFramework.Networking.ServerSocket;
 using TCPServerSocket = GameFramework.Networking.TCPServerSocket;
 using UDPServerSocket = GameFramework.Networking.UDPServerSocket;
 using NativeClient = GameFramework.Networking.Client;
+using GameFramework.Networking;
 
 namespace Backend.Base.NetworkSystem
 {
@@ -24,15 +25,15 @@ namespace Backend.Base.NetworkSystem
 
 		public void WriteBuffer(byte[] Buffer, uint Index, uint Length)
 		{
-			if (socket is TCPServerSocket)
+			if (socket.Type == Protocols.TCP)
 				((TCPServerSocket)socket).Send(client, Buffer, Index, Length);
-			else if (socket is UDPServerSocket)
+			else if (socket.Type == Protocols.UDP)
 				((UDPServerSocket)socket).Send(client, Buffer, Index, Length);
 		}
 
 		public override string ToString()
 		{
-			return client.EndPoint.ToString() + "@" + (socket is TCPServerSocket ? "TCP" : "UDP") + socket.LocalEndPoint.Port;
+			return client.EndPoint.ToString() + "@" + socket.Type + socket.LocalEndPoint.Port;
 		}
 	}
 }

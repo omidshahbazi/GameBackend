@@ -35,6 +35,12 @@ namespace Backend.Core
 			private set;
 		}
 
+		public INetworkManager NetworkManager
+		{
+			get;
+			set;
+		}
+
 		public IRequestManager RequestManager
 		{
 			get;
@@ -66,16 +72,17 @@ namespace Backend.Core
 
 			services = new List<IService>();
 
+			NetworkManager = NetworkSystem.NetworkManager.Instance;
 			RequestManager = ServerRequestManager.Instance;
 			Logger = LogManager.Instance;
 
 			AddService(ConfigManager.Instance);
 			AddService(LogManager.Instance);
-			AddService(NetworkManager.Instance);
+			AddService(NetworkSystem.NetworkManager.Instance);
 			AddService(ServerRequestManager.Instance);
 			AddService(ModuleManager.Instance);
 
-			NetworkManager.Instance.StartListenening();
+			NetworkSystem.NetworkManager.Instance.StartListenening();
 
 			LogManager.Instance.WriteInfo("Initialization completed");
 		}

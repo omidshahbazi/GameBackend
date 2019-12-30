@@ -74,6 +74,9 @@
     <Compile Include="..\..\..\Source\Base\NetworkSystem\Client.cs">
       <Link>NetworkSystem\Client.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Source\Base\NetworkSystem\INetworkManager.cs">
+      <Link>NetworkSystem\INetworkManager.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Base\NetworkSystem\IRequestManager.cs">
       <Link>NetworkSystem\IRequestManager.cs</Link>
     </Compile>

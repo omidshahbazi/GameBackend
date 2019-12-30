@@ -76,9 +76,9 @@ namespace Backend.Common.NetworkSystem
 
 		public void WriteBuffer(byte[] Buffer, uint Index, uint Length)
 		{
-			if (socket is TCPClientSocket)
+			if (socket.Type == Protocols.TCP)
 				((TCPClientSocket)socket).Send(Buffer, Index, Length);
-			else if (socket is UDPClientSocket)
+			else if (socket.Type == Protocols.UDP)
 				((UDPClientSocket)socket).Send(Buffer, Index, Length);
 		}
 
