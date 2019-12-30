@@ -65,7 +65,7 @@ namespace Backend.Core.ModuleSystem
 			string[] files = GameFramework.Common.FileLayer.FileSystem.GetFiles(librariesPath, "*" + DLL_EXTENSION, SearchOption.AllDirectories);
 			if (files == null)
 			{
-				LogManager.Instance.WriteError("Directory [{0}] doesn't exsits", librariesPath);
+				LogManager.Instance.WriteWarning("Directory [{0}] doesn't exsits, so ignore loading libraries", librariesPath);
 				return;
 			}
 
