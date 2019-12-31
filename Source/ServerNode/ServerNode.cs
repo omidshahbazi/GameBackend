@@ -35,6 +35,8 @@ namespace Backend.ServerNode
 			context.Logger.WriteInfo("Connection_OnConnected");
 
 			connection.Send(new ServerNodeIntrodunctionReq());
+
+			connection.WriteBuffer(new byte[12], 0, 12);
 		}
 
 		private void Connection_OnConnectionFailed(Connection Connection)
