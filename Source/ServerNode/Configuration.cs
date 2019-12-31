@@ -1,5 +1,5 @@
 // Copyright 2019. All Rights Reserved.
-namespace Backend.MasterBalancer
+namespace Backend.ServerNode
 {
 	struct Configuration
 	{

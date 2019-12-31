@@ -2,8 +2,11 @@
 using Backend.Base;
 using Backend.Base.ModuleSystem;
 using Backend.Base.NetworkSystem;
+using GameFramework.ASCIISerializer;
+using GameFramework.Common.FileLayer;
 using GameFramework.Common.Utilities;
 using System.Diagnostics;
+using System.IO;
 
 namespace Backend.MasterBalancer
 {
@@ -19,12 +22,19 @@ namespace Backend.MasterBalancer
 
 			Configuration config = (Configuration)Config;
 
-			SocketInfo socket = Context.NetworkManager.Sockets[0];
-
 			ArgumentParser arguments = new ArgumentParser();
 			arguments.Set("directory", config.NodeWorkingDirectory);
-			arguments.Set("protocol", socket.Protocol);
-			arguments.Set("port", socket.LocalEndPoint.Port);
+
+			SocketInfo socket = Context.NetworkManager.Sockets[0];
+
+			ISerializeObject configObj = Creator.Create<ISerializeObject>();
+			configObj.Set("ConfigStructType", "Backend.ServerNode.Configuration, Backend.ServerNode.NetFrameworkd");
+			configObj.Set("Protocol", socket.Protocol.ToString().ToUpper());
+			configObj.Set("Host", socket.LocalEndPoint.Address.ToString());
+			configObj.Set("Port", socket.LocalEndPoint.Port);
+
+			string path = Path.Combine(Path.Combine(config.NodeWorkingDirectory, "Libraries/"), "Backend.ServerNode.NetFramework.json");
+			FileSystem.Write(path, configObj.Content);
 
 			Process.Start("Standalone.NetFramework.exe", arguments.Content);
 		}

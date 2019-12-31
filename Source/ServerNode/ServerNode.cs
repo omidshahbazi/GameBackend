@@ -2,9 +2,8 @@
 using Backend.Base;
 using Backend.Base.ModuleSystem;
 using Backend.Common.NetworkSystem;
-using System.Net.Sockets;
 
-namespace Backend.MasterBalancer
+namespace Backend.ServerNode
 {
 	class ServerNode : IModule
 	{
@@ -12,9 +11,8 @@ namespace Backend.MasterBalancer
 
 		public void Initialize(IContext Context, object Config)
 		{
-
 			connection = new Connection();
-			connection.Connect()
+			//connection.Connect()
 
 			if (Config == null)
 			{

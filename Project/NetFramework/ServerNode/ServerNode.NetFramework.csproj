@@ -7,7 +7,7 @@
     <ProjectGuid>{2DC5F6F3-A0B6-4B3F-9682-6F45080F3DF0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ServerNode.NetFramework</RootNamespace>
+    <RootNamespace>Backend.ServerNode</RootNamespace>
     <AssemblyName>Backend.ServerNode.NetFramework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
