@@ -20,6 +20,8 @@ namespace Backend.MasterBalancer
 				return;
 			}
 
+			//Context.RequestManager.RegisterHandler
+
 			Configuration config = (Configuration)Config;
 
 			ArgumentParser arguments = new ArgumentParser();
