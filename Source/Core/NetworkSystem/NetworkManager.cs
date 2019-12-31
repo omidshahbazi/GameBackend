@@ -49,6 +49,9 @@ namespace Backend.Core.NetworkSystem
 			}
 		}
 
+		public event ClientConnectionEventHandler OnClientConnected;
+		public event ClientConnectionEventHandler OnClientDisconnected;
+
 		private NetworkManager()
 		{
 			clients = new ClientMap();
@@ -129,9 +132,9 @@ namespace Backend.Core.NetworkSystem
 				//socket.MultithreadedReceive = false;
 				//socket.MultithreadedSend = false;
 
-				socket.OnClientConnected += (Client) => { OnClientConnected(socket, Client); };
-				socket.OnClientDisconnected += (Client) => { OnClientDisconnected(socket, Client); };
-				socket.OnBufferReceived += (Client, Buffer) => { OnBufferReceived(socket, Client, Buffer); };
+				socket.OnClientConnected += (Client) => { OnClientConnectedHandler(socket, Client); };
+				socket.OnClientDisconnected += (Client) => { OnClientDisconnectedHandler(socket, Client); };
+				socket.OnBufferReceived += (Client, Buffer) => { OnBufferReceivedHandler(socket, Client, Buffer); };
 
 				socket.Bind(Host, Port);
 
@@ -145,27 +148,37 @@ namespace Backend.Core.NetworkSystem
 			return socket;
 		}
 
-		private void OnClientConnected(ServerSocket Socket, NativeClient Client)
+		private void OnClientConnectedHandler(ServerSocket Socket, NativeClient Client)
 		{
 			uint hash = GetHash(Socket, Client);
 
 			if (clients.ContainsKey(hash))
 				LogManager.Instance.WriteWarning("Redundant client [{0}] connected", Client.EndPoint);
 
-			clients[hash] = new Client(Socket, Client);
+			Client client = new Client(Socket, Client);
+
+			clients[hash] = client;
+
+			if (OnClientConnected != null)
+				OnClientConnected(client);
 		}
 
-		private void OnClientDisconnected(ServerSocket Socket, NativeClient Client)
+		private void OnClientDisconnectedHandler(ServerSocket Socket, NativeClient Client)
 		{
 			uint hash = GetHash(Socket, Client);
 
 			if (!clients.ContainsKey(hash))
 				LogManager.Instance.WriteWarning("Not listed client [{0}] disconnected", Client.EndPoint);
 
+			Client client = clients[hash];
+
+			if (OnClientDisconnected != null)
+				OnClientDisconnected(client);
+
 			clients.Remove(hash);
 		}
 
-		private void OnBufferReceived(ServerSocket Socket, NativeClient Sender, BufferStream Buffer)
+		private void OnBufferReceivedHandler(ServerSocket Socket, NativeClient Sender, BufferStream Buffer)
 		{
 			uint hash = GetHash(Socket, Sender);
 

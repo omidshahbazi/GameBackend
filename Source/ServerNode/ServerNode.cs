@@ -1,5 +1,6 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base;
+using Backend.Base.MasterBalancer;
 using Backend.Base.ModuleSystem;
 using Backend.Common.NetworkSystem;
 
@@ -32,6 +33,8 @@ namespace Backend.ServerNode
 		private void Connection_OnConnected(Connection Connection)
 		{
 			context.Logger.WriteInfo("Connection_OnConnected");
+
+			connection.Send(new ServerNodeIntrodunctionReq());
 		}
 
 		private void Connection_OnConnectionFailed(Connection Connection)

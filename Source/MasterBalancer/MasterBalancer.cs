@@ -1,10 +1,12 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base;
+using Backend.Base.MasterBalancer;
 using Backend.Base.ModuleSystem;
 using Backend.Base.NetworkSystem;
 using GameFramework.ASCIISerializer;
 using GameFramework.Common.FileLayer;
 using GameFramework.Common.Utilities;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -12,15 +14,20 @@ namespace Backend.MasterBalancer
 {
 	class MasterBalancer : IModule
 	{
+		private List<Client> serverNodes = null;
+
 		public void Initialize(IContext Context, object Config)
 		{
+			serverNodes = new List<Client>();
+
 			if (Config == null)
 			{
 				Context.Logger.WriteError("MasterBalancer config is null, ignore initializing");
 				return;
 			}
 
-			//Context.RequestManager.RegisterHandler
+			Context.NetworkManager.OnClientDisconnected += NetworkManager_OnClientDisconnected; ;
+			Context.RequestManager.RegisterHandler<ServerNodeIntrodunctionReq>(ServerNodeIntroduction);
 
 			Configuration config = (Configuration)Config;
 
@@ -41,12 +48,25 @@ namespace Backend.MasterBalancer
 			Process.Start("Standalone.NetFramework.exe", arguments.Content);
 		}
 
+		private void NetworkManager_OnClientDisconnected(Client Client)
+		{
+			if (!serverNodes.Contains(Client))
+				return;
+
+			serverNodes.Remove(Client);
+		}
+
 		public void Shutdown()
 		{
 		}
 
 		public void Service()
 		{
+		}
+
+		private void ServerNodeIntroduction(Client Client, ServerNodeIntrodunctionReq Request)
+		{
+			serverNodes.Add(Client);
 		}
 	}
 }

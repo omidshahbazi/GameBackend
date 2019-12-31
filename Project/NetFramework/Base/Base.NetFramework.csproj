@@ -68,6 +68,9 @@
     <Compile Include="..\..\..\Source\Base\LogSystem\ILogger.cs">
       <Link>LogSystem\ILogger.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Source\Base\MasterBalancer\Protocol.cs">
+      <Link>MasterBalancer\Protocol.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Base\ModuleSystem\IModule.cs">
       <Link>ModuleSystem\IModule.cs</Link>
     </Compile>

@@ -4,6 +4,8 @@ using System.Net.Sockets;
 
 namespace Backend.Base.NetworkSystem
 {
+	public delegate void ClientConnectionEventHandler(Client Client);
+
 	public class SocketInfo
 	{
 		public ProtocolType Protocol
@@ -31,5 +33,8 @@ namespace Backend.Base.NetworkSystem
 		{
 			get;
 		}
+
+		event ClientConnectionEventHandler OnClientConnected;
+		event ClientConnectionEventHandler OnClientDisconnected;
 	}
 }
