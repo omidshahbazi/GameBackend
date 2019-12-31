@@ -7,20 +7,41 @@ namespace Backend.ServerNode
 {
 	class ServerNode : IModule
 	{
+		private IContext context = null;
 		private Connection connection = null;
 
 		public void Initialize(IContext Context, object Config)
 		{
-			connection = new Connection();
-			//connection.Connect()
+			context = Context;
 
 			if (Config == null)
 			{
-				Context.Logger.WriteError("ServerNode config is null, ignore initializing");
+				context.Logger.WriteError("ServerNode config is null, ignore initializing");
 				return;
 			}
 
 			Configuration config = (Configuration)Config;
+
+			connection = new Connection();
+			connection.OnConnected += Connection_OnConnected;
+			connection.OnConnectionFailed += Connection_OnConnectionFailed;
+			connection.OnDisconnected += Connection_OnDisconnected;
+			connection.Connect(config.Protocol, config.Host, config.Port);
+		}
+
+		private void Connection_OnConnected(Connection Connection)
+		{
+			context.Logger.WriteInfo("Connection_OnConnected");
+		}
+
+		private void Connection_OnConnectionFailed(Connection Connection)
+		{
+			context.Logger.WriteError("Connection_OnConnectionFailed");
+		}
+
+		private void Connection_OnDisconnected(Connection Connection)
+		{
+			context.Logger.WriteError("Connection_OnDisconnected");
 		}
 
 		public void Shutdown()
@@ -29,6 +50,8 @@ namespace Backend.ServerNode
 
 		public void Service()
 		{
+			if (connection != null)
+				connection.Service();
 		}
 	}
 }

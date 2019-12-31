@@ -1,8 +1,12 @@
 // Copyright 2019. All Rights Reserved.
+using Backend.Common;
+
 namespace Backend.ServerNode
 {
 	struct Configuration
 	{
-		public string NodeWorkingDirectory;
+		public ProtocolTypes Protocol;
+		public string Host;
+		public ushort Port;
 	}
 }

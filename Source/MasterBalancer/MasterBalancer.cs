@@ -28,9 +28,9 @@ namespace Backend.MasterBalancer
 			SocketInfo socket = Context.NetworkManager.Sockets[0];
 
 			ISerializeObject configObj = Creator.Create<ISerializeObject>();
-			configObj.Set("ConfigStructType", "Backend.ServerNode.Configuration, Backend.ServerNode.NetFrameworkd");
+			configObj.Set("ConfigStructType", "Backend.ServerNode.Configuration, Backend.ServerNode.NetFramework");
 			configObj.Set("Protocol", socket.Protocol.ToString().ToUpper());
-			configObj.Set("Host", socket.LocalEndPoint.Address.ToString());
+			configObj.Set("Host", "::1");
 			configObj.Set("Port", socket.LocalEndPoint.Port);
 
 			string path = Path.Combine(Path.Combine(config.NodeWorkingDirectory, "Libraries/"), "Backend.ServerNode.NetFramework.json");
