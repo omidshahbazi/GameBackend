@@ -3,6 +3,7 @@ using Backend.Base;
 using Backend.Base.ConnectionManager;
 using Backend.Base.LogSystem;
 using Backend.Base.NetworkSystem;
+using Backend.Base.ScheduleSystem;
 using Backend.Core.ConfigSystem;
 using Backend.Core.LogSystem;
 using Backend.Core.ModuleSystem;
@@ -42,6 +43,12 @@ namespace Backend.Core
 		{
 			get;
 			set;
+		}
+
+		public IScheduleManager ScheduleManager
+		{
+			get;
+			private set;
 		}
 
 		public INetworkManager NetworkManager
@@ -84,10 +91,12 @@ namespace Backend.Core
 
 			services = new List<IService>();
 
+			ScheduleManager = ScheduleSystem.ScheduleManager.Instance;
 			NetworkManager = NetworkSystem.NetworkManager.Instance;
 			RequestManager = ServerRequestManager.Instance;
 			Logger = LogManager.Instance;
 
+			AddService(ScheduleSystem.ScheduleManager.Instance);
 			AddService(ConfigManager.Instance);
 			AddService(LogManager.Instance);
 			AddService(NetworkSystem.NetworkManager.Instance);

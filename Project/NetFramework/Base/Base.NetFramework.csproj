@@ -83,6 +83,9 @@
     <Compile Include="..\..\..\Source\Base\NetworkSystem\IRequestManager.cs">
       <Link>NetworkSystem\IRequestManager.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Source\Base\ScheduleSystem\IScheduleManager.cs">
+      <Link>ScheduleSystem\IScheduleManager.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

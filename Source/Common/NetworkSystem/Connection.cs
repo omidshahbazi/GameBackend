@@ -30,6 +30,8 @@ namespace Backend.Common.NetworkSystem
 				socket = new UDPClientSocket();
 
 			socket.MultithreadedCallbacks = false;
+			socket.MultithreadedReceive = false;
+			socket.MultithreadedSend = false;
 
 			socket.OnConnected += Socket_OnConnected;
 			socket.OnConnectionFailed += Socket_OnConnectionFailed;
