@@ -84,8 +84,7 @@ namespace Backend.Core
 
 		public void Initialize()
 		{
-			if (Arguments.Contains(ARGUMENT_WORKING_DIRECTORY))
-				WorkingDirectory = Arguments.Get<string>(ARGUMENT_WORKING_DIRECTORY);
+			WorkingDirectory = Arguments.Get<string>(ARGUMENT_WORKING_DIRECTORY);
 
 			IsRunning = true;
 
@@ -96,9 +95,9 @@ namespace Backend.Core
 			RequestManager = ServerRequestManager.Instance;
 			Logger = LogManager.Instance;
 
-			AddService(ScheduleSystem.ScheduleManager.Instance);
 			AddService(ConfigManager.Instance);
 			AddService(LogManager.Instance);
+			AddService(ScheduleSystem.ScheduleManager.Instance);
 			AddService(NetworkSystem.NetworkManager.Instance);
 			AddService(ServerRequestManager.Instance);
 			AddService(ModuleManager.Instance);
