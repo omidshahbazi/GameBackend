@@ -8,13 +8,11 @@ namespace Backend.Database.MySQL
 {
 	class MySQLConnection : IConnection
 	{
-		private Base.ConfigSystem.Database config;
 		private NativeConnection connection = null;
 
 		public MySQLConnection(Base.ConfigSystem.Database Config)
 		{
-			config = Config;
-			connection = new NativeConnection(config.Host, config.Port, config.Username, config.Password, config.Name);
+			FillConnection(Config);
 		}
 
 		public void Dispose()
@@ -40,6 +38,25 @@ namespace Backend.Database.MySQL
 		public ISerializeArray ExeeecuteWithReturnDataTable(string Query, params object[] Parameters)
 		{
 			return connection.ExecuteWithReturnISerializeArray(Query, Parameters);
+		}
+
+		private void FillConnection(Base.ConfigSystem.Database Config)
+		{
+			NativeConnection.CreateInfo info = new NativeConnection.CreateInfo();
+
+			info.Host = Config.Host;
+			info.Port = Config.Port;
+
+			info.Username = Config.Username;
+			info.Password = Config.Password;
+
+			info.Name = Config.Name;
+
+			info.CharacterSet = NativeConnection.CreateInfo.CharacterSets.UTF8;
+
+			info.PoolingEnabled = false;
+
+			connection = new NativeConnection(info);
 		}
 	}
 }
