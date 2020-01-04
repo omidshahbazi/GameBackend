@@ -3,6 +3,7 @@ using Backend.Base;
 using Backend.Base.MasterBalancer;
 using Backend.Base.ModuleSystem;
 using Backend.Common.NetworkSystem;
+using System.Diagnostics;
 
 namespace Backend.ServerNode
 {
@@ -34,7 +35,9 @@ namespace Backend.ServerNode
 		{
 			context.Logger.WriteInfo("Connection_OnConnected");
 
-			connection.Send(new ServerNodeIntrodunctionReq(), ()=>
+			ServerNodeIntrodunctionReq req = new ServerNodeIntrodunctionReq() { ProcessID = Process.GetCurrentProcess().Id };
+
+			connection.Send(req, ()=>
 			{
 				context.Logger.WriteInfo("ServerNodeIntrodunctionReq respond");
 			});

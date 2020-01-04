@@ -6,6 +6,7 @@ using Backend.Base.NetworkSystem;
 using GameFramework.ASCIISerializer;
 using GameFramework.Common.FileLayer;
 using GameFramework.Common.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,11 +15,35 @@ namespace Backend.MasterBalancer
 {
 	class MasterBalancer : IModule
 	{
-		private List<Client> serverNodes = null;
+		private class NodeInfo
+		{
+			public Process Process
+			{
+				get;
+				private set;
+			}
+
+			public Client Client
+			{
+				get;
+				private set;
+			}
+
+			public NodeInfo(Process Process, Client Client)
+			{
+				this.Process = Process;
+				this.Client = Client;
+			}
+		}
+
+		private IContext context = null;
+		private List<NodeInfo> nodes = null;
 
 		public void Initialize(IContext Context, object Config)
 		{
-			serverNodes = new List<Client>();
+			context = Context;
+
+			nodes = new List<NodeInfo>();
 
 			if (Config == null)
 			{
@@ -55,14 +80,24 @@ namespace Backend.MasterBalancer
 
 		private void NetworkManager_OnClientDisconnected(Client Client)
 		{
-			if (!serverNodes.Contains(Client))
+			NodeInfo node = FindNode(Client);
+
+			if (node == null)
 				return;
 
-			serverNodes.Remove(Client);
+			nodes.Remove(node);
+
+			context.Logger.WriteInfo("Node [{0}] under process {1} disconnected", node.Client.ToString(), node.Process.Id);
 		}
 
 		public void Shutdown()
 		{
+			for (int i = 0; i < nodes.Count; ++i)
+			{
+				NodeInfo node = nodes[i];
+
+				node.Process.Kill();
+			}
 		}
 
 		public void Service()
@@ -71,7 +106,39 @@ namespace Backend.MasterBalancer
 
 		private void ServerNodeIntroduction(Client Client, ServerNodeIntrodunctionReq Request)
 		{
-			serverNodes.Add(Client);
+			Process process = null;
+			try
+			{
+				process = Process.GetProcessById(Request.ProcessID);
+			}
+			catch { }
+
+			if (process == null)
+			{
+				context.Logger.WriteError("Process [{0}] couldn't find", Request.ProcessID);
+				return;
+			}
+
+			NodeInfo node = new NodeInfo(process, Client);
+
+			nodes.Add(node);
+
+			context.Logger.WriteInfo("Node [{0}] under process {1} connected", node.Client.ToString(), node.Process.Id);
+		}
+
+		private NodeInfo FindNode(Client Client)
+		{
+			for (int i = 0; i < nodes.Count; ++i)
+			{
+				NodeInfo node = nodes[i];
+
+				if (node.Client != Client)
+					continue;
+
+				return node;
+			}
+
+			return null;
 		}
 	}
 }

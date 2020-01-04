@@ -3,6 +3,6 @@ namespace Backend.Base.MasterBalancer
 {
 	public class ServerNodeIntrodunctionReq
 	{
-
+		public int ProcessID;
 	}
 }

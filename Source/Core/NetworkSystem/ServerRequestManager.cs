@@ -77,9 +77,7 @@ namespace Backend.Core.NetworkSystem
 			{
 				obj = MessageCreator.Instance.Deserialize(Buffer, out id, out typeID);
 			}
-			catch
-			{
-			}
+			catch { }
 
 			if (obj == null)
 			{
