@@ -26,10 +26,15 @@ namespace Backend.MasterBalancer
 				return;
 			}
 
+			Configuration config = (Configuration)Config;
+			if (string.IsNullOrEmpty(config.NodeWorkingDirectory))
+			{
+				Context.Logger.WriteError("NodeWorkingDirectory in config is null, ignore initializing");
+				return;
+			}
+
 			Context.NetworkManager.OnClientDisconnected += NetworkManager_OnClientDisconnected; ;
 			Context.RequestManager.RegisterHandler<ServerNodeIntrodunctionReq>(ServerNodeIntroduction);
-
-			Configuration config = (Configuration)Config;
 
 			ArgumentParser arguments = new ArgumentParser();
 			arguments.Set("directory", config.NodeWorkingDirectory);
