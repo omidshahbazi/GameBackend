@@ -33,7 +33,7 @@ namespace Backend.MasterBalancer
 				return;
 			}
 
-			Context.NetworkManager.OnClientDisconnected += NetworkManager_OnClientDisconnected; ;
+			Context.NetworkManager.OnClientDisconnected += NetworkManager_OnClientDisconnected;
 			Context.RequestManager.RegisterHandler<ServerNodeIntrodunctionReq>(ServerNodeIntroduction);
 
 			ArgumentParser arguments = new ArgumentParser();

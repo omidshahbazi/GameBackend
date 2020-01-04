@@ -34,9 +34,10 @@ namespace Backend.ServerNode
 		{
 			context.Logger.WriteInfo("Connection_OnConnected");
 
-			connection.Send(new ServerNodeIntrodunctionReq());
-
-			connection.WriteBuffer(new byte[12], 0, 12);
+			connection.Send(new ServerNodeIntrodunctionReq(), ()=>
+			{
+				context.Logger.WriteInfo("ServerNodeIntrodunctionReq respond");
+			});
 		}
 
 		private void Connection_OnConnectionFailed(Connection Connection)
