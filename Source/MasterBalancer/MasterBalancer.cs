@@ -62,7 +62,7 @@ namespace Backend.MasterBalancer
 			Context.RequestManager.RegisterHandler<ServerNodeIntrodunctionReq>(ServerNodeIntroduction);
 
 			ArgumentParser arguments = new ArgumentParser();
-			arguments.Set("directory", config.NodeWorkingDirectory);
+			arguments.Set("directory", Path.Combine("../", config.NodeWorkingDirectory));
 
 			SocketInfo socket = Context.NetworkManager.Sockets[0];
 

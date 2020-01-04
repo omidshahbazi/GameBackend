@@ -24,7 +24,13 @@ namespace Backend.Core
 		public string WorkingDirectory
 		{
 			get { return GameFramework.Common.FileLayer.FileSystem.DataPath; }
-			set { GameFramework.Common.FileLayer.FileSystem.DataPath = System.IO.Path.Combine(Environment.CurrentDirectory + "/../", value); }
+			set
+			{
+				if (value == null)
+					value = "";
+
+				GameFramework.Common.FileLayer.FileSystem.DataPath = System.IO.Path.Combine(Environment.CurrentDirectory, value);
+			}
 		}
 
 		public bool IsStarting
