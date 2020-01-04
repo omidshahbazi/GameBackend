@@ -93,7 +93,11 @@ namespace Backend.Common.NetworkSystem
 				if (isReply)
 				{
 					if (callbacks.ContainsKey(id))
+					{
 						callbacks[id](obj);
+
+						callbacks.Remove(id);
+					}
 				}
 				else
 					handlers[typeID](obj);
