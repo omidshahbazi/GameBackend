@@ -38,7 +38,6 @@ namespace Backend.Metric
 
 		public void Service()
 		{
-			//GetMetrics(null, null);
 		}
 
 		public void Shutdown()
