@@ -1,16 +1,17 @@
 // Copyright 2019. All Rights Reserved.
+using GameFramework.Networking;
+
 using ServerSocket = GameFramework.Networking.ServerSocket;
 using TCPServerSocket = GameFramework.Networking.TCPServerSocket;
 using UDPServerSocket = GameFramework.Networking.UDPServerSocket;
 using NativeClient = GameFramework.Networking.Client;
-using GameFramework.Networking;
 
 namespace Backend.Base.NetworkSystem
 {
 	public class Client
 	{
-		ServerSocket socket = null;
-		NativeClient client = null;
+		private ServerSocket socket = null;
+		private NativeClient client = null;
 
 		public Client(ServerSocket Socket, NativeClient Client)
 		{

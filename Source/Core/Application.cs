@@ -84,8 +84,6 @@ namespace Backend.Core
 		private Application()
 		{
 			IsStarting = true;
-
-			WorkingDirectory = "";
 		}
 
 		public void Initialize()

@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackageId>Backend.Metric.NetCore</PackageId>
+    <Authors>Backend.Metric.NetCore</Authors>
+    <Company>Backend.Metric.NetCore</Company>
+    <Product>Backend.Metric.NetCore</Product>
+    <AssemblyName>Backend.Metric.NetCore</AssemblyName>
+    <RootNamespace>Backend.Metric</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\Binaries\Server\Libraries\NetCore\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ConfigSystem\**" />
+    <Compile Remove="DatabaseSystem\**" />
+    <Compile Remove="LogSystem\**" />
+    <Compile Remove="ModuleSystem\**" />
+    <Compile Remove="MySQL\**" />
+    <EmbeddedResource Remove="ConfigSystem\**" />
+    <EmbeddedResource Remove="DatabaseSystem\**" />
+    <EmbeddedResource Remove="LogSystem\**" />
+    <EmbeddedResource Remove="ModuleSystem\**" />
+    <EmbeddedResource Remove="MySQL\**" />
+    <None Remove="ConfigSystem\**" />
+    <None Remove="DatabaseSystem\**" />
+    <None Remove="LogSystem\**" />
+    <None Remove="ModuleSystem\**" />
+    <None Remove="MySQL\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\Source\Metric\MetricCollector.cs" Link="MetricCollector.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Base\Base.NetCore.csproj" />
+  </ItemGroup>
+
+</Project>

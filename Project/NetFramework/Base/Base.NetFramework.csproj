@@ -71,6 +71,9 @@
     <Compile Include="..\..\..\Source\Base\MasterBalancer\Protocol.cs">
       <Link>MasterBalancer\Protocol.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Source\Base\Metric\Protocol.cs">
+      <Link>Metric\Protocol.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Base\ModuleSystem\IModule.cs">
       <Link>ModuleSystem\IModule.cs</Link>
     </Compile>

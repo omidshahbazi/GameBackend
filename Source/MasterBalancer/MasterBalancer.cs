@@ -75,7 +75,7 @@ namespace Backend.MasterBalancer
 			string path = Path.Combine(Path.Combine(config.NodeWorkingDirectory, "Libraries/"), "Backend.ServerNode.NetFramework.json");
 			FileSystem.Write(path, configObj.Content);
 
-			Process.Start("Standalone.NetFramework.exe", arguments.Content);
+			//Process.Start("Standalone.NetFramework.exe", arguments.Content);
 		}
 
 		private void NetworkManager_OnClientDisconnected(Client Client)

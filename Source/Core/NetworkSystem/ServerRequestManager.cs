@@ -17,6 +17,12 @@ namespace Backend.Core.NetworkSystem
 
 		private RequestMap handlers = null;
 
+		public RequestsStatistics[] Statistics
+		{
+			get;
+			private set;
+		}
+
 		private ServerRequestManager()
 		{
 		}
@@ -24,6 +30,8 @@ namespace Backend.Core.NetworkSystem
 		public void Initialize()
 		{
 			handlers = new RequestMap();
+
+			Statistics = new RequestsStatistics[1];
 		}
 
 		public void Shutdown()
@@ -70,6 +78,10 @@ namespace Backend.Core.NetworkSystem
 
 		public void DispatchBuffer(Client Client, BufferStream Buffer)
 		{
+			RequestsStatistics stats = Statistics[0];
+			++stats.IncomingMessageCount;
+			Statistics[0] = stats;
+
 			uint id = 0;
 			uint typeID = 0;
 			object obj = null;
@@ -81,6 +93,9 @@ namespace Backend.Core.NetworkSystem
 
 			if (obj == null)
 			{
+				++stats.IncomingInvalidMessageCount;
+				Statistics[0] = stats;
+
 				LogManager.Instance.WriteWarning("Client [{0}] sent an unknown packet, going to disconnect", Client.ToString());
 
 				Client.Disconnect();
@@ -94,6 +109,9 @@ namespace Backend.Core.NetworkSystem
 			}
 			catch (Exception e)
 			{
+				++stats.IncomingFailedMessageCount;
+				Statistics[0] = stats;
+
 				LogManager.Instance.WriteException(e, "Dispatching [{0}] failed", obj.GetType());
 			}
 		}
@@ -109,6 +127,10 @@ namespace Backend.Core.NetworkSystem
 				return;
 
 			Client.WriteBuffer(buffer.Buffer, 0, buffer.Size);
+
+			RequestsStatistics stats = Statistics[0];
+			++stats.OutgoingMessageCount;
+			Statistics[0] = stats;
 		}
 	}
 }

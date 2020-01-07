@@ -22,6 +22,7 @@
     <Compile Include="..\..\..\Source\Base\IContext.cs" Link="IContext.cs" />
     <Compile Include="..\..\..\Source\Base\LogSystem\ILogger.cs" Link="LogSystem\ILogger.cs" />
     <Compile Include="..\..\..\Source\Base\MasterBalancer\Protocol.cs" Link="MasterBalancer\Protocol.cs" />
+    <Compile Include="..\..\..\Source\Base\Metric\Protocol.cs" Link="Metric\Protocol.cs" />
     <Compile Include="..\..\..\Source\Base\ModuleSystem\IModule.cs" Link="ModuleSystem\IModule.cs" />
     <Compile Include="..\..\..\Source\Base\NetworkSystem\Client.cs" Link="NetoworSystem\Client.cs" />
     <Compile Include="..\..\..\Source\Base\NetworkSystem\INetworkManager.cs" Link="NetoworSystem\INetworkManager.cs" />
@@ -36,6 +37,7 @@
     <Folder Include="DatabaseSystem\" />
     <Folder Include="NetoworSystem\" />
     <Folder Include="MasterBalancer\" />
+    <Folder Include="Metric\" />
     <Folder Include="ScheduleSystem\" />
   </ItemGroup>
 

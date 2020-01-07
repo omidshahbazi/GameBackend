@@ -3,8 +3,22 @@ using System;
 
 namespace Backend.Base.NetworkSystem
 {
+	public struct RequestsStatistics
+	{
+		public uint IncomingMessageCount;
+		public uint OutgoingMessageCount;
+
+		public uint IncomingInvalidMessageCount;
+		public uint IncomingFailedMessageCount;
+	}
+
 	public interface IRequestManager
 	{
+		RequestsStatistics[] Statistics
+		{
+			get;
+		}
+
 		void RegisterHandler<ArgT>(Action<Client, ArgT> Handler) where ArgT : class;
 
 		void RegisterHandler<ArgT, ResT>(Func<Client, ArgT, ResT> Handler) where ArgT : class where ResT : class;
