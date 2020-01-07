@@ -15,12 +15,35 @@ namespace Backend.Core.NetworkSystem
 		private class RequestMap : Dictionary<uint, Action<Client, uint, object>>
 		{ }
 
+		private class StatisticsMap : Dictionary<uint, RequestsStatistics>
+		{ }
+
 		private RequestMap handlers = null;
+		private StatisticsMap statistics = null;
 
 		public RequestsStatistics[] Statistics
 		{
-			get;
-			private set;
+			get
+			{
+				SocketInfo[] sockets = NetworkManager.Instance.Sockets;
+				RequestsStatistics[] stats = new RequestsStatistics[sockets.Length];
+
+				for (int i = 0; i < sockets.Length; ++i)
+				{
+					SocketInfo info = sockets[i];
+					RequestsStatistics originStat = statistics[Client.GetSocketInfoHash(info.LocalEndPoint, info.Protocol)];
+
+					RequestsStatistics stat = stats[i] = new RequestsStatistics();
+
+					stat.IncomingMessageCount = originStat.IncomingMessageCount;
+					stat.OutgoingMessageCount = originStat.OutgoingMessageCount;
+
+					stat.IncomingInvalidMessageCount = originStat.IncomingInvalidMessageCount;
+					stat.IncomingFailedMessageCount = originStat.IncomingFailedMessageCount;
+				}
+
+				return stats;
+			}
 		}
 
 		private ServerRequestManager()
@@ -31,7 +54,14 @@ namespace Backend.Core.NetworkSystem
 		{
 			handlers = new RequestMap();
 
-			Statistics = new RequestsStatistics[1];
+			statistics = new StatisticsMap();
+			SocketInfo[] sockets = NetworkManager.Instance.Sockets;
+			for (int i = 0; i < sockets.Length; ++i)
+			{
+				SocketInfo info = sockets[i];
+
+				statistics[Client.GetSocketInfoHash(info.LocalEndPoint, info.Protocol)] = new RequestsStatistics();
+			}
 		}
 
 		public void Shutdown()
@@ -78,9 +108,8 @@ namespace Backend.Core.NetworkSystem
 
 		public void DispatchBuffer(Client Client, BufferStream Buffer)
 		{
-			RequestsStatistics stats = Statistics[0];
+			RequestsStatistics stats = GetStatistics(Client);
 			++stats.IncomingMessageCount;
-			Statistics[0] = stats;
 
 			uint id = 0;
 			uint typeID = 0;
@@ -94,7 +123,6 @@ namespace Backend.Core.NetworkSystem
 			if (obj == null)
 			{
 				++stats.IncomingInvalidMessageCount;
-				Statistics[0] = stats;
 
 				LogManager.Instance.WriteWarning("Client [{0}] sent an unknown packet, going to disconnect", Client.ToString());
 
@@ -110,7 +138,6 @@ namespace Backend.Core.NetworkSystem
 			catch (Exception e)
 			{
 				++stats.IncomingFailedMessageCount;
-				Statistics[0] = stats;
 
 				LogManager.Instance.WriteException(e, "Dispatching [{0}] failed", obj.GetType());
 			}
@@ -128,9 +155,16 @@ namespace Backend.Core.NetworkSystem
 
 			Client.WriteBuffer(buffer.Buffer, 0, buffer.Size);
 
-			RequestsStatistics stats = Statistics[0];
+			RequestsStatistics stats = GetStatistics(Client);
 			++stats.OutgoingMessageCount;
-			Statistics[0] = stats;
+		}
+
+		private RequestsStatistics GetStatistics(Client Client)
+		{
+			if (statistics.ContainsKey(Client.SocketHash))
+				return statistics[Client.SocketHash];
+
+			return null;
 		}
 	}
 }

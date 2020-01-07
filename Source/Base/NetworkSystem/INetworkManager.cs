@@ -20,10 +20,31 @@ namespace Backend.Base.NetworkSystem
 			private set;
 		}
 
-		public SocketInfo(ProtocolType Protocol, IPEndPoint LocalEndPoint)
+		public ulong IncomingTraffic
+		{
+			get;
+			private set;
+		}
+
+		public ulong OutgoingTraffic
+		{
+			get;
+			private set;
+		}
+
+		public uint ClientCount
+		{
+			get;
+			private set;
+		}
+
+		public SocketInfo(ProtocolType Protocol, IPEndPoint LocalEndPoint, ulong IncomingTraffic, ulong OutgoingTraffic, uint ClientCount)
 		{
 			this.Protocol = Protocol;
 			this.LocalEndPoint = LocalEndPoint;
+			this.IncomingTraffic = IncomingTraffic;
+			this.OutgoingTraffic = OutgoingTraffic;
+			this.ClientCount = ClientCount;
 		}
 	}
 

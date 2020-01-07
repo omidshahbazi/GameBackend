@@ -3,7 +3,7 @@ using System;
 
 namespace Backend.Base.NetworkSystem
 {
-	public struct RequestsStatistics
+	public class RequestsStatistics
 	{
 		public uint IncomingMessageCount;
 		public uint OutgoingMessageCount;

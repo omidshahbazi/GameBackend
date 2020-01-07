@@ -1,4 +1,6 @@
 // Copyright 2019. All Rights Reserved.
+using System.Net.Sockets;
+
 namespace Backend.Base.Metric
 {
 	public class GetMetricsReq
@@ -9,6 +11,9 @@ namespace Backend.Base.Metric
 	{
 		public class SocketMetric
 		{
+			public ProtocolType Protocol;
+			public ushort Port;
+
 			public ulong IncomingTraffic;
 			public ulong OutgoingTraffic;
 

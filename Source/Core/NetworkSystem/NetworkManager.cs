@@ -8,9 +8,7 @@ using GameFramework.BinarySerializer;
 using GameFramework.Common.MemoryManagement;
 using System;
 using System.Collections.Generic;
-using GameFramework.Common.Utilities;
 using System.Net.Sockets;
-using System.Text;
 
 using ServerSocket = GameFramework.Networking.ServerSocket;
 using TCPServerSocket = GameFramework.Networking.TCPServerSocket;
@@ -42,7 +40,7 @@ namespace Backend.Core.NetworkSystem
 				{
 					ServerSocket socket = sockets[i];
 
-					socketsInfo[i] = new SocketInfo((socket.Type == NetworkingProtocol.TCP ? ProtocolType.Tcp : ProtocolType.Udp), socket.LocalEndPoint);
+					socketsInfo[i] = new SocketInfo((socket.Type == NetworkingProtocol.TCP ? ProtocolType.Tcp : ProtocolType.Udp), socket.LocalEndPoint, socket.Statistics.BandwidthIn, socket.Statistics.BandwidthOut, (uint)socket.Clients.Length);
 				}
 
 				return socketsInfo;
@@ -150,7 +148,7 @@ namespace Backend.Core.NetworkSystem
 
 		private void OnClientConnectedHandler(ServerSocket Socket, NativeClient Client)
 		{
-			uint hash = GetHash(Socket, Client);
+			uint hash = Base.NetworkSystem.Client.GetClientHash(Socket, Client);
 
 			if (clients.ContainsKey(hash))
 				LogManager.Instance.WriteWarning("Redundant client [{0}] connected", Client.EndPoint);
@@ -165,7 +163,7 @@ namespace Backend.Core.NetworkSystem
 
 		private void OnClientDisconnectedHandler(ServerSocket Socket, NativeClient Client)
 		{
-			uint hash = GetHash(Socket, Client);
+			uint hash = Base.NetworkSystem.Client.GetClientHash(Socket, Client);
 
 			if (!clients.ContainsKey(hash))
 				LogManager.Instance.WriteWarning("Not listed client [{0}] disconnected", Client.EndPoint);
@@ -180,7 +178,7 @@ namespace Backend.Core.NetworkSystem
 
 		private void OnBufferReceivedHandler(ServerSocket Socket, NativeClient Sender, BufferStream Buffer)
 		{
-			uint hash = GetHash(Socket, Sender);
+			uint hash = Client.GetClientHash(Socket, Sender);
 
 			if (!clients.ContainsKey(hash))
 			{
@@ -194,11 +192,6 @@ namespace Backend.Core.NetworkSystem
 			Client client = clients[hash];
 
 			ServerRequestManager.Instance.DispatchBuffer(client, Buffer);
-		}
-
-		private static uint GetHash(ServerSocket Socket, NativeClient Client)
-		{
-			return CRC32.CalculateHash(Encoding.ASCII.GetBytes(Socket.LocalEndPoint.ToString() + Client.EndPoint.ToString()));
 		}
 	}
 }

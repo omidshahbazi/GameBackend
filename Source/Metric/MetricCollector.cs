@@ -32,14 +32,13 @@ namespace Backend.Metric
 			cpuUsageCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
 			computerInfo = new ComputerInfo();
 
-			context.RequestManager.RegisterHandler<GetMetricsReq, GetMetricsRes>(GetMetrics);
 
-			byte[] b = new byte[1024 * 1024 * 1024];
+			context.RequestManager.RegisterHandler<GetMetricsReq, GetMetricsRes>(GetMetrics);
 		}
 
 		public void Service()
 		{
-			GetMetrics(null, null);
+			//GetMetrics(null, null);
 		}
 
 		public void Shutdown()
@@ -53,18 +52,23 @@ namespace Backend.Metric
 			res.CPUUsage = cpuUsageCounter.NextValue() / 100;
 			res.MemoryUsage = 1 - (computerInfo.AvailablePhysicalMemory / (float)computerInfo.TotalPhysicalMemory);
 
+			SocketInfo[] sockets = context.NetworkManager.Sockets;
 			RequestsStatistics[] stats = context.RequestManager.Statistics;
 			res.SocketsMetric = new GetMetricsRes.SocketMetric[stats.Length];
 
 			for (int i = 0; i < stats.Length; ++i)
 			{
+				SocketInfo socket = sockets[i];
 				RequestsStatistics stat = stats[i];
-				GetMetricsRes.SocketMetric metric = res.SocketsMetric[0] = new GetMetricsRes.SocketMetric();
+				GetMetricsRes.SocketMetric metric = res.SocketsMetric[i] = new GetMetricsRes.SocketMetric();
 
-				//metric.IncomingTraffic = 
-				//metric.OutgoingTraffic;
+				metric.Protocol = socket.Protocol;
+				metric.Port = (ushort)socket.LocalEndPoint.Port;
 
-				//metric.ClientCount = 
+				metric.IncomingTraffic = socket.IncomingTraffic;
+				metric.OutgoingTraffic = socket.OutgoingTraffic;
+
+				metric.ClientCount = socket.ClientCount;
 
 				metric.IncomingMessageCount = stat.IncomingMessageCount;
 				metric.OutgoingMessageCount = stat.OutgoingMessageCount;
