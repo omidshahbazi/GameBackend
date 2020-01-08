@@ -14,6 +14,10 @@
     <OutputPath>..\..\..\Binaries\Server\NetCore\</OutputPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\Binaries\Server\NetCore\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\..\..\Source\Base\ConfigSystem\Database.cs" Link="ConfigSystem\Database.cs" />
     <Compile Include="..\..\..\Source\Base\ConfigSystem\Server.cs" Link="ConfigSystem\Server.cs" />

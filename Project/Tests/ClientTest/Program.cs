@@ -20,7 +20,7 @@ namespace ClientTest
 			connection.OnConnectionFailed += Connection_OnConnectionFailed;
 			connection.OnDisconnected += Connection_OnDisconnected;
 
-			connection.Connect(ProtocolTypes.UDP, "::1", 5000);
+			connection.Connect(ProtocolTypes.TCP, "::1", 5000);
 
 			while (true)
 			{
