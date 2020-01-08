@@ -1,6 +1,7 @@
 ﻿using Backend.Base.Metric;
 using Backend.Common.NetworkSystem;
 using GameFramework.Common.Timing;
+using System;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -9,6 +10,7 @@ namespace Backend.Admin
 	public partial class StatisticsForm : Form
 	{
 		private const float UPDATE_METRICS_INTERVAL = 1.0F;
+		private const int MAX_CPU_USAGE_SAMPLE_COUNT = 10;
 
 		private Timer timer = null;
 		private double nextUpdateMetricTime = 0;
@@ -36,7 +38,7 @@ namespace Backend.Admin
 			cpuUsageSeries.ChartType = SeriesChartType.Spline;
 		}
 
-		private void Timer_Tick(object sender, System.EventArgs e)
+		private void Timer_Tick(object sender, EventArgs e)
 		{
 			connection.Service();
 
@@ -66,6 +68,8 @@ namespace Backend.Admin
 		private void GetMetricsHandler(GetMetricsRes Data)
 		{
 			cpuUsageSeries.Points.Add(Data.CPUUsage);
+			if (cpuUsageSeries.Points.Count > MAX_CPU_USAGE_SAMPLE_COUNT)
+				cpuUsageSeries.Points.RemoveAt(0);
 		}
 	}
 }
