@@ -13,6 +13,11 @@ namespace Backend.Common.NetworkSystem
 		private ClientSocket socket = null;
 		private ClientRequestManager requestManager = null;
 
+		public bool IsConnected
+		{
+			get { return socket.IsConnected; }
+		}
+
 		public event ConnectionEventHandler OnConnected;
 		public event ConnectionEventHandler OnConnectionFailed;
 		public event ConnectionEventHandler OnDisconnected;
