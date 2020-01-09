@@ -75,6 +75,7 @@ namespace Backend.Admin
 						mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, percent));
 
 						SocketCharts socketChart = socketCharts[i] = new SocketCharts();
+						socketChart.Dock = DockStyle.Fill;
 
 						mainTableLayout.Controls.Add(socketChart, 0, i + 1);
 					}

@@ -8,8 +8,6 @@ namespace Backend.Admin
 		{
 			Series series = Chart.Series.Add(Title);
 
-			series.Points.Add(0);
-
 			series.ChartType = SeriesChartType.Spline;
 
 			return series;
