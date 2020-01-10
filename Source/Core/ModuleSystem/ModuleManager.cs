@@ -12,6 +12,7 @@ using System.Reflection;
 
 namespace Backend.Core.ModuleSystem
 {
+	[Serializable]
 	class ModuleManager : Singleton<ModuleManager>, IService
 	{
 		private class AssemblyMap : Dictionary<string, Assembly>
@@ -39,6 +40,8 @@ namespace Backend.Core.ModuleSystem
 
 		public void Shutdown()
 		{
+			assemblies.Clear();
+
 			for (int i = 0; i < modules.Count; ++i)
 				modules[i].Shutdown();
 		}

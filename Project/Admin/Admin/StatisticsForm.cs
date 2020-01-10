@@ -1,4 +1,5 @@
-﻿using Backend.Base.Metric;
+﻿using Backend.Base;
+using Backend.Base.Metric;
 using Backend.Common.NetworkSystem;
 using GameFramework.Common.Timing;
 using System;
@@ -59,30 +60,32 @@ namespace Backend.Admin
 
 		private void Connection_OnConnected(Connection Connection)
 		{
-			connection.Send<GetMetricsReq, GetMetricsRes>(new GetMetricsReq(), (res) =>
-			{
-				if (res.SocketsMetric != null)
-				{
-					socketCharts = new SocketCharts[res.SocketsMetric.Length];
+			connection.Send(new RestartReq());
 
-					mainTableLayout.RowCount = res.SocketsMetric.Length + 1;
+			//connection.Send<GetMetricsReq, GetMetricsRes>(new GetMetricsReq(), (res) =>
+			//{
+			//	if (res.SocketsMetric != null)
+			//	{
+			//		socketCharts = new SocketCharts[res.SocketsMetric.Length];
 
-					float percent = 100.0F / mainTableLayout.RowCount;
-					mainTableLayout.RowStyles[0].Height = percent;
+			//		mainTableLayout.RowCount = res.SocketsMetric.Length + 1;
 
-					for (int i = 0; i < res.SocketsMetric.Length; ++i)
-					{
-						mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, percent));
+			//		float percent = 100.0F / mainTableLayout.RowCount;
+			//		mainTableLayout.RowStyles[0].Height = percent;
 
-						SocketCharts socketChart = socketCharts[i] = new SocketCharts();
-						socketChart.Dock = DockStyle.Fill;
+			//		for (int i = 0; i < res.SocketsMetric.Length; ++i)
+			//		{
+			//			mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, percent));
 
-						mainTableLayout.Controls.Add(socketChart, 0, i + 1);
-					}
-				}
+			//			SocketCharts socketChart = socketCharts[i] = new SocketCharts();
+			//			socketChart.Dock = DockStyle.Fill;
 
-				GetMetricsHandler(res);
-			});
+			//			mainTableLayout.Controls.Add(socketChart, 0, i + 1);
+			//		}
+			//	}
+
+			//	GetMetricsHandler(res);
+			//});
 		}
 
 		private void Connection_OnConnectionFailed(Connection Connection)

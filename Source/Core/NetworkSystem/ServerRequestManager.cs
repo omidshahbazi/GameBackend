@@ -66,6 +66,8 @@ namespace Backend.Core.NetworkSystem
 
 		public void Shutdown()
 		{
+			handlers.Clear();
+			statistics.Clear();
 		}
 
 		public void Service()

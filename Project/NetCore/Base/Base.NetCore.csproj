@@ -31,6 +31,7 @@
     <Compile Include="..\..\..\Source\Base\NetworkSystem\Client.cs" Link="NetoworSystem\Client.cs" />
     <Compile Include="..\..\..\Source\Base\NetworkSystem\INetworkManager.cs" Link="NetoworSystem\INetworkManager.cs" />
     <Compile Include="..\..\..\Source\Base\NetworkSystem\IRequestManager.cs" Link="NetoworSystem\IRequestManager.cs" />
+    <Compile Include="..\..\..\Source\Base\Protocol.cs" Link="Protocol.cs" />
     <Compile Include="..\..\..\Source\Base\ScheduleSystem\IScheduleManager.cs" Link="ScheduleSystem\IScheduleManager.cs" />
   </ItemGroup>
 

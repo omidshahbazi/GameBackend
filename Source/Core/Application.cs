@@ -109,12 +109,34 @@ namespace Backend.Core
 			NetworkSystem.NetworkManager.Instance.StartListenening();
 
 			LogManager.Instance.WriteInfo("Initialization completed");
+
+			RequestManager.RegisterHandler<ShutdownReq>((client, req) =>
+			{
+				ScheduleManager.ScheduleMMainThread(() =>
+				{
+					IsRunning = false;
+					IsStarting = false;
+				}, 1);
+
+				LogManager.Instance.WriteInfo("Shutdown scheduled");
+			});
+
+			RequestManager.RegisterHandler<RestartReq>((client, req) =>
+			{
+				ScheduleManager.ScheduleMMainThread(() =>
+				{
+					IsRunning = false;
+					IsStarting = true;
+				}, 1);
+
+				LogManager.Instance.WriteInfo("Restart scheduled");
+			});
 		}
 
 		public void Shutdown()
 		{
 			for (int i = services.Count - 1; i >= 0; --i)
-				services[i].Service();
+				services[i].Shutdown();
 
 			services.Clear();
 

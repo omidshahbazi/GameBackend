@@ -1,5 +1,4 @@
 ﻿// Copyright 2019. All Rights Reserved.
-using Backend.Common.NetworkSystem;
 using GameFramework.BinarySerializer;
 using System;
 using System.Collections.Generic;
