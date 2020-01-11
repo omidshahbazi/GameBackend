@@ -131,18 +131,24 @@ namespace Backend.Core
 
 				LogManager.Instance.WriteInfo("Restart scheduled");
 			});
+
+			ScheduleManager.ScheduleMMainThread(() =>
+			{
+				IsRunning = false;
+				IsStarting = true;
+			}, 2);
 		}
 
 		public void Shutdown()
 		{
+			LogManager.Instance.WriteInfo("Shuting down completed");
+
 			for (int i = services.Count - 1; i >= 0; --i)
 				services[i].Shutdown();
 
 			services.Clear();
 
 			IsRunning = false;
-
-			LogManager.Instance.WriteInfo("Shuting down completed");
 		}
 
 		public void Service()
