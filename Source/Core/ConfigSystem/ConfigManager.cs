@@ -28,7 +28,6 @@ namespace Backend.Core.ConfigSystem
 
 		public void Shutdown()
 		{
-			Save();
 		}
 
 		public void Service()

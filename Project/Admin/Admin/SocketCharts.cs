@@ -64,7 +64,7 @@ namespace Backend.Admin
 
 			totalMetrics = Data;
 
-			infoLabel1.Text = string.Format(infoLabel1.Tag.ToString(), Data.Protocol.ToString().ToUpper() + Data.Port, totalMetrics.ClientCount, totalMetrics.IncomingTraffic, totalMetrics.OutgoingTraffic);
+			infoLabel1.Text = string.Format(infoLabel1.Tag.ToString(), Data.Port + "/" + Data.Protocol.ToString().ToUpper(), totalMetrics.ClientCount, totalMetrics.IncomingTraffic, totalMetrics.OutgoingTraffic);
 			infoLabel2.Text = string.Format(infoLabel2.Tag.ToString(), totalMetrics.IncomingMessageCount, totalMetrics.OutgoingMessageCount, totalMetrics.IncomingInvalidMessageCount, totalMetrics.IncomingFailedMessageCount);
 		}
 

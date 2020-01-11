@@ -48,7 +48,7 @@ namespace Backend.Base.NetworkSystem
 
 		public override string ToString()
 		{
-			return client.EndPoint.ToString() + "@" + socket.Type + socket.LocalEndPoint.Port;
+			return client.EndPoint.ToString() + "/" + socket.Type + " -> " + socket.LocalEndPoint.Port + "/" + socket.Type;
 		}
 
 		public static uint GetSocketInfoHash(IPEndPoint EndPoint, ProtocolType Protocol)

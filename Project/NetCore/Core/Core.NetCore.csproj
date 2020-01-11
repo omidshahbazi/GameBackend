@@ -21,6 +21,7 @@
   <ItemGroup>
     <Compile Include="..\..\..\Source\Core\Application.cs" Link="Application.cs" />
     <Compile Include="..\..\..\Source\Core\ConfigSystem\ConfigManager.cs" Link="ConfigSystem\ConfigManager.cs" />
+    <Compile Include="..\..\..\Source\Core\InternalRequestHandlers.cs" Link="InternalRequestHandlers.cs" />
     <Compile Include="..\..\..\Source\Core\IService.cs" Link="IService.cs" />
     <Compile Include="..\..\..\Source\Core\LogSystem\ConsoleLogger.cs" Link="LogSystem\ConsoleLogger.cs" />
     <Compile Include="..\..\..\Source\Core\LogSystem\FileLogger.cs" Link="LogSystem\FileLogger.cs" />

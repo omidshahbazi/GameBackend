@@ -105,32 +105,11 @@ namespace Backend.Core
 			AddService(NetworkSystem.NetworkManager.Instance);
 			AddService(ServerRequestManager.Instance);
 			AddService(ModuleManager.Instance);
+			AddService(InternalRequestHandlers.Instance);
 
 			NetworkSystem.NetworkManager.Instance.StartListenening();
 
 			LogManager.Instance.WriteInfo("Initialization completed");
-
-			RequestManager.RegisterHandler<ShutdownReq>((client, req) =>
-			{
-				ScheduleManager.ScheduleMMainThread(() =>
-				{
-					IsRunning = false;
-					IsStarting = false;
-				}, 1);
-
-				LogManager.Instance.WriteInfo("Shutdown scheduled");
-			});
-
-			RequestManager.RegisterHandler<RestartReq>((client, req) =>
-			{
-				ScheduleManager.ScheduleMMainThread(() =>
-				{
-					IsRunning = false;
-					IsStarting = true;
-				}, 1);
-
-				LogManager.Instance.WriteInfo("Restart scheduled");
-			});
 		}
 
 		public void Shutdown()
@@ -151,15 +130,26 @@ namespace Backend.Core
 				services[i].Service();
 		}
 
-		public void Restart()
+		public void ScheduleForShutdown()
 		{
-			IsStarting = true;
+			ScheduleManager.ScheduleMMainThread(() =>
+			{
+				IsRunning = false;
+				IsStarting = false;
+			}, 1);
+
+			LogManager.Instance.WriteInfo("Shutdown scheduled");
 		}
 
-		public void Close()
+		public void ScheduleForRestart()
 		{
-			IsStarting = false;
-			IsRunning = false;
+			ScheduleManager.ScheduleMMainThread(() =>
+			{
+				IsRunning = false;
+				IsStarting = true;
+			}, 1);
+
+			LogManager.Instance.WriteInfo("Restart scheduled");
 		}
 
 		private void AddService(IService Service)
