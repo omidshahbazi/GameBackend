@@ -72,7 +72,7 @@ namespace Backend.Core.NetworkSystem
 				sockets[i].Service();
 		}
 
-		public void StartListenening()
+		public void StartListening()
 		{
 			for (int i = 0; i < sockets.Length; ++i)
 				sockets[i].Listen();

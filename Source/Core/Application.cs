@@ -107,7 +107,7 @@ namespace Backend.Core
 			AddService(ModuleManager.Instance);
 			AddService(InternalRequestHandlers.Instance);
 
-			NetworkSystem.NetworkManager.Instance.StartListenening();
+			NetworkSystem.NetworkManager.Instance.StartListening();
 
 			LogManager.Instance.WriteInfo("Initialization completed");
 		}
