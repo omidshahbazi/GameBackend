@@ -131,12 +131,6 @@ namespace Backend.Core
 
 				LogManager.Instance.WriteInfo("Restart scheduled");
 			});
-
-			ScheduleManager.ScheduleMMainThread(() =>
-			{
-				IsRunning = false;
-				IsStarting = true;
-			}, 2);
 		}
 
 		public void Shutdown()
