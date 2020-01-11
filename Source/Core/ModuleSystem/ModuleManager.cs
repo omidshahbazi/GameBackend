@@ -26,6 +26,19 @@ namespace Backend.Core.ModuleSystem
 		private ModuleManager()
 		{
 			assemblies = new AssemblyMap();
+
+			Assembly[] loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+			for (int i = 0; i < loadedAssemblies.Length; ++i)
+			{
+				Assembly assembly = loadedAssemblies[i];
+
+				string path = assembly.Location;
+				//path = path.Replace('\\', '/');
+				//path = path.Replace(GameFramework.Common.FileLayer.FileSystem.DataPath, "");
+				path = Path.GetFileName(path);
+
+				assemblies[path] = assembly;
+			}
 		}
 
 		public void Initialize()
@@ -86,6 +99,8 @@ namespace Backend.Core.ModuleSystem
 
 		private Assembly LoadAssembly(string FilePath)
 		{
+			FilePath = FilePath.Replace('\\', '/');
+
 			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
 			Assembly assembly = null;
@@ -121,7 +136,7 @@ namespace Backend.Core.ModuleSystem
 				{
 					Type type = types[i];
 
-					if (!moduleInterfaceType.IsAssignableFrom(type))
+					if (type.IsInterface || !moduleInterfaceType.IsAssignableFrom(type))
 						continue;
 
 					IModule module = (IModule)Activator.CreateInstance(type);
@@ -143,6 +158,9 @@ namespace Backend.Core.ModuleSystem
 				LogManager.Instance.WriteInfo("Assembly [{0}] loaded successfully", FilePath);
 
 				goto FinishUp;
+			}
+			catch (ReflectionTypeLoadException)
+			{
 			}
 			catch (Exception e)
 			{
@@ -171,8 +189,10 @@ namespace Backend.Core.ModuleSystem
 
 		private Assembly LoadAssemblyFromFile(string FilePath)
 		{
-			if (assemblies.ContainsKey(FilePath))
-				return assemblies[FilePath];
+			string path = Path.GetFileName(FilePath);
+
+			if (assemblies.ContainsKey(path))
+				return assemblies[path];
 
 			byte[] assemblyData = GameFramework.Common.FileLayer.FileSystem.ReadBytes(FilePath);
 			if (assemblyData == null)
@@ -180,7 +200,7 @@ namespace Backend.Core.ModuleSystem
 
 			Assembly assembly = Assembly.Load(assemblyData);
 
-			assemblies[FilePath] = assembly;
+			assemblies[path] = assembly;
 
 			return assembly;
 		}

@@ -29,7 +29,7 @@ namespace Backend.Core
 				if (value == null)
 					value = "";
 
-				GameFramework.Common.FileLayer.FileSystem.DataPath = System.IO.Path.Combine(Environment.CurrentDirectory, value);
+				GameFramework.Common.FileLayer.FileSystem.DataPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, value));
 			}
 		}
 
