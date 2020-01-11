@@ -60,32 +60,30 @@ namespace Backend.Admin
 
 		private void Connection_OnConnected(Connection Connection)
 		{
-			connection.Send(new RestartReq());
+			connection.Send<GetMetricsReq, GetMetricsRes>(new GetMetricsReq(), (res) =>
+			{
+				if (res.SocketsMetric != null)
+				{
+					socketCharts = new SocketCharts[res.SocketsMetric.Length];
 
-			//connection.Send<GetMetricsReq, GetMetricsRes>(new GetMetricsReq(), (res) =>
-			//{
-			//	if (res.SocketsMetric != null)
-			//	{
-			//		socketCharts = new SocketCharts[res.SocketsMetric.Length];
+					mainTableLayout.RowCount = res.SocketsMetric.Length + 1;
 
-			//		mainTableLayout.RowCount = res.SocketsMetric.Length + 1;
+					float percent = 100.0F / mainTableLayout.RowCount;
+					mainTableLayout.RowStyles[0].Height = percent;
 
-			//		float percent = 100.0F / mainTableLayout.RowCount;
-			//		mainTableLayout.RowStyles[0].Height = percent;
+					for (int i = 0; i < res.SocketsMetric.Length; ++i)
+					{
+						mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, percent));
 
-			//		for (int i = 0; i < res.SocketsMetric.Length; ++i)
-			//		{
-			//			mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, percent));
+						SocketCharts socketChart = socketCharts[i] = new SocketCharts();
+						socketChart.Dock = DockStyle.Fill;
 
-			//			SocketCharts socketChart = socketCharts[i] = new SocketCharts();
-			//			socketChart.Dock = DockStyle.Fill;
+						mainTableLayout.Controls.Add(socketChart, 0, i + 1);
+					}
+				}
 
-			//			mainTableLayout.Controls.Add(socketChart, 0, i + 1);
-			//		}
-			//	}
-
-			//	GetMetricsHandler(res);
-			//});
+				GetMetricsHandler(res);
+			});
 		}
 
 		private void Connection_OnConnectionFailed(Connection Connection)
