@@ -50,14 +50,14 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\Source\Core\AdminRequestHandlers.cs">
+      <Link>AdminRequestHandlers.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Core\Application.cs">
       <Link>Application.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Source\Core\ConfigSystem\ConfigManager.cs">
       <Link>ConfigSystem\ConfigManager.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Source\Core\InternalRequestHandlers.cs">
-      <Link>InternalRequestHandlers.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Source\Core\IService.cs">
       <Link>IService.cs</Link>

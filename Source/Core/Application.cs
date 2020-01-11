@@ -105,7 +105,7 @@ namespace Backend.Core
 			AddService(NetworkSystem.NetworkManager.Instance);
 			AddService(ServerRequestManager.Instance);
 			AddService(ModuleManager.Instance);
-			AddService(InternalRequestHandlers.Instance);
+			AddService(AdminRequestHandlers.Instance);
 
 			NetworkSystem.NetworkManager.Instance.StartListening();
 

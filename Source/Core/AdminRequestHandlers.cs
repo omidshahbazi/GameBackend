@@ -6,7 +6,7 @@ using GameFramework.Common.MemoryManagement;
 
 namespace Backend.Core
 {
-	public class InternalRequestHandlers : Singleton<InternalRequestHandlers>, IService
+	public class AdminRequestHandlers : Singleton<AdminRequestHandlers>, IService
 	{
 		public void Initialize()
 		{
