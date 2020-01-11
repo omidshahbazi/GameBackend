@@ -110,7 +110,7 @@ namespace Backend.Core.NetworkSystem
 		{
 			ServerSocket socket = null;
 
-			string ipPort = Protocol + " [" + Host + "]:" + Port;
+			string ipPort = "[" + Host + "]:" + Port + "/" + Protocol;
 
 			try
 			{

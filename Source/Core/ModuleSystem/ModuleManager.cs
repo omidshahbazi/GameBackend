@@ -39,7 +39,7 @@ namespace Backend.Core.ModuleSystem
 
 		public void Shutdown()
 		{
-			//assemblies.Clear();
+			// We do not clear loaded assemblys, because we cannot unload them, so will face to type confilicts and/or mismatch in cast
 
 			for (int i = 0; i < modules.Count; ++i)
 				modules[i].Shutdown();
