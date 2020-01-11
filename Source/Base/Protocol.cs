@@ -1,5 +1,4 @@
 // Copyright 2019. All Rights Reserved.
-
 using Backend.Base.ConfigSystem;
 
 namespace Backend.Base
@@ -15,10 +14,5 @@ namespace Backend.Base
 	public class UpdateServerConfigs
 	{
 		public Server Config;
-	}
-
-	public class UpdateDatabaseConfigs
-	{
-		public Database Config;
 	}
 }
