@@ -23,12 +23,6 @@ namespace Backend.Base.ConfigSystem
 			public File[] Files;
 		}
 
-		public struct Admin
-		{
-			public string Username;
-			public string Password;
-		}
-
 		public struct Logger
 		{
 			public enum Types
@@ -53,7 +47,6 @@ namespace Backend.Base.ConfigSystem
 
 		public Socket[] Sockets;
 		public Module Modules;
-		public Admin[] Admins;
 		public Logger[] Loggers;
 	}
 }

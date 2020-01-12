@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageId>Backend.Metric.NetCore</PackageId>
-    <Authors>Backend.Metric.NetCore</Authors>
-    <Company>Backend.Metric.NetCore</Company>
-    <Product>Backend.Metric.NetCore</Product>
-    <AssemblyName>Backend.Metric.NetCore</AssemblyName>
-    <RootNamespace>Backend.Metric</RootNamespace>
+    <PackageId>Backend.Admin.NetCore</PackageId>
+    <Authors>Backend.Admin.NetCore</Authors>
+    <Company>Backend.Admin.NetCore</Company>
+    <Product>Backend.Admin.NetCore</Product>
+    <AssemblyName>Backend.Admin.NetCore</AssemblyName>
+    <RootNamespace>Admin.NetCore</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\Source\Metric\MetricCollector.cs" Link="MetricCollector.cs" />
+    <Compile Include="..\..\..\Source\Admin\AdminHnadler.cs" Link="AdminHnadler.cs" />
   </ItemGroup>
 
   <ItemGroup>

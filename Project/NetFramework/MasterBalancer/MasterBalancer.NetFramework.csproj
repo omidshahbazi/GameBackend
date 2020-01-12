@@ -45,11 +45,8 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Source\MasterBalancer\Configuration.cs">
-      <Link>Configuration.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Source\MasterBalancer\MasterBalancer.cs">
-      <Link>MasterBalancer.cs</Link>
+    <Compile Include="..\..\..\Source\MasterBalancer\MasterBalancerHandler.cs">
+      <Link>MasterBalancerHandler.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

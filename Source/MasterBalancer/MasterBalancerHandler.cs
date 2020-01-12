@@ -6,14 +6,13 @@ using Backend.Base.NetworkSystem;
 using GameFramework.ASCIISerializer;
 using GameFramework.Common.FileLayer;
 using GameFramework.Common.Utilities;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
 namespace Backend.MasterBalancer
 {
-	class MasterBalancer : IModule
+	class MasterBalancerHandler : IModule
 	{
 		private class NodeInfo
 		{
@@ -51,7 +50,7 @@ namespace Backend.MasterBalancer
 				return;
 			}
 
-			Configuration config = (Configuration)Config;
+			Base.ConfigSystem.MasterBalancer config = (Base.ConfigSystem.MasterBalancer)Config;
 			if (string.IsNullOrEmpty(config.NodeWorkingDirectory))
 			{
 				Context.Logger.WriteError("NodeWorkingDirectory in config is null, ignore initializing");

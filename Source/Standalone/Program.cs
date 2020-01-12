@@ -9,8 +9,6 @@ namespace Backend.Standalone
 	{
 		public static void Main(string[] Args)
 		{
-			//System.AppDomain d;
-			//d.
 			Application application = Application.Instance;
 
 			application.Arguments = ArgumentParser.Parse(Args);

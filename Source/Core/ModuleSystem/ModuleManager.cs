@@ -18,7 +18,6 @@ namespace Backend.Core.ModuleSystem
 		{ }
 
 		private const string DLL_EXTENSION = ".dll";
-		private const string CONFIG_STRUCT_TYPE_KEY_NAME = "ConfigStructType";
 
 		private AssemblyMap assemblies = null;
 		private List<IModule> modules = null;
@@ -115,18 +114,7 @@ namespace Backend.Core.ModuleSystem
 				}
 
 				object configInstance = null;
-				string configFileContent = GameFramework.Common.FileLayer.FileSystem.Read(Path.ChangeExtension(FilePath, "json"));
-				if (!string.IsNullOrEmpty(configFileContent))
-				{
-					ISerializeObject configData = Creator.Create<ISerializeObject>(configFileContent);
-
-					if (configData.Contains(CONFIG_STRUCT_TYPE_KEY_NAME))
-					{
-						Type configType = Type.GetType(configData.Get<string>(CONFIG_STRUCT_TYPE_KEY_NAME), true, true);
-						if (configType != null)
-							configInstance = Creator.Bind(configType, configData);
-					}
-				}
+				ConfigManager.Instance.LoadConfig(Path.ChangeExtension(FilePath, "json"), out configInstance);
 
 				Type[] types = null;
 				try

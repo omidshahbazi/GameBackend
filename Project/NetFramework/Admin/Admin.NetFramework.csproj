@@ -7,8 +7,8 @@
     <ProjectGuid>{40BF220F-37D2-4F4D-840C-54926408BA98}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Backend.Metric</RootNamespace>
-    <AssemblyName>Backend.Metric.NetFramework</AssemblyName>
+    <RootNamespace>Admin.NetFramework</RootNamespace>
+    <AssemblyName>Backend.Admin.NetFramework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -34,8 +34,8 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Source\Metric\MetricCollector.cs">
-      <Link>MetricCollector.cs</Link>
+    <Compile Include="..\..\..\Source\Admin\AdminHnadler.cs">
+      <Link>AdminHnadler.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

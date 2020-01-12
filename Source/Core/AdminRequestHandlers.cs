@@ -25,7 +25,7 @@ namespace Backend.Core
 			requestMan.RegisterHandler<UpdateServerConfigs>((client, req) =>
 			{
 				ConfigManager.Instance.Server = req.Config;
-				ConfigManager.Instance.Save();
+				ConfigManager.Instance.SaveServerConfig();
 			});
 		}
 

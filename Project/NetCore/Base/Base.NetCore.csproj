@@ -19,7 +19,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\..\Source\Base\ConfigSystem\Admin.cs" Link="ConfigSystem\Admin.cs" />
     <Compile Include="..\..\..\Source\Base\ConfigSystem\Database.cs" Link="ConfigSystem\Database.cs" />
+    <Compile Include="..\..\..\Source\Base\ConfigSystem\MasterBalancer.cs" Link="ConfigSystem\MasterBalancer.cs" />
     <Compile Include="..\..\..\Source\Base\ConfigSystem\Server.cs" Link="ConfigSystem\Server.cs" />
     <Compile Include="..\..\..\Source\Base\DatabaseSystem\IConnection.cs" Link="DatabaseSystem\IConnection.cs" />
     <Compile Include="..\..\..\Source\Base\DatabaseSystem\IConnectionPool.cs" Link="DatabaseSystem\IConnectionPool.cs" />

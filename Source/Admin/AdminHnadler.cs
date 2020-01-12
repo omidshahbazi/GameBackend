@@ -8,7 +8,7 @@ using System.Diagnostics;
 using Microsoft.VisualBasic.Devices;
 #endif
 
-namespace Backend.Metric
+namespace Backend.Admin
 {
 	//https://www.digitalocean.com/community/tutorials/an-introduction-to-metrics-monitoring-and-alerting
 	//CPU
@@ -21,7 +21,7 @@ namespace Backend.Metric
 	//Latency
 	//Bandwidth utilization
 
-	class MetricCollector : IModule
+	class AdminHnadler : IModule
 	{
 		private IContext context = null;
 		private PerformanceCounter cpuUsageCounter = null;

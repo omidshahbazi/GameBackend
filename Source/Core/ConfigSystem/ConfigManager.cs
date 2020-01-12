@@ -3,13 +3,20 @@ using Backend.Base.ConfigSystem;
 using GameFramework.ASCIISerializer;
 using GameFramework.Common.FileLayer;
 using GameFramework.Common.MemoryManagement;
+using System;
+using System.Collections.Generic;
 
 namespace Backend.Core.ConfigSystem
 {
 	class ConfigManager : Singleton<ConfigManager>, IService
 	{
 		private const string FILE_PATH = "Configs/Server.json";
+		private const string CONFIG_STRUCT_TYPE_KEY_NAME = "ConfigStructType";
 
+		private class TypePathMap : Dictionary<Type, string>
+		{ }
+
+		private TypePathMap typePaths;
 		public Server Server;
 
 		private ConfigManager()
@@ -18,12 +25,10 @@ namespace Backend.Core.ConfigSystem
 
 		public void Initialize()
 		{
-			string data = FileSystem.Read(FILE_PATH);
+			typePaths = new TypePathMap();
 
-			if (string.IsNullOrEmpty(data))
-				BuildSampleConfig();
-			else
-				Server = Creator.Create<Server>(data);
+			if (!LoadConfig(FILE_PATH, out Server))
+				BuildSampleServerConfig();
 		}
 
 		public void Shutdown()
@@ -34,12 +39,51 @@ namespace Backend.Core.ConfigSystem
 		{
 		}
 
-		public void Save()
+		public void SaveServerConfig()
 		{
-			FileSystem.Write(FILE_PATH, Creator.Serialize<ISerializeObject>(Server).Content);
+			SaveConfig(Server);
 		}
 
-		private void BuildSampleConfig()
+		public bool LoadConfig<T>(string FilePath, out T Config)
+		{
+			Config = default(T);
+
+			string configFileContent = FileSystem.Read(FilePath);
+
+			if (string.IsNullOrEmpty(configFileContent))
+				return false;
+
+			ISerializeObject configData = Creator.Create<ISerializeObject>(configFileContent);
+
+			if (!configData.Contains(CONFIG_STRUCT_TYPE_KEY_NAME))
+				return false;
+
+			Type configType = Type.GetType(configData.Get<string>(CONFIG_STRUCT_TYPE_KEY_NAME), true, true);
+			if (configType == null)
+				return false;
+
+			typePaths[configType] = FilePath;
+
+			Config = (T)Creator.Bind(configType, configData);
+
+			return true;
+		}
+
+		public bool SaveConfig<T>(T Config)
+		{
+			Type configType = Config.GetType();
+
+			if (!typePaths.ContainsKey(configType))
+				return false;
+
+			string path = typePaths[configType];
+
+			FileSystem.Write(path, Creator.Serialize<ISerializeObject>(Config).Content);
+
+			return true;
+		}
+
+		private void BuildSampleServerConfig()
 		{
 			Server = new Server();
 
@@ -56,16 +100,12 @@ namespace Backend.Core.ConfigSystem
 			Server.Modules.Files[0] = new Server.Module.File();
 			Server.Modules.Files[0].FilePath = "Sample.dll";
 
-			Server.Admins = new Server.Admin[1];
-			Server.Admins[0] = new Server.Admin();
-			Server.Admins[0].Username = "admin";
-
 			Server.Loggers = new Server.Logger[1];
 			Server.Loggers[0] = new Server.Logger();
 			Server.Loggers[0].Type = Server.Logger.Types.Console;
 			Server.Loggers[0].MinimumLevel = Server.Logger.Levels.Info;
 
-			Save();
+			SaveServerConfig();
 		}
 	}
 }
