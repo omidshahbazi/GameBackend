@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackageId>Backend.Chat.NetCore</PackageId>
+    <Authors>Backend.Chat.NetCore</Authors>
+    <Company>Backend.Chat.NetCore</Company>
+    <Product>Backend.Chat.NetCore</Product>
+    <AssemblyName>Backend.Chat.NetCore</AssemblyName>
+    <RootNamespace>Backend.Chat</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\Binaries\Server\Libraries\NetCore\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\Binaries\Server\Libraries\NetCore\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ConfigSystem\**" />
+    <Compile Remove="DatabaseSystem\**" />
+    <Compile Remove="LogSystem\**" />
+    <Compile Remove="ModuleSystem\**" />
+    <Compile Remove="MySQL\**" />
+    <EmbeddedResource Remove="ConfigSystem\**" />
+    <EmbeddedResource Remove="DatabaseSystem\**" />
+    <EmbeddedResource Remove="LogSystem\**" />
+    <EmbeddedResource Remove="ModuleSystem\**" />
+    <EmbeddedResource Remove="MySQL\**" />
+    <None Remove="ConfigSystem\**" />
+    <None Remove="DatabaseSystem\**" />
+    <None Remove="LogSystem\**" />
+    <None Remove="ModuleSystem\**" />
+    <None Remove="MySQL\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\Source\Chat\ChatHandler.cs" Link="ChatHandler.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Base\Base.NetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Diagnostics.PerformanceCounter">
+      <HintPath>..\..\..\Libraries\System.Diagnostics.PerformanceCounter.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
