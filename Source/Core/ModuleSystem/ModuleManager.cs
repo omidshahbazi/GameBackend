@@ -128,7 +128,17 @@ namespace Backend.Core.ModuleSystem
 					}
 				}
 
-				Type[] types = assembly.GetTypes();
+				Type[] types = null;
+				try
+				{
+					types = assembly.GetTypes();
+				}
+				catch (ReflectionTypeLoadException)
+				{
+					LogManager.Instance.WriteWarning("Loading assembly [{0}] aborted beacuse of one of it's dependency couldn't loaded", FilePath);
+
+					goto FinishUp;
+				}
 
 				Type moduleInterfaceType = typeof(IModule);
 
@@ -159,9 +169,6 @@ namespace Backend.Core.ModuleSystem
 
 				goto FinishUp;
 			}
-			catch (ReflectionTypeLoadException)
-			{
-			}
 			catch (Exception e)
 			{
 				LogManager.Instance.WriteException(e, "Loading assembly [{0}] failed", FilePath);
@@ -175,12 +182,19 @@ namespace Backend.Core.ModuleSystem
 
 		private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
 		{
-			string depFilePath = Path.GetDirectoryName(ConfigManager.Instance.Server.Modules.LibrariesPath).Replace('\\', '/') + "/" + args.Name.Split(',')[0] + DLL_EXTENSION;
+			string assemblyFileName = args.Name.Split(',')[0] + DLL_EXTENSION;
+			string depFilePath = Path.GetDirectoryName(ConfigManager.Instance.Server.Modules.LibrariesPath).Replace('\\', '/');
 
-			Assembly assembly = LoadAssemblyFromFile(depFilePath);
+			string[] files = GameFramework.Common.FileLayer.FileSystem.GetFiles(depFilePath, assemblyFileName, SearchOption.AllDirectories);
+
+			if (files == null || files.Length == 0)
+				return null;
+
+			Assembly assembly = LoadAssemblyFromFile(files[0].Replace('\\', '/'));
 			if (assembly == null)
 			{
 				LogManager.Instance.WriteError("Dependency assembly [{0}] doesn't exsits", depFilePath);
+
 				return null;
 			}
 

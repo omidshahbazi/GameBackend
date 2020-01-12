@@ -33,6 +33,9 @@
     <Reference Include="CommonManaged">
       <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Win32.Registry">
+      <HintPath>..\..\..\Libraries\Microsoft.Win32.Registry.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
