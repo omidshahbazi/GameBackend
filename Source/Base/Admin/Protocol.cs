@@ -1,7 +1,7 @@
 // Copyright 2019. All Rights Reserved.
 using System.Net.Sockets;
 
-namespace Backend.Base.Metric
+namespace Backend.Base.Admin
 {
 	public class LoginReq
 	{

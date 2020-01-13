@@ -50,6 +50,9 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\Source\Base\Admin\Protocol.cs">
+      <Link>Admin\Protocol.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Base\ConfigSystem\Admin.cs">
       <Link>ConfigSystem\Admin.cs</Link>
     </Compile>
@@ -77,9 +80,6 @@
     <Compile Include="..\..\..\Source\Base\MasterBalancer\Protocol.cs">
       <Link>MasterBalancer\Protocol.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Source\Base\Metric\Protocol.cs">
-      <Link>Metric\Protocol.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\Source\Base\ModuleSystem\IModule.cs">
       <Link>ModuleSystem\IModule.cs</Link>
     </Compile>
@@ -106,5 +106,6 @@
       <Name>Common.NetFramework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
