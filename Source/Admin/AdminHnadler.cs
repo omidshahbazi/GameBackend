@@ -24,6 +24,7 @@ namespace Backend.Admin
 	class AdminHnadler : IModule
 	{
 		private IContext context = null;
+		private Base.ConfigSystem.Admin config;
 		private PerformanceCounter cpuUsageCounter = null;
 
 #if NETFRAMEWORK
@@ -34,13 +35,16 @@ namespace Backend.Admin
 		{
 			context = Context;
 
+			config = (Base.ConfigSystem.Admin)Config;
+
 			cpuUsageCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
 
 #if NETFRAMEWORK
 			computerInfo = new ComputerInfo();
 #endif
 
-			context.RequestManager.RegisterHandler<GetMetricsReq, GetMetricsRes>(GetMetrics);
+			context.RequestManager.RegisterHandler<LoginReq, LoginRes>(HandleLogin);
+			context.RequestManager.RegisterHandler<GetMetricsReq, GetMetricsRes>(HandleGetMetrics);
 		}
 
 		public void Service()
@@ -51,7 +55,31 @@ namespace Backend.Admin
 		{
 		}
 
-		private GetMetricsRes GetMetrics(Client Client, GetMetricsReq Data)
+		private LoginRes HandleLogin(Client Client, LoginReq Data)
+		{
+			LoginRes res = new LoginRes();
+			res.Result = false;
+
+			if (config.Users != null)
+				for (int i = 0; i < config.Users.Length; ++i)
+				{
+					if (config.Users[i].Username == Data.Username &&
+						config.Users[i].Password == Data.Password)
+					{
+						res.Result = true;
+						break;
+					}
+				}
+
+			if (res.Result)
+			{
+				// add client to a valid client list
+			}
+
+			return res;
+		}
+
+		private GetMetricsRes HandleGetMetrics(Client Client, GetMetricsReq Data)
 		{
 			GetMetricsRes res = new GetMetricsRes();
 

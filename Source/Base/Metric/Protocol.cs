@@ -3,6 +3,17 @@ using System.Net.Sockets;
 
 namespace Backend.Base.Metric
 {
+	public class LoginReq
+	{
+		public string Username;
+		public string Password;
+	}
+
+	public class LoginRes
+	{
+		public bool Result;
+	}
+
 	public class GetMetricsReq
 	{
 	}
