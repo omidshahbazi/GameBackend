@@ -81,6 +81,8 @@ namespace Backend.Admin
 
 		private GetMetricsRes HandleGetMetrics(Client Client, GetMetricsReq Data)
 		{
+			// check client is valid, otherwise disconnect it
+
 			GetMetricsRes res = new GetMetricsRes();
 
 			res.CPUUsage = cpuUsageCounter.NextValue() / 100;
