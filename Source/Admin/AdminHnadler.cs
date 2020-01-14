@@ -120,6 +120,7 @@ namespace Backend.Admin
 			context.ConfigManager.SaveConfig(Data.Config);
 		}
 
+		//separate to 3 request
 		private GetMetricsRes HandleGetMetrics(Client Client, GetMetricsReq Data)
 		{
 			if (!CheckAuditClient(Client))
