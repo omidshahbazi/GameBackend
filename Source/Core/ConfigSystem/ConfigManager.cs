@@ -58,9 +58,18 @@ namespace Backend.Core.ConfigSystem
 			if (!configData.Contains(CONFIG_STRUCT_TYPE_KEY_NAME))
 				return false;
 
-			Type configType = Type.GetType(configData.Get<string>(CONFIG_STRUCT_TYPE_KEY_NAME), true, true);
-			if (configType == null)
+			Type configType = null;
+			try
+			{
+				configType = Type.GetType(configData.Get<string>(CONFIG_STRUCT_TYPE_KEY_NAME), true, true);
+
+				if (configType == null)
+					return false;
+			}
+			catch
+			{
 				return false;
+			}
 
 			typePaths[configType] = FilePath;
 
