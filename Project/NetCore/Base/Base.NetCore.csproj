@@ -15,14 +15,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\..\Source\Base\ConfigSystem\Database.cs" Link="ConfigSystem\Database.cs" />
     <Compile Include="..\..\..\Source\Base\ConfigSystem\Server.cs" Link="ConfigSystem\Server.cs" />
     <Compile Include="..\..\..\Source\Base\DatabaseSystem\IConnection.cs" Link="DatabaseSystem\IConnection.cs" />
     <Compile Include="..\..\..\Source\Base\DatabaseSystem\IConnectionPool.cs" Link="DatabaseSystem\IConnectionPool.cs" />
     <Compile Include="..\..\..\Source\Base\IContext.cs" Link="IContext.cs" />
     <Compile Include="..\..\..\Source\Base\LogSystem\ILogger.cs" Link="LogSystem\ILogger.cs" />
+    <Compile Include="..\..\..\Source\Base\MasterBalancer\Protocol.cs" Link="MasterBalancer\Protocol.cs" />
     <Compile Include="..\..\..\Source\Base\ModuleSystem\IModule.cs" Link="ModuleSystem\IModule.cs" />
     <Compile Include="..\..\..\Source\Base\NetworkSystem\Client.cs" Link="NetoworSystem\Client.cs" />
+    <Compile Include="..\..\..\Source\Base\NetworkSystem\INetworkManager.cs" Link="NetoworSystem\INetworkManager.cs" />
     <Compile Include="..\..\..\Source\Base\NetworkSystem\IRequestManager.cs" Link="NetoworSystem\IRequestManager.cs" />
+    <Compile Include="..\..\..\Source\Base\ScheduleSystem\IScheduleManager.cs" Link="ScheduleSystem\IScheduleManager.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +35,8 @@
     <Folder Include="ModuleSystem\" />
     <Folder Include="DatabaseSystem\" />
     <Folder Include="NetoworSystem\" />
+    <Folder Include="MasterBalancer\" />
+    <Folder Include="ScheduleSystem\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +44,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="ASCIISerializerManaged">
+      <HintPath>..\..\..\Libraries\ASCIISerializerManaged.dll</HintPath>
+    </Reference>
     <Reference Include="CommonManaged">
       <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
     </Reference>

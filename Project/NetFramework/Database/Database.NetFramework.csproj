@@ -34,15 +34,14 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommonManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ASCIISerializerManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
+      <HintPath>..\..\..\Libraries\ASCIISerializerManaged.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Libraries\MySql.Data.dll</HintPath>
+    <Reference Include="DatabaseManaged">
+      <HintPath>..\..\..\Libraries\DatabaseManaged.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\Source\Database\DatabaseManager.cs">
@@ -57,10 +56,6 @@
     <ProjectReference Include="..\Base\Base.NetFramework.csproj">
       <Project>{FACC0BA0-D424-46F7-98FD-A791DE500D4B}</Project>
       <Name>Base.NetFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Core.NetFramework.csproj">
-      <Project>{cdb4ab43-2c21-4afa-9e69-4d586fd6aeee}</Project>
-      <Name>Core.NetFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

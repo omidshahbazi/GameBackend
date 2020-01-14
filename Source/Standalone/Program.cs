@@ -1,5 +1,6 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Core;
+using GameFramework.Common.Utilities;
 using System.Threading;
 
 namespace Backend.Standalone
@@ -10,16 +11,21 @@ namespace Backend.Standalone
 		{
 			Application application = Application.Instance;
 
-			application.Initialize();
+			application.Arguments = ArgumentParser.Parse(Args);
 
-			while (application.IsRunning)
+			while (application.IsStarting)
 			{
-				application.Service();
+				application.Initialize();
 
-				Thread.Sleep(10);
+				while (application.IsRunning)
+				{
+					application.Service();
+
+					Thread.Sleep(10);
+				}
+
+				application.Shutdown();
 			}
-
-			application.Shutdown();
 		}
 	}
 }

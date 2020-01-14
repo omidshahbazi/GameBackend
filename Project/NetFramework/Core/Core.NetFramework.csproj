@@ -77,8 +77,11 @@
     <Compile Include="..\..\..\Source\Core\NetworkSystem\NetworkManager.cs">
       <Link>NetworkSystem\NetworkManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Source\Core\NetworkSystem\RequestManager.cs">
-      <Link>NetworkSystem\RequestManager.cs</Link>
+    <Compile Include="..\..\..\Source\Core\NetworkSystem\ServerRequestManager.cs">
+      <Link>NetworkSystem\ServerRequestManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Core\ScheduleSystem\ScheduleManager.cs">
+      <Link>ScheduleSystem\ScheduleManager.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

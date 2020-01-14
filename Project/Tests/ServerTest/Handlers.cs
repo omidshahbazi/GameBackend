@@ -7,11 +7,13 @@ namespace ServerTest
 {
 	public class Handlers : IModule
 	{
-		public void Initialize(IContext Context)
-		{
-			Context.RequestManager.RegisterHandler<GetInitialDataReq, GetInitialDataRes>(GetInitialData);
+		private IContext context = null;
 
-			Context.Logger.WriteInfo("ServerTest initialized successfully");
+		public void Initialize(IContext Context, object Config)
+		{
+			context = Context;
+
+			Context.RequestManager.RegisterHandler<GetInitialDataReq, GetInitialDataRes>(GetInitialData);
 		}
 
 		public void Service()
@@ -24,7 +26,8 @@ namespace ServerTest
 
 		private GetInitialDataRes GetInitialData(Client Client, GetInitialDataReq Arg)
 		{
-			return null;
+
+			return new GetInitialDataRes() { Data = "xxxxxxxxxxxxxxxxxxxxxxxxxx" };
 		}
 	}
 }

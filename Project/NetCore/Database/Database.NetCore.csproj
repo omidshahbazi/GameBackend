@@ -40,15 +40,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Base\Base.NetCore.csproj" />
-    <ProjectReference Include="..\Core\Core.NetCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="CommonManaged">
-      <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
+    <Reference Include="ASCIISerializerManaged">
+      <HintPath>..\..\..\Libraries\ASCIISerializerManaged.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data">
-      <HintPath>..\..\..\Libraries\MySql.Data.dll</HintPath>
+    <Reference Include="DatabaseManaged">
+      <HintPath>..\..\..\Libraries\DatabaseManaged.dll</HintPath>
     </Reference>
   </ItemGroup>
 

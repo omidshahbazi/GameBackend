@@ -1,7 +1,7 @@
 // Copyright 2019. All Rights Reserved.
 using System;
 using System.Collections.Generic;
-using Backend.Base.ConfigManager;
+using Backend.Base.ConfigSystem;
 using Backend.Base.LogSystem;
 using Backend.Core.ConfigSystem;
 using GameFramework.Common.MemoryManagement;
@@ -115,13 +115,13 @@ namespace Backend.Core.LogSystem
 				loggers[i].WriteCritical(Format, Args);
 		}
 
-		public void WriteException(string Message, Exception E)
+		public void WriteException(Exception E, string Format, params object[] Args)
 		{
 			if (loggers == null)
 				return;
 
 			for (int i = 0; i < loggers.Length; ++i)
-				loggers[i].WriteException(Message, E);
+				loggers[i].WriteException(E, Format, Args);
 		}
 	}
 }

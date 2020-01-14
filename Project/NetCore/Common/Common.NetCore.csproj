@@ -31,6 +31,8 @@
 
   <ItemGroup>
     <Compile Include="..\..\..\Source\Common\Enums.cs" Link="Enums.cs" />
+    <Compile Include="..\..\..\Source\Common\NetworkSystem\ClientRequestManager.cs" Link="NetworkSystem\ClientRequestManager.cs" />
+    <Compile Include="..\..\..\Source\Common\NetworkSystem\Connection.cs" Link="NetworkSystem\Connection.cs" />
     <Compile Include="..\..\..\Source\Common\NetworkSystem\MessageCreator.cs" Link="NetworkSystem\MessageCreator.cs" />
   </ItemGroup>
 
@@ -44,6 +46,9 @@
     </Reference>
     <Reference Include="CommonManaged">
       <HintPath>..\..\..\..\backend\Libraries\CommonManaged.dll</HintPath>
+    </Reference>
+    <Reference Include="NetworkingManaged.NetCore">
+      <HintPath>..\..\..\Libraries\NetworkingManaged.NetCore.dll</HintPath>
     </Reference>
   </ItemGroup>
 

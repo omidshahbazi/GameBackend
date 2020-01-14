@@ -5,19 +5,19 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Backend.Client
+namespace Backend.Common.NetworkSystem
 {
-	class RequestManager
+	class ClientRequestManager
 	{
 		private class RequestMap : Dictionary<uint, Action<object>>
 		{ }
 
 		private uint lastID = 0;
-		private ServerConnection connection = null;
+		private Connection connection = null;
 		private RequestMap handlers = null;
 		private RequestMap callbacks = null;
 
-		public RequestManager(ServerConnection Connection)
+		public ClientRequestManager(Connection Connection)
 		{
 			connection = Connection;
 			handlers = new RequestMap();
@@ -62,6 +62,7 @@ namespace Backend.Client
 			++lastID;
 
 			MessageCreator.Instance.Register<ArgT>();
+			MessageCreator.Instance.Register<ResT>();
 
 			BufferStream buffer = new BufferStream(new MemoryStream());
 			if (!MessageCreator.Instance.Serialize(lastID, Argument, buffer))
@@ -90,7 +91,14 @@ namespace Backend.Client
 			try
 			{
 				if (isReply)
-					callbacks[id](obj);
+				{
+					if (callbacks.ContainsKey(id))
+					{
+						callbacks[id](obj);
+
+						callbacks.Remove(id);
+					}
+				}
 				else
 					handlers[typeID](obj);
 			}

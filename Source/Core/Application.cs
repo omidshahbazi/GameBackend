@@ -3,11 +3,13 @@ using Backend.Base;
 using Backend.Base.ConnectionManager;
 using Backend.Base.LogSystem;
 using Backend.Base.NetworkSystem;
+using Backend.Base.ScheduleSystem;
 using Backend.Core.ConfigSystem;
 using Backend.Core.LogSystem;
 using Backend.Core.ModuleSystem;
 using Backend.Core.NetworkSystem;
 using GameFramework.Common.MemoryManagement;
+using GameFramework.Common.Utilities;
 using System;
 using System.Collections.Generic;
 
@@ -15,9 +17,47 @@ namespace Backend.Core
 {
 	public class Application : Singleton<Application>, IContext, IService
 	{
+		private const string ARGUMENT_WORKING_DIRECTORY = "directory";
+
 		private List<IService> services = null;
 
+		public string WorkingDirectory
+		{
+			get { return GameFramework.Common.FileLayer.FileSystem.DataPath; }
+			set
+			{
+				if (value == null)
+					value = "";
+
+				GameFramework.Common.FileLayer.FileSystem.DataPath = System.IO.Path.Combine(Environment.CurrentDirectory, value);
+			}
+		}
+
+		public bool IsStarting
+		{
+			get;
+			private set;
+		}
+
 		public bool IsRunning
+		{
+			get;
+			private set;
+		}
+
+		public ArgumentParser Arguments
+		{
+			get;
+			set;
+		}
+
+		public IScheduleManager ScheduleManager
+		{
+			get;
+			private set;
+		}
+
+		public INetworkManager NetworkManager
 		{
 			get;
 			private set;
@@ -26,7 +66,7 @@ namespace Backend.Core
 		public IRequestManager RequestManager
 		{
 			get;
-			set;
+			private set;
 		}
 
 		public ILogger Logger
@@ -43,23 +83,34 @@ namespace Backend.Core
 
 		private Application()
 		{
+			IsStarting = true;
+
+			WorkingDirectory = "";
 		}
 
 		public void Initialize()
 		{
-			GameFramework.Common.FileLayer.FileSystem.DataPath = Environment.CurrentDirectory + "/../";
+			WorkingDirectory = Arguments.Get<string>(ARGUMENT_WORKING_DIRECTORY);
+
+			IsRunning = true;
 
 			services = new List<IService>();
 
-			RequestManager = NetworkSystem.RequestManager.Instance;
+			ScheduleManager = ScheduleSystem.ScheduleManager.Instance;
+			NetworkManager = NetworkSystem.NetworkManager.Instance;
+			RequestManager = ServerRequestManager.Instance;
 			Logger = LogManager.Instance;
 
 			AddService(ConfigManager.Instance);
 			AddService(LogManager.Instance);
-			AddService(NetworkManager.Instance);
+			AddService(ScheduleSystem.ScheduleManager.Instance);
+			AddService(NetworkSystem.NetworkManager.Instance);
+			AddService(ServerRequestManager.Instance);
 			AddService(ModuleManager.Instance);
 
-			IsRunning = true;
+			NetworkSystem.NetworkManager.Instance.StartListenening();
+
+			LogManager.Instance.WriteInfo("Initialization completed");
 		}
 
 		public void Shutdown()
@@ -70,12 +121,25 @@ namespace Backend.Core
 			services.Clear();
 
 			IsRunning = false;
+
+			LogManager.Instance.WriteInfo("Shuting down completed");
 		}
 
 		public void Service()
 		{
 			for (int i = 0; i < services.Count; ++i)
 				services[i].Service();
+		}
+
+		public void Restart()
+		{
+			IsStarting = true;
+		}
+
+		public void Close()
+		{
+			IsStarting = false;
+			IsRunning = false;
 		}
 
 		private void AddService(IService Service)

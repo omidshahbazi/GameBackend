@@ -24,7 +24,8 @@
     <Compile Include="..\..\..\Source\Core\LogSystem\LogManager.cs" Link="LogSystem\LogManager.cs" />
     <Compile Include="..\..\..\Source\Core\ModuleSystem\ModuleManager.cs" Link="ModuleSystem\ModuleManager.cs" />
     <Compile Include="..\..\..\Source\Core\NetworkSystem\NetworkManager.cs" Link="NetworkSystem\NetworkManager.cs" />
-    <Compile Include="..\..\..\Source\Core\NetworkSystem\RequestManager.cs" Link="NetworkSystem\RequestManager.cs" />
+    <Compile Include="..\..\..\Source\Core\NetworkSystem\ServerRequestManager.cs" Link="NetworkSystem\ServerRequestManager.cs" />
+    <Compile Include="..\..\..\Source\Core\ScheduleSystem\ScheduleManager.cs" Link="ScheduleSystem\ScheduleManager.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +48,7 @@
     <Folder Include="NetworkSystem\" />
     <Folder Include="ModuleSystem\" />
     <Folder Include="ConfigSystem\" />
+    <Folder Include="ScheduleSystem\" />
   </ItemGroup>
 
   <ItemGroup>

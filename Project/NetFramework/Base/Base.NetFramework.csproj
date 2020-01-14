@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Server\NetFramework\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,6 +34,10 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ASCIISerializerManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\ASCIISerializerManaged.dll</HintPath>
+    </Reference>
     <Reference Include="CommonManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
@@ -43,8 +47,12 @@
       <HintPath>..\..\..\Libraries\NetworkingManaged.NetFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\Source\Base\ConfigSystem\Database.cs">
+      <Link>ConfigSystem\Database.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Base\ConfigSystem\Server.cs">
       <Link>ConfigSystem\Server.cs</Link>
     </Compile>
@@ -60,14 +68,23 @@
     <Compile Include="..\..\..\Source\Base\LogSystem\ILogger.cs">
       <Link>LogSystem\ILogger.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Source\Base\MasterBalancer\Protocol.cs">
+      <Link>MasterBalancer\Protocol.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Base\ModuleSystem\IModule.cs">
       <Link>ModuleSystem\IModule.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Source\Base\NetworkSystem\Client.cs">
       <Link>NetworkSystem\Client.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Source\Base\NetworkSystem\INetworkManager.cs">
+      <Link>NetworkSystem\INetworkManager.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Base\NetworkSystem\IRequestManager.cs">
       <Link>NetworkSystem\IRequestManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Base\ScheduleSystem\IScheduleManager.cs">
+      <Link>ScheduleSystem\IScheduleManager.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
