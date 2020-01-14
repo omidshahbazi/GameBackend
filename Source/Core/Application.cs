@@ -1,5 +1,6 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base;
+using Backend.Base.ConfigSystem;
 using Backend.Base.ConnectionManager;
 using Backend.Base.LogSystem;
 using Backend.Base.NetworkSystem;
@@ -29,7 +30,7 @@ namespace Backend.Core
 				if (value == null)
 					value = "";
 
-				GameFramework.Common.FileLayer.FileSystem.DataPath = System.IO.Path.Combine(Environment.CurrentDirectory, value);
+				GameFramework.Common.FileLayer.FileSystem.DataPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, value));
 			}
 		}
 
@@ -49,6 +50,12 @@ namespace Backend.Core
 		{
 			get;
 			set;
+		}
+
+		public IConfigManager ConfigManager
+		{
+			get;
+			private set;
 		}
 
 		public IScheduleManager ScheduleManager
@@ -84,8 +91,6 @@ namespace Backend.Core
 		private Application()
 		{
 			IsStarting = true;
-
-			WorkingDirectory = "";
 		}
 
 		public void Initialize()
@@ -101,28 +106,28 @@ namespace Backend.Core
 			RequestManager = ServerRequestManager.Instance;
 			Logger = LogManager.Instance;
 
-			AddService(ConfigManager.Instance);
+			AddService(ConfigSystem.ConfigManager.Instance);
 			AddService(LogManager.Instance);
 			AddService(ScheduleSystem.ScheduleManager.Instance);
 			AddService(NetworkSystem.NetworkManager.Instance);
 			AddService(ServerRequestManager.Instance);
 			AddService(ModuleManager.Instance);
 
-			NetworkSystem.NetworkManager.Instance.StartListenening();
+			NetworkSystem.NetworkManager.Instance.StartListening();
 
 			LogManager.Instance.WriteInfo("Initialization completed");
 		}
 
 		public void Shutdown()
 		{
+			LogManager.Instance.WriteInfo("Shuting down completed");
+
 			for (int i = services.Count - 1; i >= 0; --i)
-				services[i].Service();
+				services[i].Shutdown();
 
 			services.Clear();
 
 			IsRunning = false;
-
-			LogManager.Instance.WriteInfo("Shuting down completed");
 		}
 
 		public void Service()
@@ -131,15 +136,26 @@ namespace Backend.Core
 				services[i].Service();
 		}
 
-		public void Restart()
+		public void ScheduleForShutdown()
 		{
-			IsStarting = true;
+			ScheduleManager.ScheduleMMainThread(() =>
+			{
+				IsRunning = false;
+				IsStarting = false;
+			}, 1);
+
+			LogManager.Instance.WriteInfo("Shutdown scheduled");
 		}
 
-		public void Close()
+		public void ScheduleForRestart()
 		{
-			IsStarting = false;
-			IsRunning = false;
+			ScheduleManager.ScheduleMMainThread(() =>
+			{
+				IsRunning = false;
+				IsStarting = true;
+			}, 1);
+
+			LogManager.Instance.WriteInfo("Restart scheduled");
 		}
 
 		private void AddService(IService Service)

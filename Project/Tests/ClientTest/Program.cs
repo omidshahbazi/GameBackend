@@ -20,7 +20,7 @@ namespace ClientTest
 			connection.OnConnectionFailed += Connection_OnConnectionFailed;
 			connection.OnDisconnected += Connection_OnDisconnected;
 
-			connection.Connect(ProtocolTypes.UDP, "::1", 5000);
+			connection.Connect(ProtocolTypes.TCP, "::1", 5000);
 
 			while (true)
 			{
@@ -34,7 +34,9 @@ namespace ClientTest
 		{
 			Console.WriteLine("Connected");
 
-			connection.Send<GetInitialDataReq, GetInitialDataRes>(new GetInitialDataReq(), OnGetInitialData);
+			connection.RegisterInChatService("TestID");
+
+			//connection.Send<GetInitialDataReq, GetInitialDataRes>(new GetInitialDataReq(), OnGetInitialData);
 		}
 
 		private static void Connection_OnConnectionFailed(Connection Connection)
@@ -50,8 +52,6 @@ namespace ClientTest
 		private static void OnGetInitialData(GetInitialDataRes Res)
 		{
 			Console.WriteLine("respond");
-
-			connection.Send<GetInitialDataReq, GetInitialDataRes>(new GetInitialDataReq(), OnGetInitialData);
 		}
 	}
 }

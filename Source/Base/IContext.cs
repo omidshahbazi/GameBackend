@@ -4,12 +4,18 @@ using Backend.Base.ConnectionManager;
 using Backend.Base.LogSystem;
 using GameFramework.Common.Utilities;
 using Backend.Base.ScheduleSystem;
+using Backend.Base.ConfigSystem;
 
 namespace Backend.Base
 {
 	public interface IContext
 	{
 		ArgumentParser Arguments
+		{
+			get;
+		}
+
+		IConfigManager ConfigManager
 		{
 			get;
 		}
@@ -39,5 +45,9 @@ namespace Backend.Base
 			get;
 			set;
 		}
+
+		void ScheduleForShutdown();
+
+		void ScheduleForRestart();
 	}
 }

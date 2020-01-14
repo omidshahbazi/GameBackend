@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\Binaries\Server\NetFramework\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -58,6 +58,9 @@
     </Compile>
     <Compile Include="..\..\..\Source\Core\IService.cs">
       <Link>IService.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Core\LogSystem\CallbackUtilities.cs">
+      <Link>LogSystem\CallbackUtilities.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Source\Core\LogSystem\ConsoleLogger.cs">
       <Link>LogSystem\ConsoleLogger.cs</Link>

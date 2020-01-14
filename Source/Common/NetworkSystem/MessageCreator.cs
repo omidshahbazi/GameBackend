@@ -28,11 +28,12 @@ namespace Backend.Common.NetworkSystem
 			return typeID;
 		}
 
-		public bool Serialize(uint ID, object Instance, BufferStream Buffer)
+		public bool Serialize(uint ID, uint RequestTypeID, object Instance, BufferStream Buffer)
 		{
 			uint typeID = Instance == null ? 0 : GenerateTypeID(Instance.GetType());
 
 			Buffer.WriteUInt32(ID);
+			Buffer.WriteUInt32(RequestTypeID);
 			Buffer.WriteUInt32(typeID);
 
 			if (Instance != null)
@@ -41,15 +42,16 @@ namespace Backend.Common.NetworkSystem
 			return true;
 		}
 
-		public object Deserialize(BufferStream Buffer, out uint ID, out uint TypeID)
+		public object Deserialize(BufferStream Buffer, out uint ID, out uint RequestTypeID)
 		{
 			ID = Buffer.ReadUInt32();
-			TypeID = Buffer.ReadUInt32();
+			RequestTypeID = Buffer.ReadUInt32();
+			uint typeID = Buffer.ReadUInt32();
 
-			if (!types.ContainsKey(TypeID))
+			if (!types.ContainsKey(typeID))
 				return null;
 
-			return Serializer.Deserialize(types[TypeID], Buffer);
+			return Serializer.Deserialize(types[typeID], Buffer);
 		}
 
 		public static uint GenerateTypeID(Type Type)

@@ -1,5 +1,4 @@
 ﻿// Copyright 2019. All Rights Reserved.
-using Backend.Common.NetworkSystem;
 using GameFramework.BinarySerializer;
 using System;
 using System.Collections.Generic;
@@ -40,10 +39,10 @@ namespace Backend.Common.NetworkSystem
 		{
 			++lastID;
 
-			MessageCreator.Instance.Register<ArgT>();
+			uint typeID = MessageCreator.Instance.Register<ArgT>();
 
 			BufferStream buffer = new BufferStream(new MemoryStream());
-			if (!MessageCreator.Instance.Serialize(lastID, Argument, buffer))
+			if (!MessageCreator.Instance.Serialize(lastID, typeID, Argument, buffer))
 				return;
 
 			connection.WriteBuffer(buffer.Buffer, 0, buffer.Size);
@@ -61,11 +60,11 @@ namespace Backend.Common.NetworkSystem
 		{
 			++lastID;
 
-			MessageCreator.Instance.Register<ArgT>();
-			MessageCreator.Instance.Register<ResT>();
+			uint typeID = MessageCreator.Instance.Register<ArgT>();
+			typeID += MessageCreator.Instance.Register<ResT>();
 
 			BufferStream buffer = new BufferStream(new MemoryStream());
-			if (!MessageCreator.Instance.Serialize(lastID, Argument, buffer))
+			if (!MessageCreator.Instance.Serialize(lastID, typeID, Argument, buffer))
 				return;
 
 			connection.WriteBuffer(buffer.Buffer, 0, buffer.Size);
@@ -80,8 +79,8 @@ namespace Backend.Common.NetworkSystem
 		public void DispatchBuffer(BufferStream Buffer)
 		{
 			uint id;
-			uint typeID;
-			object obj = MessageCreator.Instance.Deserialize(Buffer, out id, out typeID);
+			uint requestTypeID;
+			object obj = MessageCreator.Instance.Deserialize(Buffer, out id, out requestTypeID);
 
 			bool isReply = (id != 0);
 
@@ -100,7 +99,12 @@ namespace Backend.Common.NetworkSystem
 					}
 				}
 				else
-					handlers[typeID](obj);
+				{
+					if (!handlers.ContainsKey(requestTypeID))
+						return;
+
+					handlers[requestTypeID](obj);
+				}
 			}
 			catch (Exception e)
 			{

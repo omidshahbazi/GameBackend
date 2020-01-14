@@ -17,6 +17,10 @@
     <OutputPath>..\..\..\Binaries\Server\NetCore\</OutputPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\Binaries\Server\NetCore\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\..\..\Source\Standalone\Program.cs" Link="Program.cs" />
   </ItemGroup>
@@ -28,6 +32,9 @@
   <ItemGroup>
     <Reference Include="CommonManaged">
       <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Registry">
+      <HintPath>..\..\..\Libraries\Microsoft.Win32.Registry.dll</HintPath>
     </Reference>
   </ItemGroup>
 

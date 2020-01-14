@@ -8,9 +8,7 @@ using GameFramework.BinarySerializer;
 using GameFramework.Common.MemoryManagement;
 using System;
 using System.Collections.Generic;
-using GameFramework.Common.Utilities;
 using System.Net.Sockets;
-using System.Text;
 
 using ServerSocket = GameFramework.Networking.ServerSocket;
 using TCPServerSocket = GameFramework.Networking.TCPServerSocket;
@@ -42,7 +40,7 @@ namespace Backend.Core.NetworkSystem
 				{
 					ServerSocket socket = sockets[i];
 
-					socketsInfo[i] = new SocketInfo((socket.Type == NetworkingProtocol.TCP ? ProtocolType.Tcp : ProtocolType.Udp), socket.LocalEndPoint);
+					socketsInfo[i] = new SocketInfo((socket.Type == NetworkingProtocol.TCP ? ProtocolType.Tcp : ProtocolType.Udp), socket.LocalEndPoint, socket.Statistics.BandwidthIn, socket.Statistics.BandwidthOut, (uint)socket.Clients.Length);
 				}
 
 				return socketsInfo;
@@ -74,7 +72,7 @@ namespace Backend.Core.NetworkSystem
 				sockets[i].Service();
 		}
 
-		public void StartListenening()
+		public void StartListening()
 		{
 			for (int i = 0; i < sockets.Length; ++i)
 				sockets[i].Listen();
@@ -112,7 +110,7 @@ namespace Backend.Core.NetworkSystem
 		{
 			ServerSocket socket = null;
 
-			string ipPort = Protocol + " [" + Host + "]:" + Port;
+			string ipPort = "[" + Host + "]:" + Port + "/" + Protocol;
 
 			try
 			{
@@ -150,7 +148,7 @@ namespace Backend.Core.NetworkSystem
 
 		private void OnClientConnectedHandler(ServerSocket Socket, NativeClient Client)
 		{
-			uint hash = GetHash(Socket, Client);
+			uint hash = Base.NetworkSystem.Client.GetClientHash(Socket, Client);
 
 			if (clients.ContainsKey(hash))
 				LogManager.Instance.WriteWarning("Redundant client [{0}] connected", Client.EndPoint);
@@ -160,31 +158,34 @@ namespace Backend.Core.NetworkSystem
 			clients[hash] = client;
 
 			if (OnClientConnected != null)
-				OnClientConnected(client);
+				CallbackUtilities.InvokeCallback(OnClientConnected.Invoke, client);
 		}
 
 		private void OnClientDisconnectedHandler(ServerSocket Socket, NativeClient Client)
 		{
-			uint hash = GetHash(Socket, Client);
+			uint hash = Base.NetworkSystem.Client.GetClientHash(Socket, Client);
 
 			if (!clients.ContainsKey(hash))
+			{
 				LogManager.Instance.WriteWarning("Not listed client [{0}] disconnected", Client.EndPoint);
+				return;
+			}
 
 			Client client = clients[hash];
 
 			if (OnClientDisconnected != null)
-				OnClientDisconnected(client);
+				CallbackUtilities.InvokeCallback(OnClientDisconnected.Invoke, client);
 
 			clients.Remove(hash);
 		}
 
 		private void OnBufferReceivedHandler(ServerSocket Socket, NativeClient Sender, BufferStream Buffer)
 		{
-			uint hash = GetHash(Socket, Sender);
+			uint hash = Client.GetClientHash(Socket, Sender);
 
 			if (!clients.ContainsKey(hash))
 			{
-				LogManager.Instance.WriteError("Not listed client [{0}] Sent a packet, going to disconnect", Sender.EndPoint);
+				LogManager.Instance.WriteError("Not listed client [{0}] sent a packet, going to disconnect", Sender.EndPoint);
 
 				Socket.DisconnectClient(Sender);
 
@@ -194,11 +195,6 @@ namespace Backend.Core.NetworkSystem
 			Client client = clients[hash];
 
 			ServerRequestManager.Instance.DispatchBuffer(client, Buffer);
-		}
-
-		private static uint GetHash(ServerSocket Socket, NativeClient Client)
-		{
-			return CRC32.CalculateHash(Encoding.ASCII.GetBytes(Socket.LocalEndPoint.ToString() + Client.EndPoint.ToString()));
 		}
 	}
 }

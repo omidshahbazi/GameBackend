@@ -1,7 +1,7 @@
 // Copyright 2019. All Rights Reserved.
-namespace Backend.MasterBalancer
+namespace Backend.Base.ConfigSystem
 {
-	struct Configuration
+	public struct MasterBalancer
 	{
 		public string NodeWorkingDirectory;
 	}

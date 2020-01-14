@@ -1,16 +1,31 @@
 // Copyright 2019. All Rights Reserved.
+using GameFramework.Networking;
+using System.Text;
+using GameFramework.Common.Utilities;
+using System.Net;
+using System.Net.Sockets;
+
 using ServerSocket = GameFramework.Networking.ServerSocket;
 using TCPServerSocket = GameFramework.Networking.TCPServerSocket;
 using UDPServerSocket = GameFramework.Networking.UDPServerSocket;
 using NativeClient = GameFramework.Networking.Client;
-using GameFramework.Networking;
 
 namespace Backend.Base.NetworkSystem
 {
 	public class Client
 	{
-		ServerSocket socket = null;
-		NativeClient client = null;
+		private ServerSocket socket = null;
+		private NativeClient client = null;
+
+		public uint SocketHash
+		{
+			get { return GetSocketInfoHash(socket.LocalEndPoint, (socket.Type == Protocols.TCP ? ProtocolType.Tcp : ProtocolType.Udp)); }
+		}
+
+		public uint ClientHash
+		{
+			get { return GetClientHash(socket, client); }
+		}
 
 		public Client(ServerSocket Socket, NativeClient Client)
 		{
@@ -33,7 +48,17 @@ namespace Backend.Base.NetworkSystem
 
 		public override string ToString()
 		{
-			return client.EndPoint.ToString() + "@" + socket.Type + socket.LocalEndPoint.Port;
+			return client.EndPoint.ToString() + "/" + socket.Type + " -> " + socket.LocalEndPoint.Port + "/" + socket.Type;
+		}
+
+		public static uint GetSocketInfoHash(IPEndPoint EndPoint, ProtocolType Protocol)
+		{
+			return CRC32.CalculateHash(Encoding.ASCII.GetBytes(EndPoint.ToString() + Protocol.ToString().ToUpper()));
+		}
+
+		public static uint GetClientHash(ServerSocket Socket, NativeClient Client)
+		{
+			return CRC32.CalculateHash(Encoding.ASCII.GetBytes(Socket.LocalEndPoint.ToString() + Client.EndPoint.ToString()));
 		}
 	}
 }
