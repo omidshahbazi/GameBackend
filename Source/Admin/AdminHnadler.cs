@@ -59,6 +59,9 @@ namespace Backend.Admin
 			auditClients = new AuditClientMap();
 
 			context.RequestManager.RegisterHandler<LoginReq, LoginRes>(HandleLogin);
+			context.RequestManager.RegisterHandler<ShutdownReq>(HandlerShutdown);
+			context.RequestManager.RegisterHandler<RestartReq>(HandlerRestart);
+			context.RequestManager.RegisterHandler<UpdateServerConfigsReq>(HandleUpdateServerConfigs);
 			context.RequestManager.RegisterHandler<GetMetricsReq, GetMetricsRes>(HandleGetMetrics);
 		}
 
@@ -103,16 +106,34 @@ namespace Backend.Admin
 			return res;
 		}
 
+		private void HandlerShutdown(Client Client, ShutdownReq Data)
+		{
+			if (!CheckAuditClient(Client))
+				return;
+
+			context.ScheduleForShutdown();
+		}
+
+		private void HandlerRestart(Client Client, RestartReq Data)
+		{
+			if (!CheckAuditClient(Client))
+				return;
+
+			context.ScheduleForRestart();
+		}
+
+		private void HandleUpdateServerConfigs(Client Client, UpdateServerConfigsReq Data)
+		{
+			if (!CheckAuditClient(Client))
+				return;
+
+			context.ConfigManager.SaveConfig(Data.Config);
+		}
+
 		private GetMetricsRes HandleGetMetrics(Client Client, GetMetricsReq Data)
 		{
-			if (!IsAuditClient(Client))
-			{
-				context.Logger.WriteWarning("Not audited client [{0}] tried to send administration request, going to disconnect", Client.ToString());
-
-				Client.Disconnect();
-
+			if (!CheckAuditClient(Client))
 				return null;
-			}
 
 			GetMetricsRes res = new GetMetricsRes();
 
@@ -149,9 +170,18 @@ namespace Backend.Admin
 			return res;
 		}
 
-		private bool IsAuditClient(Client Client)
+		private bool CheckAuditClient(Client Client)
 		{
-			return auditClients.ContainsValue(Client);
+			bool isAudit = auditClients.ContainsValue(Client);
+
+			if (!isAudit)
+			{
+				context.Logger.WriteWarning("Not audited client [{0}] tried to send administration request, going to disconnect", Client.ToString());
+
+				Client.Disconnect();
+			}
+
+			return isAudit;
 		}
 	}
 }

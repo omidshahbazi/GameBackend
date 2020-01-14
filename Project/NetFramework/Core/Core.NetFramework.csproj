@@ -50,9 +50,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Source\Core\AdminRequestHandlers.cs">
-      <Link>AdminRequestHandlers.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\Source\Core\Application.cs">
       <Link>Application.cs</Link>
     </Compile>

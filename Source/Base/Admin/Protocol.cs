@@ -1,4 +1,5 @@
 // Copyright 2019. All Rights Reserved.
+using Backend.Base.ConfigSystem;
 using System.Net.Sockets;
 
 namespace Backend.Base.Admin
@@ -16,6 +17,19 @@ namespace Backend.Base.Admin
 
 	public class Logout
 	{
+	}
+
+	public class ShutdownReq
+	{
+	}
+
+	public class RestartReq
+	{
+	}
+
+	public class UpdateServerConfigsReq
+	{
+		public Server Config;
 	}
 
 	public class GetMetricsReq

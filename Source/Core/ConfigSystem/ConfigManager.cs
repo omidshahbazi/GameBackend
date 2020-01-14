@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Backend.Core.ConfigSystem
 {
-	class ConfigManager : Singleton<ConfigManager>, IService
+	class ConfigManager : Singleton<ConfigManager>, IService, IConfigManager
 	{
 		private const string FILE_PATH = "Configs/Server.json";
 		private const string CONFIG_STRUCT_TYPE_KEY_NAME = "ConfigStructType";
@@ -37,11 +37,6 @@ namespace Backend.Core.ConfigSystem
 
 		public void Service()
 		{
-		}
-
-		public void SaveServerConfig()
-		{
-			SaveConfig(Server);
 		}
 
 		public bool LoadConfig<T>(string FilePath, out T Config)
@@ -114,7 +109,7 @@ namespace Backend.Core.ConfigSystem
 			Server.Loggers[0].Type = Server.Logger.Types.Console;
 			Server.Loggers[0].MinimumLevel = Server.Logger.Levels.Info;
 
-			SaveServerConfig();
+			SaveConfig(Server);
 		}
 	}
 }

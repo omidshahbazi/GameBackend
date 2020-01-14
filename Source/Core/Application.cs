@@ -1,5 +1,6 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base;
+using Backend.Base.ConfigSystem;
 using Backend.Base.ConnectionManager;
 using Backend.Base.LogSystem;
 using Backend.Base.NetworkSystem;
@@ -51,6 +52,12 @@ namespace Backend.Core
 			set;
 		}
 
+		public IConfigManager ConfigManager
+		{
+			get;
+			private set;
+		}
+
 		public IScheduleManager ScheduleManager
 		{
 			get;
@@ -99,13 +106,12 @@ namespace Backend.Core
 			RequestManager = ServerRequestManager.Instance;
 			Logger = LogManager.Instance;
 
-			AddService(ConfigManager.Instance);
+			AddService(ConfigSystem.ConfigManager.Instance);
 			AddService(LogManager.Instance);
 			AddService(ScheduleSystem.ScheduleManager.Instance);
 			AddService(NetworkSystem.NetworkManager.Instance);
 			AddService(ServerRequestManager.Instance);
 			AddService(ModuleManager.Instance);
-			AddService(AdminRequestHandlers.Instance);
 
 			NetworkSystem.NetworkManager.Instance.StartListening();
 

@@ -22,6 +22,7 @@
     <Compile Include="..\..\..\Source\Base\Admin\Protocol.cs" Link="Admin\Protocol.cs" />
     <Compile Include="..\..\..\Source\Base\ConfigSystem\Admin.cs" Link="ConfigSystem\Admin.cs" />
     <Compile Include="..\..\..\Source\Base\ConfigSystem\Database.cs" Link="ConfigSystem\Database.cs" />
+    <Compile Include="..\..\..\Source\Base\ConfigSystem\IConfigManager.cs" Link="ConfigSystem\IConfigManager.cs" />
     <Compile Include="..\..\..\Source\Base\ConfigSystem\MasterBalancer.cs" Link="ConfigSystem\MasterBalancer.cs" />
     <Compile Include="..\..\..\Source\Base\ConfigSystem\Server.cs" Link="ConfigSystem\Server.cs" />
     <Compile Include="..\..\..\Source\Base\DatabaseSystem\IConnection.cs" Link="DatabaseSystem\IConnection.cs" />
@@ -33,7 +34,6 @@
     <Compile Include="..\..\..\Source\Base\NetworkSystem\Client.cs" Link="NetoworSystem\Client.cs" />
     <Compile Include="..\..\..\Source\Base\NetworkSystem\INetworkManager.cs" Link="NetoworSystem\INetworkManager.cs" />
     <Compile Include="..\..\..\Source\Base\NetworkSystem\IRequestManager.cs" Link="NetoworSystem\IRequestManager.cs" />
-    <Compile Include="..\..\..\Source\Base\Protocol.cs" Link="Protocol.cs" />
     <Compile Include="..\..\..\Source\Base\ScheduleSystem\IScheduleManager.cs" Link="ScheduleSystem\IScheduleManager.cs" />
   </ItemGroup>
 

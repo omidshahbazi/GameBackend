@@ -59,6 +59,9 @@
     <Compile Include="..\..\..\Source\Base\ConfigSystem\Database.cs">
       <Link>ConfigSystem\Database.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Source\Base\ConfigSystem\IConfigManager.cs">
+      <Link>ConfigSystem\IConfigManager.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Base\ConfigSystem\MasterBalancer.cs">
       <Link>ConfigSystem\MasterBalancer.cs</Link>
     </Compile>
@@ -91,9 +94,6 @@
     </Compile>
     <Compile Include="..\..\..\Source\Base\NetworkSystem\IRequestManager.cs">
       <Link>NetworkSystem\IRequestManager.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Source\Base\Protocol.cs">
-      <Link>Protocol.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Source\Base\ScheduleSystem\IScheduleManager.cs">
       <Link>ScheduleSystem\IScheduleManager.cs</Link>
