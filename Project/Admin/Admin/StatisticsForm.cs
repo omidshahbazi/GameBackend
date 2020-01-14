@@ -64,8 +64,6 @@ namespace Backend.Admin
 		private void Connection_OnConnected(Connection Connection)
 		{
 			connection.Send<LoginReq, LoginRes>(new LoginReq() { Username = "Admin", Password = "qwer1234" }, LoginResHandler);
-
-
 		}
 
 		private void Connection_OnConnectionFailed(Connection Connection)
