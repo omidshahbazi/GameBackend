@@ -99,7 +99,12 @@ namespace Backend.Common.NetworkSystem
 					}
 				}
 				else
+				{
+					if (!handlers.ContainsKey(requestTypeID))
+						return;
+
 					handlers[requestTypeID](obj);
+				}
 			}
 			catch (Exception e)
 			{

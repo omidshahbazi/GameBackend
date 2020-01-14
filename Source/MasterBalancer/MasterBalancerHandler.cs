@@ -86,7 +86,7 @@ namespace Backend.MasterBalancer
 
 			nodes.Remove(node);
 
-			context.Logger.WriteInfo("Node [{0}] under process {1} disconnected", node.Client.ToString(), node.Process.Id);
+			context.Logger.WriteInfo("Node [{0}] under process {1} disconnected", node.Client, node.Process.Id);
 		}
 
 		public void Shutdown()
@@ -122,7 +122,7 @@ namespace Backend.MasterBalancer
 
 			nodes.Add(node);
 
-			context.Logger.WriteInfo("Node [{0}] under process {1} connected", node.Client.ToString(), node.Process.Id);
+			context.Logger.WriteInfo("Node [{0}] under process {1} connected", node.Client, node.Process.Id);
 		}
 
 		private NodeInfo FindNode(Client Client)

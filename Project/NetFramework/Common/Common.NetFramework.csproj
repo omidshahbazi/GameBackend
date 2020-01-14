@@ -49,6 +49,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\Source\Common\Chat\Protocol.cs">
+      <Link>Protocol\Protocol.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Common\Enums.cs">
       <Link>Enums.cs</Link>
     </Compile>

@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\..\Source\Common\Chat\Protocol.cs" Link="Chat\Protocol.cs" />
     <Compile Include="..\..\..\Source\Common\Enums.cs" Link="Enums.cs" />
     <Compile Include="..\..\..\Source\Common\NetworkSystem\ClientRequestManager.cs" Link="NetworkSystem\ClientRequestManager.cs" />
     <Compile Include="..\..\..\Source\Common\NetworkSystem\Connection.cs" Link="NetworkSystem\Connection.cs" />
@@ -42,6 +43,7 @@
 
   <ItemGroup>
     <Folder Include="NetworkSystem\" />
+    <Folder Include="Chat\" />
   </ItemGroup>
 
   <ItemGroup>

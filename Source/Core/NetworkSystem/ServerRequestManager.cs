@@ -128,9 +128,16 @@ namespace Backend.Core.NetworkSystem
 			{
 				++stats.IncomingInvalidMessageCount;
 
-				LogManager.Instance.WriteWarning("Client [{0}] sent an unknown packet, going to disconnect", Client.ToString());
+				LogManager.Instance.WriteWarning("Client [{0}] sent an unknown packet, going to disconnect client", Client);
 
 				Client.Disconnect();
+
+				return;
+			}
+
+			if (!handlers.ContainsKey(requestTypeID))
+			{
+				LogManager.Instance.WriteError("Invalid combinition with request [{0}] has been received from [{1}], going to disconnect client", obj.GetType(), Client);
 
 				return;
 			}
@@ -143,7 +150,7 @@ namespace Backend.Core.NetworkSystem
 			{
 				++stats.IncomingFailedMessageCount;
 
-				LogManager.Instance.WriteException(e, "Dispatching [{0}] failed", obj.GetType());
+				LogManager.Instance.WriteException(e, "Dispatching [{0}] from [{1}] failed", obj.GetType(), Client);
 			}
 		}
 

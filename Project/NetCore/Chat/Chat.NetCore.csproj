@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Base\Base.NetCore.csproj" />
+    <ProjectReference Include="..\Common\Common.NetCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

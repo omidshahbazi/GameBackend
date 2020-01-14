@@ -34,15 +34,7 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BinarySerializerManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Libraries\BinarySerializerManaged.dll</HintPath>
-    </Reference>
     <Reference Include="CommonManaged, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-    <Reference Include="NetworkingManaged.NetFramework">
-      <HintPath>..\..\..\Libraries\NetworkingManaged.NetFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -50,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NetFramework\Common\Common.NetFramework.csproj">
-      <Project>{ed3f4c47-2abf-43d5-85fe-e54d15924899}</Project>
+      <Project>{ED3F4C47-2ABF-43D5-85FE-E54D15924899}</Project>
       <Name>Common.NetFramework</Name>
     </ProjectReference>
   </ItemGroup>

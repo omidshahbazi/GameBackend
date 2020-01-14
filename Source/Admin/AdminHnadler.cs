@@ -176,7 +176,7 @@ namespace Backend.Admin
 
 			if (!isAudit)
 			{
-				context.Logger.WriteWarning("Not audited client [{0}] tried to send administration request, going to disconnect", Client.ToString());
+				context.Logger.WriteWarning("Not audited client [{0}] tried to send administration request, going to disconnect", Client);
 
 				Client.Disconnect();
 			}
