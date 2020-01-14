@@ -9,7 +9,7 @@ namespace Backend.Admin
 {
 	public partial class StatisticsForm : Form
 	{
-		private const float UPDATE_METRICS_INTERVAL = 10.5F;
+		private const float UPDATE_METRICS_INTERVAL = 1.0F;
 		private const int MAX_CPU_USAGE_SAMPLE_COUNT = 10;
 		private const int MAX_MEMORY_USAGE_SAMPLE_COUNT = 10;
 
