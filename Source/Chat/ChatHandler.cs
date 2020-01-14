@@ -8,13 +8,20 @@ namespace Backend.Chat
 {
 	class ChatHandler : IModule
 	{
+		//private class Client
 		private IContext context = null;
 
 		public void Initialize(IContext Context, object Config)
 		{
 			context = Context;
 
+			context.NetworkManager.OnClientDisconnected += NetworkManager_OnClientDisconnected;
 			context.RequestManager.RegisterHandler<RegisterReq, RegisterRes>(HandlerRegister);
+		}
+
+		private void NetworkManager_OnClientDisconnected(Client Client)
+		{
+
 		}
 
 		public void Service()

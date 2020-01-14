@@ -139,7 +139,7 @@ namespace Backend.Admin
 
 			res.CPUUsage = cpuUsageCounter.NextValue() / 100;
 
-#if NETFRAMEWORK
+#if NET_FRAMEWORK
 			res.MemoryUsage = 1 - (computerInfo.AvailablePhysicalMemory / (float)computerInfo.TotalPhysicalMemory);
 #endif
 

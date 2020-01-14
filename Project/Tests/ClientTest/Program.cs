@@ -34,7 +34,7 @@ namespace ClientTest
 		{
 			Console.WriteLine("Connected");
 
-			connection.RegisterInChatService();
+			connection.RegisterInChatService("TestID");
 
 			//connection.Send<GetInitialDataReq, GetInitialDataRes>(new GetInitialDataReq(), OnGetInitialData);
 		}
