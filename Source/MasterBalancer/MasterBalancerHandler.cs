@@ -46,24 +46,24 @@ namespace Backend.MasterBalancer
 
 			if (Config == null)
 			{
-				Context.Logger.WriteError("MasterBalancer config is null, ignore initializing");
+				context.Logger.WriteError("MasterBalancer config is null, ignore initializing");
 				return;
 			}
 
 			Base.ConfigSystem.MasterBalancer config = (Base.ConfigSystem.MasterBalancer)Config;
 			if (string.IsNullOrEmpty(config.NodeWorkingDirectory))
 			{
-				Context.Logger.WriteError("NodeWorkingDirectory in config is null, ignore initializing");
+				context.Logger.WriteError("NodeWorkingDirectory in config is null, ignore initializing");
 				return;
 			}
 
-			Context.NetworkManager.OnClientDisconnected += NetworkManager_OnClientDisconnected;
-			Context.RequestManager.RegisterHandler<ServerNodeIntrodunctionReq>(ServerNodeIntroduction);
+			context.NetworkManager.OnClientDisconnected += NetworkManager_OnClientDisconnected;
+			context.RequestManager.RegisterHandler<ServerNodeIntrodunctionReq>(ServerNodeIntroduction);
 
 			ArgumentParser arguments = new ArgumentParser();
 			arguments.Set("directory", Path.Combine("../", config.NodeWorkingDirectory));
 
-			SocketInfo socket = Context.NetworkManager.Sockets[0];
+			SocketInfo socket = context.NetworkManager.Sockets[0];
 
 			ISerializeObject configObj = Creator.Create<ISerializeObject>();
 			configObj.Set("ConfigStructType", "Backend.ServerNode.Configuration, Backend.ServerNode.NetFramework");

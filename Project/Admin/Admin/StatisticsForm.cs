@@ -9,7 +9,7 @@ namespace Backend.Admin
 {
 	public partial class StatisticsForm : Form
 	{
-		private const float UPDATE_METRICS_INTERVAL = 0.5F;
+		private const float UPDATE_METRICS_INTERVAL = 10.5F;
 		private const int MAX_CPU_USAGE_SAMPLE_COUNT = 10;
 		private const int MAX_MEMORY_USAGE_SAMPLE_COUNT = 10;
 
@@ -17,6 +17,7 @@ namespace Backend.Admin
 		private double nextUpdateMetricTime = 0;
 
 		private Connection connection = null;
+		private bool isLoggedIn = false;
 
 		private Series cpuUsageSeries = null;
 		private Series memoryUsageSeries = null;
@@ -36,6 +37,9 @@ namespace Backend.Admin
 			connection.OnConnected += Connection_OnConnected;
 			connection.OnConnectionFailed += Connection_OnConnectionFailed;
 			connection.OnDisconnected += Connection_OnDisconnected;
+
+			connection.RegisterHandler<Logout>(LogoutHandler);
+
 			connection.Connect(Common.ProtocolTypes.TCP, "::1", 5000);
 
 			cpuUsageSeries = ChartUtilities.ConfigChartSeries(cpuUsageChart, "CPU Usage");
@@ -46,7 +50,7 @@ namespace Backend.Admin
 		{
 			connection.Service();
 
-			if (connection.IsConnected)
+			if (isLoggedIn)
 			{
 				if (nextUpdateMetricTime <= Time.CurrentEpochTime)
 				{
@@ -59,30 +63,9 @@ namespace Backend.Admin
 
 		private void Connection_OnConnected(Connection Connection)
 		{
-			connection.Send<GetMetricsReq, GetMetricsRes>(new GetMetricsReq(), (res) =>
-			{
-				if (res.SocketsMetric != null)
-				{
-					socketCharts = new SocketCharts[res.SocketsMetric.Length];
+			connection.Send<LoginReq, LoginRes>(new LoginReq() { Username = "Admin", Password = "qwer1234" }, LoginResHandler);
 
-					mainTableLayout.RowCount = res.SocketsMetric.Length + 1;
 
-					float percent = 100.0F / mainTableLayout.RowCount;
-					mainTableLayout.RowStyles[0].Height = percent;
-
-					for (int i = 0; i < res.SocketsMetric.Length; ++i)
-					{
-						mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, percent));
-
-						SocketCharts socketChart = socketCharts[i] = new SocketCharts();
-						socketChart.Dock = DockStyle.Fill;
-
-						mainTableLayout.Controls.Add(socketChart, 0, i + 1);
-					}
-				}
-
-				GetMetricsHandler(res);
-			});
 		}
 
 		private void Connection_OnConnectionFailed(Connection Connection)
@@ -91,6 +74,48 @@ namespace Backend.Admin
 
 		private void Connection_OnDisconnected(Connection Connection)
 		{
+		}
+
+		private void LoginResHandler(LoginRes Data)
+		{
+			if (!Data.Result)
+				Application.Exit();
+
+			isLoggedIn = true;
+
+			connection.Send<GetMetricsReq, GetMetricsRes>(new GetMetricsReq(), GetFirstMetricsHandler);
+		}
+
+		private void LogoutHandler(Logout Data)
+		{
+			isLoggedIn = false;
+
+			Application.Exit();
+		}
+
+		private void GetFirstMetricsHandler(GetMetricsRes Data)
+		{
+			if (Data.SocketsMetric != null)
+			{
+				socketCharts = new SocketCharts[Data.SocketsMetric.Length];
+
+				mainTableLayout.RowCount = Data.SocketsMetric.Length + 1;
+
+				float percent = 100.0F / mainTableLayout.RowCount;
+				mainTableLayout.RowStyles[0].Height = percent;
+
+				for (int i = 0; i < Data.SocketsMetric.Length; ++i)
+				{
+					mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, percent));
+
+					SocketCharts socketChart = socketCharts[i] = new SocketCharts();
+					socketChart.Dock = DockStyle.Fill;
+
+					mainTableLayout.Controls.Add(socketChart, 0, i + 1);
+				}
+			}
+
+			GetMetricsHandler(Data);
 		}
 
 		private void GetMetricsHandler(GetMetricsRes Data)

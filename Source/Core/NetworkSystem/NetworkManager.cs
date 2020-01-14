@@ -158,7 +158,7 @@ namespace Backend.Core.NetworkSystem
 			clients[hash] = client;
 
 			if (OnClientConnected != null)
-				OnClientConnected(client);
+				CallbackUtilities.InvokeCallback(OnClientConnected.Invoke, client);
 		}
 
 		private void OnClientDisconnectedHandler(ServerSocket Socket, NativeClient Client)
@@ -166,12 +166,15 @@ namespace Backend.Core.NetworkSystem
 			uint hash = Base.NetworkSystem.Client.GetClientHash(Socket, Client);
 
 			if (!clients.ContainsKey(hash))
+			{
 				LogManager.Instance.WriteWarning("Not listed client [{0}] disconnected", Client.EndPoint);
+				return;
+			}
 
 			Client client = clients[hash];
 
 			if (OnClientDisconnected != null)
-				OnClientDisconnected(client);
+				CallbackUtilities.InvokeCallback(OnClientDisconnected.Invoke, client);
 
 			clients.Remove(hash);
 		}
@@ -182,7 +185,7 @@ namespace Backend.Core.NetworkSystem
 
 			if (!clients.ContainsKey(hash))
 			{
-				LogManager.Instance.WriteError("Not listed client [{0}] Sent a packet, going to disconnect", Sender.EndPoint);
+				LogManager.Instance.WriteError("Not listed client [{0}] sent a packet, going to disconnect", Sender.EndPoint);
 
 				Socket.DisconnectClient(Sender);
 

@@ -14,6 +14,10 @@ namespace Backend.Base.Admin
 		public bool Result;
 	}
 
+	public class Logout
+	{
+	}
+
 	public class GetMetricsReq
 	{
 	}

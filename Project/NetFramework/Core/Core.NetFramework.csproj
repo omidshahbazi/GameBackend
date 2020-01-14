@@ -62,6 +62,9 @@
     <Compile Include="..\..\..\Source\Core\IService.cs">
       <Link>IService.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Source\Core\LogSystem\CallbackUtilities.cs">
+      <Link>LogSystem\CallbackUtilities.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Core\LogSystem\ConsoleLogger.cs">
       <Link>LogSystem\ConsoleLogger.cs</Link>
     </Compile>

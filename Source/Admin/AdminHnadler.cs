@@ -4,7 +4,9 @@ using Backend.Base.Admin;
 using Backend.Base.ModuleSystem;
 using Backend.Base.NetworkSystem;
 using System.Diagnostics;
-#if NETFRAMEWORK
+using System.Collections.Generic;
+using GameFramework.Common.Utilities;
+#if NET_FRAMEWORK
 using Microsoft.VisualBasic.Devices;
 #endif
 
@@ -23,11 +25,16 @@ namespace Backend.Admin
 
 	class AdminHnadler : IModule
 	{
+		private class AuditClientMap : Dictionary<uint, Client>
+		{ }
+
 		private IContext context = null;
 		private Base.ConfigSystem.Admin config;
 		private PerformanceCounter cpuUsageCounter = null;
 
-#if NETFRAMEWORK
+		private AuditClientMap auditClients = null;
+
+#if NET_FRAMEWORK
 		private ComputerInfo computerInfo = null;
 #endif
 
@@ -35,13 +42,21 @@ namespace Backend.Admin
 		{
 			context = Context;
 
+			if (Config == null)
+			{
+				context.Logger.WriteError("Admin config is null, ignore initializing");
+				return;
+			}
+
 			config = (Base.ConfigSystem.Admin)Config;
 
 			cpuUsageCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
 
-#if NETFRAMEWORK
+#if NET_FRAMEWORK
 			computerInfo = new ComputerInfo();
 #endif
+
+			auditClients = new AuditClientMap();
 
 			context.RequestManager.RegisterHandler<LoginReq, LoginRes>(HandleLogin);
 			context.RequestManager.RegisterHandler<GetMetricsReq, GetMetricsRes>(HandleGetMetrics);
@@ -73,7 +88,16 @@ namespace Backend.Admin
 
 			if (res.Result)
 			{
-				// add client to a valid client list
+				uint hash = CRC32.CalculateHash(System.Text.Encoding.ASCII.GetBytes(Data.Username + Data.Password));
+
+				if (auditClients.ContainsKey(hash))
+				{
+					Client client = auditClients[hash];
+
+					context.RequestManager.Send(client, new Logout());
+				}
+
+				auditClients[hash] = Client;
 			}
 
 			return res;
@@ -81,7 +105,14 @@ namespace Backend.Admin
 
 		private GetMetricsRes HandleGetMetrics(Client Client, GetMetricsReq Data)
 		{
-			// check client is valid, otherwise disconnect it
+			if (!IsAuditClient(Client))
+			{
+				context.Logger.WriteWarning("Not audited client [{0}] tried to send administration request, going to disconnect", Client.ToString());
+
+				Client.Disconnect();
+
+				return null;
+			}
 
 			GetMetricsRes res = new GetMetricsRes();
 
@@ -116,6 +147,11 @@ namespace Backend.Admin
 			}
 
 			return res;
+		}
+
+		private bool IsAuditClient(Client Client)
+		{
+			return auditClients.ContainsValue(Client);
 		}
 	}
 }

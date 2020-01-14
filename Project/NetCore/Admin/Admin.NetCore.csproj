@@ -45,6 +45,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CommonManaged">
+      <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
+    </Reference>
     <Reference Include="System.Diagnostics.PerformanceCounter">
       <HintPath>..\..\..\Libraries\System.Diagnostics.PerformanceCounter.dll</HintPath>
     </Reference>
