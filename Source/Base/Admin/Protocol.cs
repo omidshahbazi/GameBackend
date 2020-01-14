@@ -38,16 +38,8 @@ namespace Backend.Base.Admin
 
 	public class GetMetricsRes
 	{
-		public class SocketMetric
+		public class Metric
 		{
-			public ProtocolType Protocol;
-			public ushort Port;
-
-			public ulong IncomingTraffic;
-			public ulong OutgoingTraffic;
-
-			public uint ClientCount;
-
 			public ulong IncomingMessageCount;
 			public ulong OutgoingMessageCount;
 			public ulong IncomingInvalidMessageCount;
@@ -56,9 +48,26 @@ namespace Backend.Base.Admin
 			public float AverageProcessTime;
 		}
 
+		public class SocketMetric : Metric
+		{
+			public ProtocolType Protocol;
+			public ushort Port;
+
+			public ulong IncomingTraffic;
+			public ulong OutgoingTraffic;
+
+			public uint ClientCount;
+		}
+
+		public class RequestMetric : Metric
+		{
+			public string Type;
+		}
+
 		public float CPUUsage;
 		public float MemoryUsage;
 
 		public SocketMetric[] SocketsMetric;
+		public RequestMetric[] RequeestsMetric;
 	}
 }
