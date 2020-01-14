@@ -13,16 +13,6 @@ using Microsoft.VisualBasic.Devices;
 namespace Backend.Admin
 {
 	//https://www.digitalocean.com/community/tutorials/an-introduction-to-metrics-monitoring-and-alerting
-	//CPU
-	//Memory
-	//Disk space
-	//Processes
-	//Performance and latency of responses
-	//Connectivity
-	//Error rates and packet loss
-	//Latency
-	//Bandwidth utilization
-
 	class AdminHnadler : IModule
 	{
 		private class AuditClientMap : Dictionary<uint, Client>
@@ -144,7 +134,7 @@ namespace Backend.Admin
 #endif
 
 			SocketInfo[] sockets = context.NetworkManager.Sockets;
-			RequestsStatistics[] stats = context.RequestManager.Statistics;
+			RequestsStatistics[] stats = context.RequestManager.SocketStatistics;
 			res.SocketsMetric = new GetMetricsRes.SocketMetric[stats.Length];
 
 			for (int i = 0; i < stats.Length; ++i)
@@ -165,6 +155,8 @@ namespace Backend.Admin
 				metric.OutgoingMessageCount = stat.OutgoingMessageCount;
 				metric.IncomingInvalidMessageCount = stat.IncomingInvalidMessageCount;
 				metric.IncomingFailedMessageCount = stat.IncomingFailedMessageCount;
+
+				metric.AverageProcessTime = (float)(stat.TotalProcessTime / stat.IncomingMessageCount);
 			}
 
 			return res;

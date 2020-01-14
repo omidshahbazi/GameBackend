@@ -1,8 +1,11 @@
 // Copyright 2019. All Rights Reserved.
 using System;
+using System.Collections.Generic;
 
 namespace Backend.Base.NetworkSystem
 {
+	//per client connections stats
+
 	public class RequestsStatistics
 	{
 		public uint IncomingMessageCount;
@@ -10,11 +13,30 @@ namespace Backend.Base.NetworkSystem
 
 		public uint IncomingInvalidMessageCount;
 		public uint IncomingFailedMessageCount;
+
+		public double TotalProcessTime;
+	}
+
+	public class RequestStatisticsMap : Dictionary<Type, RequestsStatistics>
+	{
+		public RequestStatisticsMap()
+		{
+		}
+
+		public RequestStatisticsMap(RequestStatisticsMap Map) :
+			base(Map)
+		{
+		}
 	}
 
 	public interface IRequestManager
 	{
-		RequestsStatistics[] Statistics
+		RequestsStatistics[] SocketStatistics
+		{
+			get;
+		}
+
+		RequestStatisticsMap RequestStatistics
 		{
 			get;
 		}

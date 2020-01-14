@@ -52,6 +52,8 @@ namespace Backend.Base.Admin
 			public ulong OutgoingMessageCount;
 			public ulong IncomingInvalidMessageCount;
 			public ulong IncomingFailedMessageCount;
+
+			public float AverageProcessTime;
 		}
 
 		public float CPUUsage;
