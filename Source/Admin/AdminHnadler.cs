@@ -133,14 +133,19 @@ namespace Backend.Admin
 			res.MemoryUsage = 1 - (computerInfo.AvailablePhysicalMemory / (float)computerInfo.TotalPhysicalMemory);
 #endif
 
-			SocketInfo[] sockets = context.NetworkManager.Sockets;
-			RequestsStatistics[] stats = context.RequestManager.SocketStatistics;
-			res.SocketsMetric = new GetMetricsRes.SocketMetric[stats.Length];
+			GetMetricsRes.Metric totalMetric = res.TotalMetric = new GetMetricsRes.Metric();
 
-			for (int i = 0; i < stats.Length; ++i)
+			SocketInfo[] sockets = context.NetworkManager.Sockets;
+			RequestsStatistics[] socketStats = context.RequestManager.SocketStatistics;
+			res.SocketsMetric = new GetMetricsRes.SocketMetric[socketStats.Length];
+
+			double totalProcessTime = 0;
+
+			int i = 0;
+			for (; i < socketStats.Length; ++i)
 			{
 				SocketInfo socket = sockets[i];
-				RequestsStatistics stat = stats[i];
+				RequestsStatistics socketStat = socketStats[i];
 				GetMetricsRes.SocketMetric metric = res.SocketsMetric[i] = new GetMetricsRes.SocketMetric();
 
 				metric.Protocol = socket.Protocol;
@@ -151,15 +156,41 @@ namespace Backend.Admin
 
 				metric.ClientCount = socket.ClientCount;
 
-				metric.IncomingMessageCount = stat.IncomingMessageCount;
-				metric.OutgoingMessageCount = stat.OutgoingMessageCount;
-				metric.IncomingInvalidMessageCount = stat.IncomingInvalidMessageCount;
-				metric.IncomingFailedMessageCount = stat.IncomingFailedMessageCount;
+				AddMetric(metric, socketStat);
+				AddMetric(totalMetric, socketStat);
 
-				metric.AverageProcessTime = (float)(stat.TotalProcessTime / stat.IncomingMessageCount);
+				totalProcessTime += socketStat.TotalProcessTime;
+			}
+
+			if (totalMetric.IncomingMessageCount != 0)
+				totalMetric.AverageProcessTime = (float)(totalProcessTime / totalMetric.IncomingMessageCount);
+
+			RequestStatisticsMap requestStats = context.RequestManager.RequestStatistics;
+			res.RequestsMetric = new GetMetricsRes.RequestMetric[requestStats.Count];
+
+			RequestStatisticsMap.Enumerator requestStatIt = requestStats.GetEnumerator();
+			i = 0;
+			while (requestStatIt.MoveNext())
+			{
+				GetMetricsRes.RequestMetric metric = res.RequestsMetric[i++] = new GetMetricsRes.RequestMetric();
+
+				metric.Type = requestStatIt.Current.Key.Name;
+
+				AddMetric(metric, requestStatIt.Current.Value);
 			}
 
 			return res;
+		}
+
+		private void AddMetric(GetMetricsRes.Metric Metric, RequestsStatistics Stats)
+		{
+			Metric.IncomingMessageCount += Stats.IncomingMessageCount;
+			Metric.OutgoingMessageCount += Stats.OutgoingMessageCount;
+			Metric.IncomingInvalidMessageCount += Stats.IncomingInvalidMessageCount;
+			Metric.IncomingFailedMessageCount += Stats.IncomingFailedMessageCount;
+
+			if (Stats.IncomingMessageCount != 0)
+				Metric.AverageProcessTime += (float)(Stats.TotalProcessTime / Stats.IncomingMessageCount);
 		}
 
 		private bool CheckAuditClient(Client Client)

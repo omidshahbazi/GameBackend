@@ -67,7 +67,9 @@ namespace Backend.Base.Admin
 		public float CPUUsage;
 		public float MemoryUsage;
 
+		public Metric TotalMetric;
+
 		public SocketMetric[] SocketsMetric;
-		public RequestMetric[] RequeestsMetric;
+		public RequestMetric[] RequestsMetric;
 	}
 }
