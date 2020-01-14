@@ -68,6 +68,8 @@ namespace Backend.Core.ConfigSystem
 			}
 			catch
 			{
+				typePaths[typeof(T)] = FilePath;
+
 				return false;
 			}
 
