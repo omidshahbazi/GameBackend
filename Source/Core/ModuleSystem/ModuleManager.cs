@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
+using FileSystem = GameFramework.Common.FileLayer.FileSystem;
+
 namespace Backend.Core.ModuleSystem
 {
 	class ModuleManager : Singleton<ModuleManager>, IService
@@ -17,7 +19,10 @@ namespace Backend.Core.ModuleSystem
 		private class AssemblyMap : Dictionary<string, Assembly>
 		{ }
 
+		private const string TEMP_ROOT_DIRECOTRY = "Temp/";
 		private const string DLL_EXTENSION = ".dll";
+
+		private string tempDirectory = "";
 
 		private AssemblyMap assemblies = null;
 		private List<IModule> modules = null;
@@ -33,7 +38,7 @@ namespace Backend.Core.ModuleSystem
 
 				string path = assembly.Location;
 				//path = path.Replace('\\', '/');
-				//path = path.Replace(GameFramework.Common.FileLayer.FileSystem.DataPath, "");
+				//path = path.Replace(FileSystem.DataPath, "");
 				path = Path.GetFileName(path);
 
 				assemblies[path] = assembly;
@@ -43,6 +48,10 @@ namespace Backend.Core.ModuleSystem
 		public void Initialize()
 		{
 			modules = new List<IModule>();
+
+			tempDirectory = Path.Combine(TEMP_ROOT_DIRECOTRY, DateTime.Now.ToString("yyyyMMddhhmmss"));
+
+			FileSystem.CreateDirectory(tempDirectory);
 
 			LoadLibraries();
 
@@ -72,7 +81,7 @@ namespace Backend.Core.ModuleSystem
 				return;
 			}
 
-			string[] files = GameFramework.Common.FileLayer.FileSystem.GetFiles(librariesPath, "*" + DLL_EXTENSION, SearchOption.AllDirectories);
+			string[] files = FileSystem.GetFiles(librariesPath, "*" + DLL_EXTENSION, SearchOption.AllDirectories);
 			if (files == null)
 			{
 				LogManager.Instance.WriteWarning("Directory [{0}] doesn't exsits, so ignore loading libraries", librariesPath);
@@ -173,7 +182,7 @@ namespace Backend.Core.ModuleSystem
 			string assemblyFileName = args.Name.Split(',')[0] + DLL_EXTENSION;
 			string depFilePath = Path.GetDirectoryName(ConfigManager.Instance.Server.Modules.LibrariesPath).Replace('\\', '/');
 
-			string[] files = GameFramework.Common.FileLayer.FileSystem.GetFiles(depFilePath, assemblyFileName, SearchOption.AllDirectories);
+			string[] files = FileSystem.GetFiles(depFilePath, assemblyFileName, SearchOption.AllDirectories);
 
 			if (files == null || files.Length == 0)
 				return null;
@@ -191,20 +200,32 @@ namespace Backend.Core.ModuleSystem
 
 		private Assembly LoadAssemblyFromFile(string FilePath)
 		{
-			string path = Path.GetFileName(FilePath);
+			string path = CopyAndGetPath(FilePath);
+			string fileName = Path.GetFileName(path);
 
-			if (assemblies.ContainsKey(path))
-				return assemblies[path];
+			if (assemblies.ContainsKey(fileName))
+				return assemblies[fileName];
 
-			byte[] assemblyData = GameFramework.Common.FileLayer.FileSystem.ReadBytes(FilePath);
+			byte[] assemblyData = FileSystem.ReadBytes(path);
 			if (assemblyData == null)
 				return null;
 
 			Assembly assembly = Assembly.Load(assemblyData);
 
-			assemblies[path] = assembly;
+			assemblies[fileName] = assembly;
 
 			return assembly;
+		}
+
+		private string CopyAndGetPath(string FilePath)
+		{
+			string fileName = Path.GetFileName(FilePath);
+
+			string toPath = Path.Combine(tempDirectory, fileName).Replace('\\', '/');
+
+			FileSystem.CopyFile(FilePath, toPath, true);
+
+			return toPath;
 		}
 	}
 }
