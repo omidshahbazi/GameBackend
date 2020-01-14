@@ -1,5 +1,6 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base.ConfigSystem;
+using GameFramework.Common.Utilities;
 using System;
 
 namespace Backend.Core.LogSystem
@@ -22,18 +23,7 @@ namespace Backend.Core.LogSystem
 			if (minLevel > Server.Logger.Levels.Info)
 				return;
 
-			Console.BackgroundColor = ConsoleColor.Gray;
-			Console.ForegroundColor = ConsoleColor.Black;
-			Console.Write("Info");
-			Console.BackgroundColor = ConsoleColor.Black;
-
-			Console.ForegroundColor = ConsoleColor.Gray;
-
-			Console.Write(" ");
-
-			Console.WriteLine(Format, Args);
-
-			Console.ResetColor();
+			ConsoleHelper.WriteInfo(Format, Args);
 		}
 
 		public void WriteWarning(string Format, params object[] Args)
@@ -41,18 +31,7 @@ namespace Backend.Core.LogSystem
 			if (minLevel > Server.Logger.Levels.Warning)
 				return;
 
-			Console.BackgroundColor = ConsoleColor.DarkYellow;
-			Console.ForegroundColor = ConsoleColor.Black;
-			Console.Write("Warning");
-			Console.BackgroundColor = ConsoleColor.Black;
-
-			Console.ForegroundColor = ConsoleColor.Gray;
-
-			Console.Write(" ");
-
-			Console.WriteLine(Format, Args);
-
-			Console.ResetColor();
+			ConsoleHelper.WriteWarning(Format, Args);
 		}
 
 		public void WriteError(string Format, params object[] Args)
@@ -60,18 +39,7 @@ namespace Backend.Core.LogSystem
 			if (minLevel > Server.Logger.Levels.Error)
 				return;
 
-			Console.BackgroundColor = ConsoleColor.DarkRed;
-			Console.ForegroundColor = ConsoleColor.Black;
-			Console.Write("Error");
-			Console.BackgroundColor = ConsoleColor.Black;
-
-			Console.ForegroundColor = ConsoleColor.Gray;
-
-			Console.Write(" ");
-
-			Console.WriteLine(Format, Args);
-
-			Console.ResetColor();
+			ConsoleHelper.WriteError(Format, Args);
 		}
 
 		public void WriteDebug(string Format, params object[] Args)
@@ -79,18 +47,7 @@ namespace Backend.Core.LogSystem
 			if (minLevel > Server.Logger.Levels.Debug)
 				return;
 
-			Console.BackgroundColor = ConsoleColor.Cyan;
-			Console.ForegroundColor = ConsoleColor.Black;
-			Console.Write("Debug");
-			Console.BackgroundColor = ConsoleColor.Black;
-
-			Console.ForegroundColor = ConsoleColor.Gray;
-
-			Console.Write(" ");
-
-			Console.WriteLine(Format, Args);
-
-			Console.ResetColor();
+			ConsoleHelper.WriteDebug(Format, Args);
 		}
 
 		public void WriteCritical(string Format, params object[] Args)
@@ -98,18 +55,7 @@ namespace Backend.Core.LogSystem
 			if (minLevel > Server.Logger.Levels.Critical)
 				return;
 
-			Console.BackgroundColor = ConsoleColor.Red;
-			Console.ForegroundColor = ConsoleColor.Black;
-			Console.Write("Critical");
-			Console.BackgroundColor = ConsoleColor.Black;
-
-			Console.ForegroundColor = ConsoleColor.Gray;
-
-			Console.Write(" ");
-
-			Console.WriteLine(Format, Args);
-
-			Console.ResetColor();
+			ConsoleHelper.WriteCritical(Format, Args);
 		}
 
 		public void WriteException(Exception E, string Format, params object[] Args)
@@ -117,25 +63,7 @@ namespace Backend.Core.LogSystem
 			if (minLevel > Server.Logger.Levels.Critical)
 				return;
 
-			Console.BackgroundColor = ConsoleColor.Red;
-			Console.ForegroundColor = ConsoleColor.Black;
-			Console.Write("Exception");
-			Console.BackgroundColor = ConsoleColor.Black;
-
-			Console.ForegroundColor = ConsoleColor.Gray;
-
-			Console.Write(" ");
-
-			Console.WriteLine(Format, Args);
-
-			if (E != null)
-			{
-				Console.ForegroundColor = ConsoleColor.DarkGray;
-				Console.WriteLine(E.ToString());
-				Console.WriteLine(E.StackTrace);
-			}
-
-			Console.ResetColor();
+			ConsoleHelper.WriteException(E, Format, Args);
 		}
 	}
 }

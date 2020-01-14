@@ -3,6 +3,7 @@ using Backend.Base.ConfigSystem;
 using GameFramework.ASCIISerializer;
 using GameFramework.Common.FileLayer;
 using GameFramework.Common.MemoryManagement;
+using GameFramework.Common.Utilities;
 using System;
 using System.Collections.Generic;
 
@@ -28,7 +29,11 @@ namespace Backend.Core.ConfigSystem
 			typePaths = new TypePathMap();
 
 			if (!LoadConfig(FILE_PATH, out Server))
+			{
+				ConsoleHelper.WriteError("Couldn't load server config from [{0}]", FILE_PATH);
+
 				BuildSampleServerConfig();
+			}
 		}
 
 		public void Shutdown()
