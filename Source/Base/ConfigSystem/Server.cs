@@ -10,6 +10,8 @@ namespace Backend.Base.ConfigSystem
 			public string Host;
 			public ushort[] Ports;
 			public ProtocolTypes Protocol;
+			public uint ReceiveBufferSize;
+			public uint SendBufferSize;
 		}
 
 		public struct Module

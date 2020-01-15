@@ -97,7 +97,7 @@ namespace Backend.Core.NetworkSystem
 
 				for (int j = 0; j < socketInfo.Ports.Length; ++j)
 				{
-					ServerSocket socket = CreateSocket(socketInfo.Protocol, socketInfo.Host, socketInfo.Ports[j]);
+					ServerSocket socket = CreateSocket(socketInfo, socketInfo.Ports[j]);
 					if (socket == null)
 						continue;
 
@@ -108,25 +108,31 @@ namespace Backend.Core.NetworkSystem
 			sockets = socketList.ToArray();
 		}
 
-		private ServerSocket CreateSocket(ProtocolTypes Protocol, string Host, ushort Port)
+		private ServerSocket CreateSocket(Server.Socket SocketInfo, ushort Port)
 		{
 			ServerSocket socket = null;
 
-			string ipPort = "[" + Host + "]:" + Port + "/" + Protocol;
+			string ipPort = "[" + SocketInfo.Host + "]:" + Port + "/" + SocketInfo.Protocol;
 
 			try
 			{
 				LogManager.Instance.WriteInfo("Creating socket on {0}", ipPort);
 
-				if (Protocol == ProtocolTypes.TCP)
+				if (SocketInfo.Protocol == ProtocolTypes.TCP)
 					socket = new TCPServerSocket();
-				else if (Protocol == ProtocolTypes.UDP)
+				else if (SocketInfo.Protocol == ProtocolTypes.UDP)
 					socket = new UDPServerSocket();
 				else
 				{
-					LogManager.Instance.WriteError("Unknown protocol [{0}", Protocol);
+					LogManager.Instance.WriteError("Unknown protocol [{0}", SocketInfo.Protocol);
 					return null;
 				}
+
+				if (SocketInfo.ReceiveBufferSize != 0)
+					socket.ReceiveBufferSize = SocketInfo.ReceiveBufferSize;
+
+				if (SocketInfo.SendBufferSize != 0)
+					socket.SendBufferSize = SocketInfo.SendBufferSize;
 
 				//socket.MultithreadedCallbacks = false;
 				//socket.MultithreadedReceive = false;
@@ -136,7 +142,7 @@ namespace Backend.Core.NetworkSystem
 				socket.OnClientDisconnected += (Client) => { OnClientDisconnectedHandler(socket, Client); };
 				socket.OnBufferReceived += (Client, Buffer) => { OnBufferReceivedHandler(socket, Client, Buffer); };
 
-				socket.Bind(Host, Port);
+				socket.Bind(SocketInfo.Host, Port);
 
 				LogManager.Instance.WriteInfo("Socket on {0} created successfully", ipPort);
 			}
