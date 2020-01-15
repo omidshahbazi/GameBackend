@@ -81,7 +81,7 @@ namespace Backend.Base.Admin
 	{
 		public float CPUUsage;
 		public float MemoryUsage;
-
+		public double UpTime;
 		public Metric TotalMetric;
 	}
 

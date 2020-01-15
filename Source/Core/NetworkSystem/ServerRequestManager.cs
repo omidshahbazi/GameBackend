@@ -172,7 +172,8 @@ namespace Backend.Core.NetworkSystem
 			}
 
 			RequestsStatistics reqStats = GetRequestStatistics(obj.GetType());
-			++reqStats.IncomingMessageCount;
+			if (reqStats != null)
+				++reqStats.IncomingMessageCount;
 
 			if (!handlers.ContainsKey(requestTypeID))
 			{
@@ -194,7 +195,8 @@ namespace Backend.Core.NetworkSystem
 			catch (Exception e)
 			{
 				++sockStats.IncomingFailedMessageCount;
-				++reqStats.IncomingFailedMessageCount;
+				if (reqStats != null)
+					++reqStats.IncomingFailedMessageCount;
 
 				LogManager.Instance.WriteException(e, "Dispatching [{0}] from [{1}] failed", obj.GetType(), Client);
 			}

@@ -9,6 +9,7 @@ using GameFramework.Common.Utilities;
 using System;
 using GameFramework.Common.FileLayer;
 using System.IO;
+using GameFramework.Common.Timing;
 #if NET_FRAMEWORK
 using Microsoft.VisualBasic.Devices;
 #endif
@@ -186,6 +187,8 @@ namespace Backend.Admin
 #if NET_FRAMEWORK
 			res.MemoryUsage = 1 - (computerInfo.AvailablePhysicalMemory / (float)computerInfo.TotalPhysicalMemory);
 #endif
+
+			res.UpTime = (Time.CurrentUTCDateTime - Process.GetCurrentProcess().StartTime).TotalSeconds;
 
 			Metric totalMetric = res.TotalMetric = new Metric();
 
