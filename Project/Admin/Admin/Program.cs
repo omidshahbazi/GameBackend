@@ -1,4 +1,5 @@
 ﻿using Backend.Common.NetworkSystem;
+using GameFramework.Common.FileLayer;
 using System;
 using System.Windows.Forms;
 
@@ -11,6 +12,10 @@ namespace Backend.Admin
 		[STAThread]
 		static void Main()
 		{
+			FileSystem.DataPath = Environment.CurrentDirectory;
+
+			Configurations temp = Configurations.Instance;
+
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 

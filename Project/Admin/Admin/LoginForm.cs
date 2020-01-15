@@ -35,7 +35,9 @@ namespace Backend.Admin
 		{
 			connection.OnConnected += Connection_OnConnected;
 
-			connection.Connect(Common.ProtocolTypes.TCP, "::1", 5000);
+			ProfileInfo.Connection con = Configurations.Instance.Profile.LastConnection;
+
+			connection.Connect(con.Protocol, con.Host, con.Port);
 		}
 
 		private void CancelConnect()
@@ -47,7 +49,9 @@ namespace Backend.Admin
 
 		private void Connection_OnConnected(Connection Connection)
 		{
-			connection.Send<LoginReq, LoginRes>(new LoginReq() { Username = "Admin", Password = "qwer1234" }, (Data) =>
+			ProfileInfo.Connection con = Configurations.Instance.Profile.LastConnection;
+
+			connection.Send<LoginReq, LoginRes>(new LoginReq() { Username = con.Username, Password = "qwer1234" }, (Data) =>
 			{
 				if (Data.Result)
 					Close();
