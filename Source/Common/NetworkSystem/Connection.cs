@@ -15,7 +15,7 @@ namespace Backend.Common.NetworkSystem
 
 		public bool IsConnected
 		{
-			get { return socket.IsConnected; }
+			get { return (socket == null ? false : socket.IsConnected); }
 		}
 
 		public event ConnectionEventHandler OnConnected;
@@ -48,6 +48,9 @@ namespace Backend.Common.NetworkSystem
 
 		public void Disconnect()
 		{
+			if (socket == null)
+				return;
+
 			socket.Disconnect();
 
 			socket.OnConnected -= Socket_OnConnected;

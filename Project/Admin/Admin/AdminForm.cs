@@ -1,5 +1,4 @@
-﻿using Backend.Base.Admin;
-using Backend.Common.NetworkSystem;
+﻿using Backend.Common.NetworkSystem;
 using System.Windows.Forms;
 
 namespace Backend.Admin
@@ -19,12 +18,6 @@ namespace Backend.Admin
 			timer.Interval = 100;
 			timer.Tick += Timer_Tick;
 			timer.Start();
-
-			connection.Service();
-			connection.Send(new LoginRes(), () =>
-			{
-
-			});
 		}
 
 		private void Timer_Tick(object sender, System.EventArgs e)
