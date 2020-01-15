@@ -57,6 +57,8 @@ namespace Backend.Core.NetworkSystem
 
 		public void Initialize()
 		{
+			TCPServerSocket.OpenDynamicTCPPorts();
+
 			CreateSockets();
 		}
 

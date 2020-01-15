@@ -1,9 +1,9 @@
 // Copyright 2019. All Rights Reserved.
+//#define COPY_ASSEMBLY_TO_TEMP
 using Backend.Base.ConfigSystem;
 using Backend.Base.ModuleSystem;
 using Backend.Core.ConfigSystem;
 using Backend.Core.LogSystem;
-using GameFramework.ASCIISerializer;
 using GameFramework.Common.MemoryManagement;
 using System;
 using System.Collections.Generic;
@@ -19,39 +19,33 @@ namespace Backend.Core.ModuleSystem
 		private class AssemblyMap : Dictionary<string, Assembly>
 		{ }
 
-		private const string TEMP_ROOT_DIRECOTRY = "Temp/";
+#if COPY_ASSEMBLY_TO_TEMP
+		private const string TEMP_ROOT_DIRECOTRY = "TempAssemblies/";
+#endif
+
 		private const string DLL_EXTENSION = ".dll";
 
+#if COPY_ASSEMBLY_TO_TEMP
 		private string tempDirectory = "";
+#endif
 
 		private AssemblyMap assemblies = null;
 		private List<IModule> modules = null;
 
 		private ModuleManager()
 		{
-			assemblies = new AssemblyMap();
-
-			Assembly[] loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-			for (int i = 0; i < loadedAssemblies.Length; ++i)
-			{
-				Assembly assembly = loadedAssemblies[i];
-
-				string path = assembly.Location;
-				//path = path.Replace('\\', '/');
-				//path = path.Replace(FileSystem.DataPath, "");
-				path = Path.GetFileName(path);
-
-				assemblies[path] = assembly;
-			}
 		}
 
 		public void Initialize()
 		{
+			InitializeAssemblyCache();
 			modules = new List<IModule>();
 
+#if COPY_ASSEMBLY_TO_TEMP
 			tempDirectory = Path.Combine(TEMP_ROOT_DIRECOTRY, DateTime.Now.ToString("yyyyMMddhhmmss"));
 
 			FileSystem.CreateDirectory(tempDirectory);
+#endif
 
 			LoadLibraries();
 
@@ -70,6 +64,24 @@ namespace Backend.Core.ModuleSystem
 		{
 			for (int i = 0; i < modules.Count; ++i)
 				modules[i].Service();
+		}
+
+		private void InitializeAssemblyCache()
+		{
+			assemblies = new AssemblyMap();
+
+			Assembly[] loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+			for (int i = 0; i < loadedAssemblies.Length; ++i)
+			{
+				Assembly assembly = loadedAssemblies[i];
+
+				string path = assembly.Location;
+				//path = path.Replace('\\', '/');
+				//path = path.Replace(FileSystem.DataPath, "");
+				path = Path.GetFileName(path);
+
+				assemblies[path] = assembly;
+			}
 		}
 
 		private void LoadLibraries()
@@ -219,6 +231,7 @@ namespace Backend.Core.ModuleSystem
 
 		private string CopyAndGetPath(string FilePath)
 		{
+#if COPY_ASSEMBLY_TO_TEMP
 			string fileName = Path.GetFileName(FilePath);
 
 			string toPath = Path.Combine(tempDirectory, fileName).Replace('\\', '/');
@@ -226,6 +239,9 @@ namespace Backend.Core.ModuleSystem
 			FileSystem.CopyFile(FilePath, toPath, true);
 
 			return toPath;
+#else
+			return FilePath;
+#endif
 		}
 	}
 }

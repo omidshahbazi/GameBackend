@@ -6,6 +6,7 @@ using Backend.Base.NetworkSystem;
 using System.Diagnostics;
 using System.Collections.Generic;
 using GameFramework.Common.Utilities;
+using System;
 #if NET_FRAMEWORK
 using Microsoft.VisualBasic.Devices;
 #endif
@@ -52,7 +53,10 @@ namespace Backend.Admin
 			context.RequestManager.RegisterHandler<ShutdownReq>(HandlerShutdown);
 			context.RequestManager.RegisterHandler<RestartReq>(HandlerRestart);
 			context.RequestManager.RegisterHandler<UpdateServerConfigsReq>(HandleUpdateServerConfigs);
-			context.RequestManager.RegisterHandler<GetMetricsReq, GetMetricsRes>(HandleGetMetrics);
+			context.RequestManager.RegisterHandler<UploadFile>(HandleUploadFile);
+			context.RequestManager.RegisterHandler<GetTotalSocketMetricsReq, GetTotalSocketMetricsRes>(HandleGetTotalSocketMetrics);
+			context.RequestManager.RegisterHandler<GetDetailedSocketMetricsReq, GetDetailedSocketMetricsRes>(HandleGetDetailedSocketMetrics);
+			context.RequestManager.RegisterHandler<GetDetailedRequestMetricsReq, GetDetailedRequestMetricsRes>(HandleGetDetailedRequestMetrics);
 		}
 
 		public void Service()
@@ -120,13 +124,17 @@ namespace Backend.Admin
 			context.ConfigManager.SaveConfig(Data.Config);
 		}
 
-		//separate to 3 request
-		private GetMetricsRes HandleGetMetrics(Client Client, GetMetricsReq Data)
+		private void HandleUploadFile(Client Client, UploadFile Data)
+		{
+
+		}
+
+		private GetTotalSocketMetricsRes HandleGetTotalSocketMetrics(Client Client, GetTotalSocketMetricsReq Data)
 		{
 			if (!CheckAuditClient(Client))
 				return null;
 
-			GetMetricsRes res = new GetMetricsRes();
+			GetTotalSocketMetricsRes res = new GetTotalSocketMetricsRes();
 
 			res.CPUUsage = cpuUsageCounter.NextValue() / 100;
 
@@ -134,20 +142,46 @@ namespace Backend.Admin
 			res.MemoryUsage = 1 - (computerInfo.AvailablePhysicalMemory / (float)computerInfo.TotalPhysicalMemory);
 #endif
 
-			GetMetricsRes.Metric totalMetric = res.TotalMetric = new GetMetricsRes.Metric();
+			Metric totalMetric = res.TotalMetric = new Metric();
 
-			SocketInfo[] sockets = context.NetworkManager.Sockets;
 			RequestsStatistics[] socketStats = context.RequestManager.SocketStatistics;
-			res.SocketsMetric = new GetMetricsRes.SocketMetric[socketStats.Length];
 
 			double totalProcessTime = 0;
 
 			int i = 0;
 			for (; i < socketStats.Length; ++i)
 			{
+				RequestsStatistics socketStat = socketStats[i];
+
+				AddMetric(totalMetric, socketStat);
+
+				totalProcessTime += socketStat.TotalProcessTime;
+			}
+
+			if (totalMetric.IncomingMessageCount != 0)
+				totalMetric.AverageProcessTime = (float)(totalProcessTime / totalMetric.IncomingMessageCount);
+
+			return res;
+		}
+
+		private GetDetailedSocketMetricsRes HandleGetDetailedSocketMetrics(Client Client, GetDetailedSocketMetricsReq Data)
+		{
+			if (!CheckAuditClient(Client))
+				return null;
+
+			GetDetailedSocketMetricsRes res = new GetDetailedSocketMetricsRes();
+
+			SocketInfo[] sockets = context.NetworkManager.Sockets;
+			RequestsStatistics[] socketStats = context.RequestManager.SocketStatistics;
+			res.SocketsMetric = new SocketMetric[socketStats.Length];
+
+			double totalProcessTime = 0;
+			
+			for (int i = 0; i < socketStats.Length; ++i)
+			{
 				SocketInfo socket = sockets[i];
 				RequestsStatistics socketStat = socketStats[i];
-				GetMetricsRes.SocketMetric metric = res.SocketsMetric[i] = new GetMetricsRes.SocketMetric();
+				SocketMetric metric = res.SocketsMetric[i] = new SocketMetric();
 
 				metric.Protocol = socket.Protocol;
 				metric.Port = (ushort)socket.LocalEndPoint.Port;
@@ -158,22 +192,28 @@ namespace Backend.Admin
 				metric.ClientCount = socket.ClientCount;
 
 				AddMetric(metric, socketStat);
-				AddMetric(totalMetric, socketStat);
 
 				totalProcessTime += socketStat.TotalProcessTime;
 			}
 
-			if (totalMetric.IncomingMessageCount != 0)
-				totalMetric.AverageProcessTime = (float)(totalProcessTime / totalMetric.IncomingMessageCount);
+			return res;
+		}
+
+		private GetDetailedRequestMetricsRes HandleGetDetailedRequestMetrics(Client Client, GetDetailedRequestMetricsReq Data)
+		{
+			if (!CheckAuditClient(Client))
+				return null;
+
+			GetDetailedRequestMetricsRes res = new GetDetailedRequestMetricsRes();
 
 			RequestStatisticsMap requestStats = context.RequestManager.RequestStatistics;
-			res.RequestsMetric = new GetMetricsRes.RequestMetric[requestStats.Count];
+			res.RequestsMetric = new RequestMetric[requestStats.Count];
 
 			RequestStatisticsMap.Enumerator requestStatIt = requestStats.GetEnumerator();
-			i = 0;
+			int i = 0;
 			while (requestStatIt.MoveNext())
 			{
-				GetMetricsRes.RequestMetric metric = res.RequestsMetric[i++] = new GetMetricsRes.RequestMetric();
+				RequestMetric metric = res.RequestsMetric[i++] = new RequestMetric();
 
 				metric.Type = requestStatIt.Current.Key.Name;
 
@@ -183,7 +223,7 @@ namespace Backend.Admin
 			return res;
 		}
 
-		private void AddMetric(GetMetricsRes.Metric Metric, RequestsStatistics Stats)
+		private void AddMetric(Metric Metric, RequestsStatistics Stats)
 		{
 			Metric.IncomingMessageCount += Stats.IncomingMessageCount;
 			Metric.OutgoingMessageCount += Stats.OutgoingMessageCount;

@@ -54,7 +54,7 @@ namespace Backend.Admin
 			{
 				if (nextUpdateMetricTime <= Time.CurrentEpochTime)
 				{
-					connection.Send<GetMetricsReq, GetMetricsRes>(new GetMetricsReq(), GetMetricsHandler);
+					connection.Send<GetDetailedSocketMetricsReq, GetDetailedSocketMetricsRes>(new GetDetailedSocketMetricsReq(), GetMetricsHandler);
 
 					nextUpdateMetricTime = Time.CurrentEpochTime + UPDATE_METRICS_INTERVAL;
 				}
@@ -81,7 +81,10 @@ namespace Backend.Admin
 
 			isLoggedIn = true;
 
-			connection.Send<GetMetricsReq, GetMetricsRes>(new GetMetricsReq(), GetFirstMetricsHandler);
+			connection.Send<GetDetailedSocketMetricsReq, GetDetailedSocketMetricsRes>(new GetDetailedSocketMetricsReq(), GetFirstMetricsHandler);
+
+
+			connection.Send<UploadFile>(new UploadFile() { FilePath = "Libraries/omid.dll", Content = System.IO.File.ReadAllBytes("D:/instruction_tables.pdf") });
 		}
 
 		private void LogoutHandler(Logout Data)
@@ -91,7 +94,7 @@ namespace Backend.Admin
 			Application.Exit();
 		}
 
-		private void GetFirstMetricsHandler(GetMetricsRes Data)
+		private void GetFirstMetricsHandler(GetDetailedSocketMetricsRes Data)
 		{
 			if (Data.SocketsMetric != null)
 			{
@@ -116,15 +119,15 @@ namespace Backend.Admin
 			GetMetricsHandler(Data);
 		}
 
-		private void GetMetricsHandler(GetMetricsRes Data)
+		private void GetMetricsHandler(GetDetailedSocketMetricsRes Data)
 		{
-			cpuUsageSeries.Points.Add((int)(Data.CPUUsage * 100));
-			if (cpuUsageSeries.Points.Count > MAX_CPU_USAGE_SAMPLE_COUNT)
-				cpuUsageSeries.Points.RemoveAt(0);
+			//cpuUsageSeries.Points.Add((int)(Data.CPUUsage * 100));
+			//if (cpuUsageSeries.Points.Count > MAX_CPU_USAGE_SAMPLE_COUNT)
+			//	cpuUsageSeries.Points.RemoveAt(0);
 
-			memoryUsageSeries.Points.Add((int)(Data.MemoryUsage * 100));
-			if (memoryUsageSeries.Points.Count > MAX_MEMORY_USAGE_SAMPLE_COUNT)
-				memoryUsageSeries.Points.RemoveAt(0);
+			//memoryUsageSeries.Points.Add((int)(Data.MemoryUsage * 100));
+			//if (memoryUsageSeries.Points.Count > MAX_MEMORY_USAGE_SAMPLE_COUNT)
+			//	memoryUsageSeries.Points.RemoveAt(0);
 
 			if (Data.SocketsMetric != null)
 			{

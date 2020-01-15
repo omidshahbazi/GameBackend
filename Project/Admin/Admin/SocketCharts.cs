@@ -24,7 +24,7 @@ namespace Backend.Admin
 		private Series incomingInvalidMessageSeries = null;
 		private Series incomingFailedMessageSeries = null;
 
-		private GetMetricsRes.SocketMetric totalMetrics;
+		private SocketMetric totalMetrics;
 
 		public SocketCharts()
 		{
@@ -41,10 +41,10 @@ namespace Backend.Admin
 			incomingInvalidMessageSeries = ChartUtilities.ConfigChartSeries(incomingInvalidMessageChart, "Incoming Invalid Message");
 			incomingFailedMessageSeries = ChartUtilities.ConfigChartSeries(incomingFailedMessageChart, "Incoming Failed Message");
 
-			totalMetrics = new GetMetricsRes.SocketMetric();
+			totalMetrics = new SocketMetric();
 		}
 
-		public void AddSamples(GetMetricsRes.SocketMetric Data)
+		public void AddSamples(SocketMetric Data)
 		{
 			ccuSeries.Points.Add(Data.ClientCount);
 			if (ccuSeries.Points.Count > MAX_CCU_SAMPLE_COUNT)
