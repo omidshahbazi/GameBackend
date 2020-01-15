@@ -58,7 +58,16 @@ namespace Backend.Base.Admin
 		public Server Config;
 	}
 
-	public class UploadFile
+	public class FetchFilesReq
+	{
+	}
+
+	public class FetchFilesRes
+	{
+		public string[] FilePaths;
+	}
+
+	public class UploadFileReq
 	{
 		public string FilePath;
 		public byte[] Content;

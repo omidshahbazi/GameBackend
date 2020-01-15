@@ -119,7 +119,7 @@ namespace Backend.Core.ModuleSystem
 
 		private Assembly LoadAssembly(string FilePath)
 		{
-			FilePath = FilePath.Replace('\\', '/');
+			//FilePath = FilePath.Replace('\\', '/');
 
 			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
@@ -192,14 +192,14 @@ namespace Backend.Core.ModuleSystem
 		private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
 		{
 			string assemblyFileName = args.Name.Split(',')[0] + DLL_EXTENSION;
-			string depFilePath = Path.GetDirectoryName(ConfigManager.Instance.Server.Modules.LibrariesPath).Replace('\\', '/');
+			string depFilePath = Path.GetDirectoryName(ConfigManager.Instance.Server.Modules.LibrariesPath);//.Replace('\\', '/');
 
 			string[] files = FileSystem.GetFiles(depFilePath, assemblyFileName, SearchOption.AllDirectories);
 
 			if (files == null || files.Length == 0)
 				return null;
 
-			Assembly assembly = LoadAssemblyFromFile(files[0].Replace('\\', '/'));
+			Assembly assembly = LoadAssemblyFromFile(files[0]);//.Replace('\\', '/'));
 			if (assembly == null)
 			{
 				LogManager.Instance.WriteError("Dependency assembly [{0}] doesn't exsits", depFilePath);
@@ -234,7 +234,7 @@ namespace Backend.Core.ModuleSystem
 #if COPY_ASSEMBLY_TO_TEMP
 			string fileName = Path.GetFileName(FilePath);
 
-			string toPath = Path.Combine(tempDirectory, fileName).Replace('\\', '/');
+			string toPath = Path.Combine(tempDirectory, fileName);//.Replace('\\', '/');
 
 			FileSystem.CopyFile(FilePath, toPath, true);
 

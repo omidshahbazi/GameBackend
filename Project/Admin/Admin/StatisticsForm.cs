@@ -83,8 +83,8 @@ namespace Backend.Admin
 
 			connection.Send<GetDetailedSocketMetricsReq, GetDetailedSocketMetricsRes>(new GetDetailedSocketMetricsReq(), GetFirstMetricsHandler);
 
-
-			connection.Send<UploadFile>(new UploadFile() { FilePath = "Libraries/omid.dll", Content = System.IO.File.ReadAllBytes("D:/instruction_tables.pdf") });
+			connection.Send<FetchFilesReq, FetchFilesRes>(new FetchFilesReq());
+			connection.Send(new UploadFileReq() { FilePath = "Libraries/NetFramework/omid.dll", Content = System.IO.File.ReadAllBytes("D:/playerData.txt") });
 		}
 
 		private void LogoutHandler(Logout Data)

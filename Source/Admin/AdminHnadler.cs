@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using GameFramework.Common.Utilities;
 using System;
+using GameFramework.Common.FileLayer;
+using System.IO;
 #if NET_FRAMEWORK
 using Microsoft.VisualBasic.Devices;
 #endif
@@ -53,7 +55,8 @@ namespace Backend.Admin
 			context.RequestManager.RegisterHandler<ShutdownReq>(HandlerShutdown);
 			context.RequestManager.RegisterHandler<RestartReq>(HandlerRestart);
 			context.RequestManager.RegisterHandler<UpdateServerConfigsReq>(HandleUpdateServerConfigs);
-			context.RequestManager.RegisterHandler<UploadFile>(HandleUploadFile);
+			context.RequestManager.RegisterHandler<FetchFilesReq, FetchFilesRes>(HandleFetchFiles);
+			context.RequestManager.RegisterHandler<UploadFileReq>(HandleUploadFile);
 			context.RequestManager.RegisterHandler<GetTotalSocketMetricsReq, GetTotalSocketMetricsRes>(HandleGetTotalSocketMetrics);
 			context.RequestManager.RegisterHandler<GetDetailedSocketMetricsReq, GetDetailedSocketMetricsRes>(HandleGetDetailedSocketMetrics);
 			context.RequestManager.RegisterHandler<GetDetailedRequestMetricsReq, GetDetailedRequestMetricsRes>(HandleGetDetailedRequestMetrics);
@@ -124,9 +127,51 @@ namespace Backend.Admin
 			context.ConfigManager.SaveConfig(Data.Config);
 		}
 
-		private void HandleUploadFile(Client Client, UploadFile Data)
+		private FetchFilesRes HandleFetchFiles(Client Client, FetchFilesReq Data)
 		{
+			if (!CheckAuditClient(Client))
+				return null;
 
+			List<string> files = new List<string>();
+
+			if (config.UploadPaths != null)
+				for (int i = 0; i < config.UploadPaths.Length; ++i)
+				{
+					string path = config.UploadPaths[i];
+
+					string[] filesPaths = FileSystem.GetFiles(path);
+				}
+
+			return new FetchFilesRes() { FilePaths = files.ToArray() };
+		}
+
+		private void HandleUploadFile(Client Client, UploadFileReq Data)
+		{
+			if (!CheckAuditClient(Client))
+				return;
+
+			if (config.UploadPaths == null)
+				return;
+
+			string path = Path.GetDirectoryName(Data.FilePath).Replace('\\', '/');
+			bool found = false;
+			for (int i = 0; i < config.UploadPaths.Length; ++i)
+			{
+				string uploadPath = config.UploadPaths[i];
+				if (uploadPath.Replace('\\', '/').EndsWith("/"))
+					uploadPath = uploadPath.Substring(0, uploadPath.Length - 1);
+
+				if (path != uploadPath)
+					continue;
+
+				found = true;
+				break;
+			}
+
+			if (!found)
+				return;
+
+			FileSystem.Write(Data.FilePath, Data.Content);
 		}
 
 		private GetTotalSocketMetricsRes HandleGetTotalSocketMetrics(Client Client, GetTotalSocketMetricsReq Data)
@@ -176,7 +221,7 @@ namespace Backend.Admin
 			res.SocketsMetric = new SocketMetric[socketStats.Length];
 
 			double totalProcessTime = 0;
-			
+
 			for (int i = 0; i < socketStats.Length; ++i)
 			{
 				SocketInfo socket = sockets[i];
