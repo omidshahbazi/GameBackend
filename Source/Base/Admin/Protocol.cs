@@ -41,7 +41,7 @@ namespace Backend.Base.Admin
 		public bool Result;
 	}
 
-	public class Logout
+	public class LogoutReq
 	{
 	}
 
@@ -73,11 +73,11 @@ namespace Backend.Base.Admin
 		public byte[] Content;
 	}
 
-	public class GetTotalSocketMetricsReq
+	public class GetTotalMetricsReq
 	{
 	}
 
-	public class GetTotalSocketMetricsRes
+	public class GetTotalMetricsRes
 	{
 		public float CPUUsage;
 		public float MemoryUsage;

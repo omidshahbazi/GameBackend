@@ -38,7 +38,7 @@ namespace Backend.Admin
 			connection.OnConnectionFailed += Connection_OnConnectionFailed;
 			connection.OnDisconnected += Connection_OnDisconnected;
 
-			connection.RegisterHandler<Logout>(LogoutHandler);
+			connection.RegisterHandler<LogoutReq>(LogoutHandler);
 
 			connection.Connect(Common.ProtocolTypes.TCP, "::1", 5000);
 
@@ -87,7 +87,7 @@ namespace Backend.Admin
 			connection.Send(new UploadFileReq() { FilePath = "Libraries/NetFramework/omid.dll", Content = System.IO.File.ReadAllBytes("D:/playerData.txt") });
 		}
 
-		private void LogoutHandler(Logout Data)
+		private void LogoutHandler(LogoutReq Data)
 		{
 			isLoggedIn = false;
 

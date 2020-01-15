@@ -58,7 +58,7 @@ namespace Backend.Admin
 			context.RequestManager.RegisterHandler<UpdateServerConfigsReq>(HandleUpdateServerConfigs);
 			context.RequestManager.RegisterHandler<FetchFilesReq, FetchFilesRes>(HandleFetchFiles);
 			context.RequestManager.RegisterHandler<UploadFileReq>(HandleUploadFile);
-			context.RequestManager.RegisterHandler<GetTotalSocketMetricsReq, GetTotalSocketMetricsRes>(HandleGetTotalSocketMetrics);
+			context.RequestManager.RegisterHandler<GetTotalMetricsReq, GetTotalMetricsRes>(HandleGetTotalMetrics);
 			context.RequestManager.RegisterHandler<GetDetailedSocketMetricsReq, GetDetailedSocketMetricsRes>(HandleGetDetailedSocketMetrics);
 			context.RequestManager.RegisterHandler<GetDetailedRequestMetricsReq, GetDetailedRequestMetricsRes>(HandleGetDetailedRequestMetrics);
 		}
@@ -95,7 +95,7 @@ namespace Backend.Admin
 				{
 					Client client = auditClients[hash];
 
-					context.RequestManager.Send(client, new Logout());
+					context.RequestManager.Send(client, new LogoutReq());
 				}
 
 				auditClients[hash] = Client;
@@ -175,12 +175,12 @@ namespace Backend.Admin
 			FileSystem.Write(Data.FilePath, Data.Content);
 		}
 
-		private GetTotalSocketMetricsRes HandleGetTotalSocketMetrics(Client Client, GetTotalSocketMetricsReq Data)
+		private GetTotalMetricsRes HandleGetTotalMetrics(Client Client, GetTotalMetricsReq Data)
 		{
 			if (!CheckAuditClient(Client))
 				return null;
 
-			GetTotalSocketMetricsRes res = new GetTotalSocketMetricsRes();
+			GetTotalMetricsRes res = new GetTotalMetricsRes();
 
 			res.CPUUsage = cpuUsageCounter.NextValue() / 100;
 
