@@ -51,7 +51,7 @@ namespace Backend.Admin
 		{
 			ProfileInfo.Connection con = Configurations.Instance.Profile.LastConnection;
 
-			connection.Send<LoginReq, LoginRes>(new LoginReq() { Username = con.Username, Password = "qwer1234" }, (Data) =>
+			connection.Send<LoginReq, LoginRes>(new LoginReq() { Username = con.Username, Password = con.Password }, (Data) =>
 			{
 				if (Data.Result)
 					Close();
