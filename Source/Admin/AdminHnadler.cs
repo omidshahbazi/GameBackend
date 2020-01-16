@@ -201,9 +201,6 @@ namespace Backend.Admin
 			{
 				SocketInfo socket = sockets[i];
 
-				totalMetric.IncomingTraffic += socket.IncomingTraffic;
-				totalMetric.OutgoingTraffic += socket.OutgoingTraffic;
-
 				res.ClientCount += socket.ClientCount;
 			}
 

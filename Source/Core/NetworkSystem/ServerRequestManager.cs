@@ -37,8 +37,8 @@ namespace Backend.Core.NetworkSystem
 
 					RequestsStatistics stat = stats[i] = new RequestsStatistics();
 
-					stat.IncomingTraffic = originStat.IncomingTraffic;
-					stat.OutgoingTraffic = originStat.OutgoingTraffic;
+					stat.IncomingTraffic = info.IncomingTraffic;
+					stat.OutgoingTraffic = info.OutgoingTraffic;
 
 					stat.IncomingMessageCount = originStat.IncomingMessageCount;
 					stat.OutgoingMessageCount = originStat.OutgoingMessageCount;

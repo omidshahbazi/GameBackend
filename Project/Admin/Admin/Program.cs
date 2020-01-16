@@ -6,8 +6,6 @@ using System.Windows.Forms;
 namespace Backend.Admin
 {
 	// per client connections stats
-	// Disconneection
-	// socket traffic
 
 	static class Program
 	{
