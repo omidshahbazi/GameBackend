@@ -26,6 +26,8 @@ namespace Backend.Admin
 			connection.OnDisconnected += Connection_OnDisconnected;
 			connection.RegisterHandler<LogoutReq>(HandleLogout);
 
+			connection.Send<FetchFilesReq, FetchFilesRes>(new FetchFilesReq(), HandleFeetchFiles);
+
 			Timer_Tick(null, null);
 		}
 
@@ -41,6 +43,10 @@ namespace Backend.Admin
 		private void HandleLogout(LogoutReq Data)
 		{
 			Close();
+		}
+
+		private void HandleFeetchFiles(FetchFilesRes Data)
+		{
 		}
 
 		private void HandleGetTotalMetrics(GetTotalMetricsRes Data)

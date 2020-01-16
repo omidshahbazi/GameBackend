@@ -144,7 +144,9 @@ namespace Backend.Admin
 				{
 					string path = config.UploadPaths[i];
 
-					string[] filesPaths = FileSystem.GetFiles(path);
+					string[] filesPaths = FileSystem.GetFiles(path, "*.*", SearchOption.AllDirectories);
+
+					files.AddRange(filesPaths);
 				}
 
 			return new FetchFilesRes() { FilePaths = files.ToArray() };
