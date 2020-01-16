@@ -31,8 +31,6 @@ namespace Backend.Admin
 
 	class Configurations : Singleton<Configurations>
 	{
-		public const string UP_TIME_FORMAT = @"%d\ \D\a\y\s\ hh\:mm";
-
 		private const string FILE_NAME = "Configuration.json";
 
 		public ProfileInfo Profile;

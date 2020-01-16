@@ -204,7 +204,7 @@ namespace Backend.Admin
 				totalMetric.IncomingTraffic += socket.IncomingTraffic;
 				totalMetric.OutgoingTraffic += socket.OutgoingTraffic;
 
-				totalMetric.ClientCount += socket.ClientCount;
+				res.ClientCount += socket.ClientCount;
 			}
 
 			RequestsStatistics[] socketStats = context.RequestManager.SocketStatistics;
@@ -244,9 +244,6 @@ namespace Backend.Admin
 				metric.Protocol = socket.Protocol;
 				metric.Port = (ushort)socket.LocalEndPoint.Port;
 
-				metric.IncomingTraffic = socket.IncomingTraffic;
-				metric.OutgoingTraffic = socket.OutgoingTraffic;
-
 				metric.ClientCount = socket.ClientCount;
 
 				AddMetric(metric, socketStat);
@@ -283,6 +280,9 @@ namespace Backend.Admin
 
 		private void AddMetric(Metric Metric, RequestsStatistics Stats)
 		{
+			Metric.IncomingTraffic += Stats.IncomingTraffic;
+			Metric.OutgoingTraffic += Stats.OutgoingTraffic;
+
 			Metric.IncomingMessageCount += Stats.IncomingMessageCount;
 			Metric.OutgoingMessageCount += Stats.OutgoingMessageCount;
 			Metric.IncomingInvalidMessageCount += Stats.IncomingInvalidMessageCount;

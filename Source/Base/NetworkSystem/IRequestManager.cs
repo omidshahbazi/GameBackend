@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace Backend.Base.NetworkSystem
 {
-	//per client connections stats
-
 	public class RequestsStatistics
 	{
+		public ulong IncomingTraffic;
+		public ulong OutgoingTraffic;
+
 		public uint IncomingMessageCount;
 		public uint OutgoingMessageCount;
-
 		public uint IncomingInvalidMessageCount;
 		public uint IncomingFailedMessageCount;
 

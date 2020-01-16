@@ -30,12 +30,14 @@
 		{
 			this.mainTab = new System.Windows.Forms.TabControl();
 			this.dashboardTab = new System.Windows.Forms.TabPage();
+			this.shutdownButton = new System.Windows.Forms.Button();
+			this.restartButton = new System.Windows.Forms.Button();
+			this.socketsStatsButton = new System.Windows.Forms.Button();
+			this.requestsStasButton = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.updateIntervalBox = new System.Windows.Forms.ComboBox();
-			this.fileManagerTab = new System.Windows.Forms.TabPage();
 			this.totalMetricCharts1 = new Backend.Admin.TotalMetricCharts();
-			this.messagesStasButton = new System.Windows.Forms.Button();
-			this.socketsStatsButton = new System.Windows.Forms.Button();
+			this.fileManagerTab = new System.Windows.Forms.TabPage();
 			this.mainTab.SuspendLayout();
 			this.dashboardTab.SuspendLayout();
 			this.SuspendLayout();
@@ -54,8 +56,10 @@
 			// dashboardTab
 			// 
 			this.dashboardTab.BackColor = System.Drawing.SystemColors.Control;
+			this.dashboardTab.Controls.Add(this.shutdownButton);
+			this.dashboardTab.Controls.Add(this.restartButton);
 			this.dashboardTab.Controls.Add(this.socketsStatsButton);
-			this.dashboardTab.Controls.Add(this.messagesStasButton);
+			this.dashboardTab.Controls.Add(this.requestsStasButton);
 			this.dashboardTab.Controls.Add(this.label1);
 			this.dashboardTab.Controls.Add(this.updateIntervalBox);
 			this.dashboardTab.Controls.Add(this.totalMetricCharts1);
@@ -64,6 +68,48 @@
 			this.dashboardTab.Size = new System.Drawing.Size(1000, 703);
 			this.dashboardTab.TabIndex = 0;
 			this.dashboardTab.Text = "Dashboard";
+			// 
+			// shutdownButton
+			// 
+			this.shutdownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.shutdownButton.Location = new System.Drawing.Point(925, 0);
+			this.shutdownButton.Name = "shutdownButton";
+			this.shutdownButton.Size = new System.Drawing.Size(75, 21);
+			this.shutdownButton.TabIndex = 6;
+			this.shutdownButton.Text = "Shutdown";
+			this.shutdownButton.UseVisualStyleBackColor = true;
+			this.shutdownButton.Click += new System.EventHandler(this.ShutdownButton_Click);
+			// 
+			// restartButton
+			// 
+			this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.restartButton.Location = new System.Drawing.Point(844, 0);
+			this.restartButton.Name = "restartButton";
+			this.restartButton.Size = new System.Drawing.Size(75, 21);
+			this.restartButton.TabIndex = 5;
+			this.restartButton.Text = "Restart";
+			this.restartButton.UseVisualStyleBackColor = true;
+			this.restartButton.Click += new System.EventHandler(this.RestartButton_Click);
+			// 
+			// socketsStatsButton
+			// 
+			this.socketsStatsButton.Location = new System.Drawing.Point(232, 0);
+			this.socketsStatsButton.Name = "socketsStatsButton";
+			this.socketsStatsButton.Size = new System.Drawing.Size(75, 21);
+			this.socketsStatsButton.TabIndex = 4;
+			this.socketsStatsButton.Text = "Sockets";
+			this.socketsStatsButton.UseVisualStyleBackColor = true;
+			this.socketsStatsButton.Click += new System.EventHandler(this.SocketsStatsButton_Click);
+			// 
+			// requestsStasButton
+			// 
+			this.requestsStasButton.Location = new System.Drawing.Point(151, 0);
+			this.requestsStasButton.Name = "requestsStasButton";
+			this.requestsStasButton.Size = new System.Drawing.Size(75, 21);
+			this.requestsStasButton.TabIndex = 3;
+			this.requestsStasButton.Text = "Requests";
+			this.requestsStasButton.UseVisualStyleBackColor = true;
+			this.requestsStasButton.Click += new System.EventHandler(this.RequestsStasButton_Click);
 			// 
 			// label1
 			// 
@@ -92,15 +138,6 @@
 			this.updateIntervalBox.TabIndex = 1;
 			this.updateIntervalBox.SelectedIndexChanged += new System.EventHandler(this.UpdateInterval_SelectedIndexChanged);
 			// 
-			// fileManagerTab
-			// 
-			this.fileManagerTab.BackColor = System.Drawing.SystemColors.Control;
-			this.fileManagerTab.Location = new System.Drawing.Point(4, 22);
-			this.fileManagerTab.Name = "fileManagerTab";
-			this.fileManagerTab.Size = new System.Drawing.Size(1000, 703);
-			this.fileManagerTab.TabIndex = 1;
-			this.fileManagerTab.Text = "File Manager";
-			// 
 			// totalMetricCharts1
 			// 
 			this.totalMetricCharts1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -111,25 +148,14 @@
 			this.totalMetricCharts1.Size = new System.Drawing.Size(1000, 680);
 			this.totalMetricCharts1.TabIndex = 0;
 			// 
-			// messagesStasButton
+			// fileManagerTab
 			// 
-			this.messagesStasButton.Location = new System.Drawing.Point(844, 0);
-			this.messagesStasButton.Name = "messagesStasButton";
-			this.messagesStasButton.Size = new System.Drawing.Size(75, 21);
-			this.messagesStasButton.TabIndex = 3;
-			this.messagesStasButton.Text = "Messages";
-			this.messagesStasButton.UseVisualStyleBackColor = true;
-			this.messagesStasButton.Click += new System.EventHandler(this.MessagesStasButton_Click);
-			// 
-			// socketsStatsButton
-			// 
-			this.socketsStatsButton.Location = new System.Drawing.Point(925, 0);
-			this.socketsStatsButton.Name = "socketsStatsButton";
-			this.socketsStatsButton.Size = new System.Drawing.Size(75, 21);
-			this.socketsStatsButton.TabIndex = 4;
-			this.socketsStatsButton.Text = "Sockets";
-			this.socketsStatsButton.UseVisualStyleBackColor = true;
-			this.socketsStatsButton.Click += new System.EventHandler(this.SocketsStatsButton_Click);
+			this.fileManagerTab.BackColor = System.Drawing.SystemColors.Control;
+			this.fileManagerTab.Location = new System.Drawing.Point(4, 22);
+			this.fileManagerTab.Name = "fileManagerTab";
+			this.fileManagerTab.Size = new System.Drawing.Size(1000, 703);
+			this.fileManagerTab.TabIndex = 1;
+			this.fileManagerTab.Text = "File Manager";
 			// 
 			// AdminForm
 			// 
@@ -158,6 +184,8 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.ComboBox updateIntervalBox;
 		private System.Windows.Forms.Button socketsStatsButton;
-		private System.Windows.Forms.Button messagesStasButton;
+		private System.Windows.Forms.Button requestsStasButton;
+		private System.Windows.Forms.Button shutdownButton;
+		private System.Windows.Forms.Button restartButton;
 	}
 }

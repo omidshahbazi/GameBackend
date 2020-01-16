@@ -23,6 +23,7 @@ namespace Backend.Admin
 
 			updateIntervalBox.SelectedIndex = updateIntervalBox.Items.IndexOf(Configurations.Instance.Profile.Dashboard.RefreshInterval.ToString());
 
+			connection.OnDisconnected += Connection_OnDisconnected;
 			connection.RegisterHandler<LogoutReq>(HandleLogout);
 
 			Timer_Tick(null, null);
@@ -32,12 +33,9 @@ namespace Backend.Admin
 		{
 			base.OnClosed(e);
 
-			timer.Stop();
-		}
+			connection.OnDisconnected -= Connection_OnDisconnected;
 
-		private void Timer_Tick(object sender, EventArgs e)
-		{
-			connection.Send<GetTotalMetricsReq, GetTotalMetricsRes>(new GetTotalMetricsReq(), HandleGetTotalMetrics);
+			timer.Stop();
 		}
 
 		private void HandleLogout(LogoutReq Data)
@@ -50,6 +48,16 @@ namespace Backend.Admin
 			totalMetricCharts1.SetMetric(Data);
 		}
 
+		private void Connection_OnDisconnected(Connection Connection)
+		{
+			Close();
+		}
+
+		private void Timer_Tick(object sender, EventArgs e)
+		{
+			connection.Send<GetTotalMetricsReq, GetTotalMetricsRes>(new GetTotalMetricsReq(), HandleGetTotalMetrics);
+		}
+
 		private void UpdateInterval_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			uint interval = Convert.ToUInt32(updateIntervalBox.SelectedItem);
@@ -59,14 +67,30 @@ namespace Backend.Admin
 			timer.Interval = (int)interval * 1000;
 		}
 
-		private void MessagesStasButton_Click(object sender, EventArgs e)
+		private void RequestsStasButton_Click(object sender, EventArgs e)
 		{
-
+			new DetailedMetricForm(connection, DetailedMetricForm.Type.Request).ShowDialog();
 		}
 
 		private void SocketsStatsButton_Click(object sender, EventArgs e)
 		{
+			new DetailedMetricForm(connection, DetailedMetricForm.Type.Socket).ShowDialog();
+		}
 
+		private void RestartButton_Click(object sender, EventArgs e)
+		{
+			if (MessageBox.Show("Would you like to restart the server ?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+				return;
+
+			connection.Send(new RestartReq());
+		}
+
+		private void ShutdownButton_Click(object sender, EventArgs e)
+		{
+			if (MessageBox.Show("Would you like to shutdown the server ?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+				return;
+
+			connection.Send(new ShutdownReq());
 		}
 	}
 }
