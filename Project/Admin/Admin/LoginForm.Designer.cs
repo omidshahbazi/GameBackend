@@ -36,6 +36,7 @@
 			this.editButton = new System.Windows.Forms.Button();
 			this.cancelButton = new System.Windows.Forms.Button();
 			this.connectButton = new System.Windows.Forms.Button();
+			this.errorMessageLabel = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// connectionList
@@ -43,7 +44,7 @@
 			this.connectionList.FormattingEnabled = true;
 			this.connectionList.Location = new System.Drawing.Point(291, 15);
 			this.connectionList.Name = "connectionList";
-			this.connectionList.Size = new System.Drawing.Size(192, 160);
+			this.connectionList.Size = new System.Drawing.Size(192, 173);
 			this.connectionList.TabIndex = 0;
 			// 
 			// loginInfo
@@ -57,7 +58,7 @@
 			// 
 			// selectButton
 			// 
-			this.selectButton.Location = new System.Drawing.Point(291, 181);
+			this.selectButton.Location = new System.Drawing.Point(291, 194);
 			this.selectButton.Name = "selectButton";
 			this.selectButton.Size = new System.Drawing.Size(48, 23);
 			this.selectButton.TabIndex = 2;
@@ -66,7 +67,7 @@
 			// 
 			// addButton
 			// 
-			this.addButton.Location = new System.Drawing.Point(397, 181);
+			this.addButton.Location = new System.Drawing.Point(397, 194);
 			this.addButton.Name = "addButton";
 			this.addButton.Size = new System.Drawing.Size(34, 23);
 			this.addButton.TabIndex = 3;
@@ -75,7 +76,7 @@
 			// 
 			// deleteButton
 			// 
-			this.deleteButton.Location = new System.Drawing.Point(437, 181);
+			this.deleteButton.Location = new System.Drawing.Point(437, 194);
 			this.deleteButton.Name = "deleteButton";
 			this.deleteButton.Size = new System.Drawing.Size(46, 23);
 			this.deleteButton.TabIndex = 4;
@@ -84,7 +85,7 @@
 			// 
 			// editButton
 			// 
-			this.editButton.Location = new System.Drawing.Point(345, 181);
+			this.editButton.Location = new System.Drawing.Point(345, 194);
 			this.editButton.Name = "editButton";
 			this.editButton.Size = new System.Drawing.Size(46, 23);
 			this.editButton.TabIndex = 5;
@@ -93,7 +94,7 @@
 			// 
 			// cancelButton
 			// 
-			this.cancelButton.Location = new System.Drawing.Point(12, 181);
+			this.cancelButton.Location = new System.Drawing.Point(12, 194);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 23);
 			this.cancelButton.TabIndex = 6;
@@ -103,7 +104,7 @@
 			// 
 			// connectButton
 			// 
-			this.connectButton.Location = new System.Drawing.Point(93, 181);
+			this.connectButton.Location = new System.Drawing.Point(93, 194);
 			this.connectButton.Name = "connectButton";
 			this.connectButton.Size = new System.Drawing.Size(75, 23);
 			this.connectButton.TabIndex = 7;
@@ -111,11 +112,22 @@
 			this.connectButton.UseVisualStyleBackColor = true;
 			this.connectButton.Click += new System.EventHandler(this.ConnectButton_Click);
 			// 
+			// errorMessageLabel
+			// 
+			this.errorMessageLabel.AutoSize = true;
+			this.errorMessageLabel.ForeColor = System.Drawing.Color.Red;
+			this.errorMessageLabel.Location = new System.Drawing.Point(12, 173);
+			this.errorMessageLabel.Name = "errorMessageLabel";
+			this.errorMessageLabel.Size = new System.Drawing.Size(72, 13);
+			this.errorMessageLabel.TabIndex = 8;
+			this.errorMessageLabel.Text = "ErrorMessage";
+			// 
 			// LoginForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(500, 218);
+			this.ClientSize = new System.Drawing.Size(500, 229);
+			this.Controls.Add(this.errorMessageLabel);
 			this.Controls.Add(this.connectButton);
 			this.Controls.Add(this.cancelButton);
 			this.Controls.Add(this.editButton);
@@ -130,6 +142,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Login";
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -143,5 +156,6 @@
 		private System.Windows.Forms.Button editButton;
 		private System.Windows.Forms.Button cancelButton;
 		private System.Windows.Forms.Button connectButton;
+		private System.Windows.Forms.Label errorMessageLabel;
 	}
 }

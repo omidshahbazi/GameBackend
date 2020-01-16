@@ -20,7 +20,9 @@ namespace Backend.Admin
 
 			UpdateConnectionListUI();
 
-			cancelButton.Enabled = false;
+			SetDisconnectedStateUI();
+
+			SetErrorMessage("");
 		}
 
 		private void ConnectButton_Click(object sender, EventArgs e)
@@ -33,8 +35,7 @@ namespace Backend.Admin
 
 			connection.Connect(con.Protocol, con.Host, con.Port);
 
-			connectButton.Enabled = false;
-			cancelButton.Enabled = true;
+			SetConneectingStateUI();
 		}
 
 		protected override void OnClosed(EventArgs e)
@@ -50,9 +51,7 @@ namespace Backend.Admin
 
 			connection.Disconnect();
 
-			connectButton.Enabled = true;
-			cancelButton.Enabled = false;
-
+			SetDisconnectedStateUI();
 		}
 
 		private void Connection_OnConnected(Connection Connection)
@@ -64,7 +63,12 @@ namespace Backend.Admin
 				if (Data.Result)
 					Close();
 				else
+				{
 					connection.Disconnect();
+
+					SetDisconnectedStateUI();
+					SetErrorMessage("Invalid username or password");
+				}
 			});
 
 			connection.OnConnected -= Connection_OnConnected;
@@ -72,8 +76,9 @@ namespace Backend.Admin
 
 		private void Connection_OnConnectionFailed(Connection Connection)
 		{
-			connectButton.Enabled = true;
-			cancelButton.Enabled = false;
+			SetDisconnectedStateUI();
+
+			SetErrorMessage("Couldn't connect to host");
 		}
 
 		private void UpdateLastConnection()
@@ -111,6 +116,35 @@ namespace Backend.Admin
 			if (profileInfo.Connections != null)
 				for (int i = 0; i < profileInfo.Connections.Length; ++i)
 					connectionList.Items.Add(profileInfo.Connections[i].Name);
+		}
+
+		void SetConneectingStateUI()
+		{
+			connectButton.Enabled = false;
+			cancelButton.Enabled = true;
+
+			selectButton.Enabled = false;
+			editButton.Enabled = false;
+			addButton.Enabled = false;
+			deleteButton.Enabled = false;
+
+			SetErrorMessage("");
+		}
+
+		void SetDisconnectedStateUI()
+		{
+			connectButton.Enabled = true;
+			cancelButton.Enabled = false;
+
+			selectButton.Enabled = true;
+			editButton.Enabled = true;
+			addButton.Enabled = true;
+			deleteButton.Enabled = true;
+		}
+
+		void SetErrorMessage(string Message)
+		{
+			errorMessageLabel.Text = Message;
 		}
 	}
 }
