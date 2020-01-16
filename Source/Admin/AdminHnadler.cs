@@ -32,8 +32,12 @@ namespace Backend.Admin
 		private ComputerInfo computerInfo = null;
 #endif
 
+		private double startTime = 0;
+
 		public void Initialize(IContext Context, object Config)
 		{
+			startTime = Time.CurrentEpochTime;
+
 			context = Context;
 
 			if (Config == null)
@@ -188,16 +192,24 @@ namespace Backend.Admin
 			res.MemoryUsage = 1 - (computerInfo.AvailablePhysicalMemory / (float)computerInfo.TotalPhysicalMemory);
 #endif
 
-			res.UpTime = (Time.CurrentUTCDateTime - Process.GetCurrentProcess().StartTime).TotalSeconds;
+			res.UpTime = Time.CurrentEpochTime - startTime;
 
 			Metric totalMetric = res.TotalMetric = new Metric();
 
+			SocketInfo[] sockets = context.NetworkManager.Sockets;
+			for (int i = 0; i < sockets.Length; ++i)
+			{
+				SocketInfo socket = sockets[i];
+
+				totalMetric.IncomingTraffic += socket.IncomingTraffic;
+				totalMetric.OutgoingTraffic += socket.OutgoingTraffic;
+
+				totalMetric.ClientCount += socket.ClientCount;
+			}
+
 			RequestsStatistics[] socketStats = context.RequestManager.SocketStatistics;
-
 			double totalProcessTime = 0;
-
-			int i = 0;
-			for (; i < socketStats.Length; ++i)
+			for (int i = 0; i < socketStats.Length; ++i)
 			{
 				RequestsStatistics socketStat = socketStats[i];
 
@@ -222,9 +234,7 @@ namespace Backend.Admin
 			SocketInfo[] sockets = context.NetworkManager.Sockets;
 			RequestsStatistics[] socketStats = context.RequestManager.SocketStatistics;
 			res.SocketsMetric = new SocketMetric[socketStats.Length];
-
 			double totalProcessTime = 0;
-
 			for (int i = 0; i < socketStats.Length; ++i)
 			{
 				SocketInfo socket = sockets[i];

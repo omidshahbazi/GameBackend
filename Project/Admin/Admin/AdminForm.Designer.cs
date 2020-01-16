@@ -31,7 +31,9 @@
 			this.mainTab = new System.Windows.Forms.TabControl();
 			this.dashboardTab = new System.Windows.Forms.TabPage();
 			this.fileManagerTab = new System.Windows.Forms.TabPage();
+			this.totalMetricCharts1 = new Backend.Admin.TotalMetricCharts();
 			this.mainTab.SuspendLayout();
+			this.dashboardTab.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// mainTab
@@ -48,6 +50,7 @@
 			// dashboardTab
 			// 
 			this.dashboardTab.BackColor = System.Drawing.SystemColors.Control;
+			this.dashboardTab.Controls.Add(this.totalMetricCharts1);
 			this.dashboardTab.Location = new System.Drawing.Point(4, 22);
 			this.dashboardTab.Name = "dashboardTab";
 			this.dashboardTab.Size = new System.Drawing.Size(904, 501);
@@ -63,6 +66,13 @@
 			this.fileManagerTab.TabIndex = 1;
 			this.fileManagerTab.Text = "File Manager";
 			// 
+			// totalMetricCharts1
+			// 
+			this.totalMetricCharts1.Location = new System.Drawing.Point(0, 0);
+			this.totalMetricCharts1.Name = "totalMetricCharts1";
+			this.totalMetricCharts1.Size = new System.Drawing.Size(349, 332);
+			this.totalMetricCharts1.TabIndex = 0;
+			// 
 			// AdminForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -73,6 +83,7 @@
 			this.ShowIcon = false;
 			this.Text = "Backend Admin";
 			this.mainTab.ResumeLayout(false);
+			this.dashboardTab.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -82,5 +93,6 @@
 		private System.Windows.Forms.TabControl mainTab;
 		private System.Windows.Forms.TabPage dashboardTab;
 		private System.Windows.Forms.TabPage fileManagerTab;
+		private TotalMetricCharts totalMetricCharts1;
 	}
 }

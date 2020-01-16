@@ -6,6 +6,11 @@ namespace Backend.Base.Admin
 {
 	public class Metric
 	{
+		public ulong IncomingTraffic;
+		public ulong OutgoingTraffic;
+
+		public uint ClientCount;
+
 		public ulong IncomingMessageCount;
 		public ulong OutgoingMessageCount;
 		public ulong IncomingInvalidMessageCount;
@@ -18,11 +23,6 @@ namespace Backend.Base.Admin
 	{
 		public ProtocolType Protocol;
 		public ushort Port;
-
-		public ulong IncomingTraffic;
-		public ulong OutgoingTraffic;
-
-		public uint ClientCount;
 	}
 
 	public class RequestMetric : Metric

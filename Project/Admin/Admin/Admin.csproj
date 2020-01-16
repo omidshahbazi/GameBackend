@@ -99,6 +99,12 @@
     <Compile Include="StatisticsForm.Designer.cs">
       <DependentUpon>StatisticsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TotalMetricCharts.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TotalMetricCharts.Designer.cs">
+      <DependentUpon>TotalMetricCharts.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -125,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="StatisticsForm.resx">
       <DependentUpon>StatisticsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TotalMetricCharts.resx">
+      <DependentUpon>TotalMetricCharts.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

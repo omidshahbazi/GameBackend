@@ -7,8 +7,6 @@ namespace Backend.Admin
 {
 	public partial class AdminForm : Form
 	{
-		private const string UP_TIME_FORMAT = @"%d\ \D\a\y\s\ hh\:mm";
-
 		private Connection connection = null;
 		private Timer timer = null;
 
@@ -45,8 +43,7 @@ namespace Backend.Admin
 
 		private void HandleGetTotalMetrics(GetTotalMetricsRes Data)
 		{
-			TimeSpan sp = TimeSpan.FromSeconds(Data.UpTime);
-			string str = sp.ToString(UP_TIME_FORMAT);
+			totalMetricCharts1.SetMetric(Data);
 		}
 	}
 }

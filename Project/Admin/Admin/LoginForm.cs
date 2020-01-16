@@ -24,6 +24,8 @@ namespace Backend.Admin
 			SetDisconnectedStateUI();
 
 			SetErrorMessage("");
+
+			ConnectButton_Click(null, null);
 		}
 
 		protected override void OnClosed(EventArgs e)
