@@ -5,8 +5,6 @@ using System.Windows.Forms;
 
 namespace Backend.Admin
 {
-	// per client connections stats
-
 	static class Program
 	{
 		private static Connection connection = null;
