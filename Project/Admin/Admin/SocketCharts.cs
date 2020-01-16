@@ -4,7 +4,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Backend.Admin
 {
-	public partial class SocketCharts : UserControl
+	partial class SocketCharts : UserControl
 	{
 		private const int MAX_MEMORY_USAGE_SAMPLE_COUNT = 10;
 

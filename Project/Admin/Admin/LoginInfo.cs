@@ -4,42 +4,32 @@ using System.Windows.Forms;
 
 namespace Backend.Admin
 {
-	public partial class LoginInfo : UserControl
+	partial class LoginInfo : UserControl
 	{
-		public string ConnectionName
+		public ProfileInfo.Connection Connection
 		{
-			get { return nameBox.Text; }
-			set { nameBox.Text = value; }
-		}
+			get
+			{
+				ProfileInfo.Connection con = new ProfileInfo.Connection();
 
-		public ProtocolTypes Protocol
-		{
-			get { return (ProtocolTypes)protocolBox.SelectedItem; }
-			set { protocolBox.SelectedItem = value; }
-		}
+				con.Name = nameBox.Text;
+				con.Protocol = (ProtocolTypes)protocolBox.SelectedItem;
+				con.Host = hostBox.Text;
+				con.Port = (ushort)portBox.Value;
+				con.Username = usernameBox.Text;
+				con.Password = passwordBox.Text;
 
-		public string Host
-		{
-			get { return hostBox.Text; }
-			set { hostBox.Text = value; }
-		}
-
-		public ushort Port
-		{
-			get { return (ushort)portBox.Value; }
-			set { portBox.Value = value; }
-		}
-
-		public string Username
-		{
-			get { return usernameBox.Text; }
-			set { usernameBox.Text = value; }
-		}
-
-		public string Password
-		{
-			get { return passwordBox.Text; }
-			set { passwordBox.Text = value; }
+				return con;
+			}
+			set
+			{
+				nameBox.Text = value.Name;
+				protocolBox.SelectedItem = value.Protocol;
+				hostBox.Text = value.Host;
+				portBox.Value = value.Port;
+				usernameBox.Text = value.Username;
+				passwordBox.Text = value.Password;
+			}
 		}
 
 		public LoginInfo()

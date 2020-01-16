@@ -62,6 +62,12 @@
     </Compile>
     <Compile Include="Configurations.cs" />
     <Compile Include="ChartUtilities.cs" />
+    <Compile Include="ConnectionEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectionEdit.Designer.cs">
+      <DependentUpon>ConnectionEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +106,9 @@
   <ItemGroup>
     <EmbeddedResource Include="AdminForm.resx">
       <DependentUpon>AdminForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConnectionEdit.resx">
+      <DependentUpon>ConnectionEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>

@@ -42,14 +42,14 @@
 			// connectionList
 			// 
 			this.connectionList.FormattingEnabled = true;
-			this.connectionList.Location = new System.Drawing.Point(291, 15);
+			this.connectionList.Location = new System.Drawing.Point(291, 6);
 			this.connectionList.Name = "connectionList";
-			this.connectionList.Size = new System.Drawing.Size(192, 173);
+			this.connectionList.Size = new System.Drawing.Size(192, 147);
 			this.connectionList.TabIndex = 0;
 			// 
 			// loginInfo
 			// 
-			this.loginInfo.Location = new System.Drawing.Point(12, 12);
+			this.loginInfo.Location = new System.Drawing.Point(12, -23);
 			this.loginInfo.MaximumSize = new System.Drawing.Size(273, 158);
 			this.loginInfo.MinimumSize = new System.Drawing.Size(273, 158);
 			this.loginInfo.Name = "loginInfo";
@@ -58,43 +58,47 @@
 			// 
 			// selectButton
 			// 
-			this.selectButton.Location = new System.Drawing.Point(291, 194);
+			this.selectButton.Location = new System.Drawing.Point(291, 159);
 			this.selectButton.Name = "selectButton";
 			this.selectButton.Size = new System.Drawing.Size(48, 23);
 			this.selectButton.TabIndex = 2;
 			this.selectButton.Text = "&Select";
 			this.selectButton.UseVisualStyleBackColor = true;
+			this.selectButton.Click += new System.EventHandler(this.SelectButton_Click);
 			// 
 			// addButton
 			// 
-			this.addButton.Location = new System.Drawing.Point(397, 194);
+			this.addButton.Location = new System.Drawing.Point(397, 159);
 			this.addButton.Name = "addButton";
 			this.addButton.Size = new System.Drawing.Size(34, 23);
 			this.addButton.TabIndex = 3;
 			this.addButton.Text = "&Add";
 			this.addButton.UseVisualStyleBackColor = true;
+			this.addButton.Click += new System.EventHandler(this.AddButton_Click);
 			// 
 			// deleteButton
 			// 
-			this.deleteButton.Location = new System.Drawing.Point(437, 194);
+			this.deleteButton.Location = new System.Drawing.Point(437, 159);
 			this.deleteButton.Name = "deleteButton";
 			this.deleteButton.Size = new System.Drawing.Size(46, 23);
 			this.deleteButton.TabIndex = 4;
 			this.deleteButton.Text = "&Delete";
 			this.deleteButton.UseVisualStyleBackColor = true;
+			this.deleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
 			// 
 			// editButton
 			// 
-			this.editButton.Location = new System.Drawing.Point(345, 194);
+			this.editButton.Location = new System.Drawing.Point(345, 159);
 			this.editButton.Name = "editButton";
 			this.editButton.Size = new System.Drawing.Size(46, 23);
 			this.editButton.TabIndex = 5;
 			this.editButton.Text = "&Edit";
 			this.editButton.UseVisualStyleBackColor = true;
+			this.editButton.Click += new System.EventHandler(this.EditButton_Click);
 			// 
 			// cancelButton
 			// 
-			this.cancelButton.Location = new System.Drawing.Point(12, 194);
+			this.cancelButton.Location = new System.Drawing.Point(12, 159);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 23);
 			this.cancelButton.TabIndex = 6;
@@ -104,7 +108,7 @@
 			// 
 			// connectButton
 			// 
-			this.connectButton.Location = new System.Drawing.Point(93, 194);
+			this.connectButton.Location = new System.Drawing.Point(93, 159);
 			this.connectButton.Name = "connectButton";
 			this.connectButton.Size = new System.Drawing.Size(75, 23);
 			this.connectButton.TabIndex = 7;
@@ -116,7 +120,7 @@
 			// 
 			this.errorMessageLabel.AutoSize = true;
 			this.errorMessageLabel.ForeColor = System.Drawing.Color.Red;
-			this.errorMessageLabel.Location = new System.Drawing.Point(12, 173);
+			this.errorMessageLabel.Location = new System.Drawing.Point(12, 138);
 			this.errorMessageLabel.Name = "errorMessageLabel";
 			this.errorMessageLabel.Size = new System.Drawing.Size(72, 13);
 			this.errorMessageLabel.TabIndex = 8;
@@ -126,7 +130,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(500, 229);
+			this.ClientSize = new System.Drawing.Size(500, 188);
 			this.Controls.Add(this.errorMessageLabel);
 			this.Controls.Add(this.connectButton);
 			this.Controls.Add(this.cancelButton);

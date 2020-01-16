@@ -7,7 +7,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Backend.Admin
 {
-	public partial class StatisticsForm : Form
+	partial class StatisticsForm : Form
 	{
 		private const float UPDATE_METRICS_INTERVAL = 1.0F;
 		private const int MAX_CPU_USAGE_SAMPLE_COUNT = 10;

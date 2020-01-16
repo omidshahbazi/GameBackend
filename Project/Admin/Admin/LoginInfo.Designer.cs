@@ -56,7 +56,7 @@
 			this.label1.Location = new System.Drawing.Point(3, 6);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(38, 13);
-			this.label1.TabIndex = 1;
+			this.label1.TabIndex = 10;
 			this.label1.Text = "Name:";
 			// 
 			// label2
@@ -65,7 +65,7 @@
 			this.label2.Location = new System.Drawing.Point(3, 32);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(49, 13);
-			this.label2.TabIndex = 3;
+			this.label2.TabIndex = 10;
 			this.label2.Text = "Protocol:";
 			// 
 			// label3
@@ -74,7 +74,7 @@
 			this.label3.Location = new System.Drawing.Point(3, 59);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(32, 13);
-			this.label3.TabIndex = 5;
+			this.label3.TabIndex = 10;
 			this.label3.Text = "Host:";
 			// 
 			// hostBox
@@ -82,7 +82,7 @@
 			this.hostBox.Location = new System.Drawing.Point(67, 56);
 			this.hostBox.Name = "hostBox";
 			this.hostBox.Size = new System.Drawing.Size(200, 20);
-			this.hostBox.TabIndex = 4;
+			this.hostBox.TabIndex = 2;
 			// 
 			// protocolBox
 			// 
@@ -91,7 +91,7 @@
 			this.protocolBox.Location = new System.Drawing.Point(67, 29);
 			this.protocolBox.Name = "protocolBox";
 			this.protocolBox.Size = new System.Drawing.Size(200, 21);
-			this.protocolBox.TabIndex = 6;
+			this.protocolBox.TabIndex = 1;
 			// 
 			// label4
 			// 
@@ -99,7 +99,7 @@
 			this.label4.Location = new System.Drawing.Point(3, 84);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(29, 13);
-			this.label4.TabIndex = 8;
+			this.label4.TabIndex = 10;
 			this.label4.Text = "Port:";
 			// 
 			// portBox
@@ -112,7 +112,7 @@
             0});
 			this.portBox.Name = "portBox";
 			this.portBox.Size = new System.Drawing.Size(200, 20);
-			this.portBox.TabIndex = 9;
+			this.portBox.TabIndex = 3;
 			// 
 			// label5
 			// 
@@ -120,7 +120,7 @@
 			this.label5.Location = new System.Drawing.Point(3, 111);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(58, 13);
-			this.label5.TabIndex = 11;
+			this.label5.TabIndex = 10;
 			this.label5.Text = "Username:";
 			// 
 			// usernameBox
@@ -128,7 +128,7 @@
 			this.usernameBox.Location = new System.Drawing.Point(67, 108);
 			this.usernameBox.Name = "usernameBox";
 			this.usernameBox.Size = new System.Drawing.Size(200, 20);
-			this.usernameBox.TabIndex = 10;
+			this.usernameBox.TabIndex = 4;
 			// 
 			// label6
 			// 
@@ -136,7 +136,7 @@
 			this.label6.Location = new System.Drawing.Point(3, 137);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(56, 13);
-			this.label6.TabIndex = 13;
+			this.label6.TabIndex = 10;
 			this.label6.Text = "Password:";
 			// 
 			// passwordBox
@@ -144,7 +144,7 @@
 			this.passwordBox.Location = new System.Drawing.Point(67, 134);
 			this.passwordBox.Name = "passwordBox";
 			this.passwordBox.Size = new System.Drawing.Size(200, 20);
-			this.passwordBox.TabIndex = 12;
+			this.passwordBox.TabIndex = 5;
 			this.passwordBox.UseSystemPasswordChar = true;
 			// 
 			// LoginInfo
