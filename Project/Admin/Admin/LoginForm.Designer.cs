@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.connectionList = new System.Windows.Forms.ListBox();
-			this.loginInfo1 = new Backend.Admin.LoginInfo();
+			this.loginInfo = new Backend.Admin.LoginInfo();
 			this.selectButton = new System.Windows.Forms.Button();
 			this.addButton = new System.Windows.Forms.Button();
 			this.deleteButton = new System.Windows.Forms.Button();
@@ -46,14 +46,14 @@
 			this.connectionList.Size = new System.Drawing.Size(192, 160);
 			this.connectionList.TabIndex = 0;
 			// 
-			// loginInfo1
+			// loginInfo
 			// 
-			this.loginInfo1.Location = new System.Drawing.Point(12, 12);
-			this.loginInfo1.MaximumSize = new System.Drawing.Size(273, 158);
-			this.loginInfo1.MinimumSize = new System.Drawing.Size(273, 158);
-			this.loginInfo1.Name = "loginInfo1";
-			this.loginInfo1.Size = new System.Drawing.Size(273, 158);
-			this.loginInfo1.TabIndex = 1;
+			this.loginInfo.Location = new System.Drawing.Point(12, 12);
+			this.loginInfo.MaximumSize = new System.Drawing.Size(273, 158);
+			this.loginInfo.MinimumSize = new System.Drawing.Size(273, 158);
+			this.loginInfo.Name = "loginInfo";
+			this.loginInfo.Size = new System.Drawing.Size(273, 158);
+			this.loginInfo.TabIndex = 1;
 			// 
 			// selectButton
 			// 
@@ -99,6 +99,7 @@
 			this.cancelButton.TabIndex = 6;
 			this.cancelButton.Text = "Cance&l";
 			this.cancelButton.UseVisualStyleBackColor = true;
+			this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
 			// 
 			// connectButton
 			// 
@@ -108,6 +109,7 @@
 			this.connectButton.TabIndex = 7;
 			this.connectButton.Text = "&Connect";
 			this.connectButton.UseVisualStyleBackColor = true;
+			this.connectButton.Click += new System.EventHandler(this.ConnectButton_Click);
 			// 
 			// LoginForm
 			// 
@@ -120,7 +122,7 @@
 			this.Controls.Add(this.deleteButton);
 			this.Controls.Add(this.addButton);
 			this.Controls.Add(this.selectButton);
-			this.Controls.Add(this.loginInfo1);
+			this.Controls.Add(this.loginInfo);
 			this.Controls.Add(this.connectionList);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "LoginForm";
@@ -134,7 +136,7 @@
 		#endregion
 
 		private System.Windows.Forms.ListBox connectionList;
-		private LoginInfo loginInfo1;
+		private LoginInfo loginInfo;
 		private System.Windows.Forms.Button selectButton;
 		private System.Windows.Forms.Button addButton;
 		private System.Windows.Forms.Button deleteButton;

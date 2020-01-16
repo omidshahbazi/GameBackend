@@ -26,6 +26,13 @@ namespace Backend.Admin
 			connection.RegisterHandler<LogoutReq>(HandleLogout);
 		}
 
+		protected override void OnClosed(EventArgs e)
+		{
+			base.OnClosed(e);
+
+			timer.Stop();
+		}
+
 		private void Timer_Tick(object sender, EventArgs e)
 		{
 			connection.Send<GetTotalMetricsReq, GetTotalMetricsRes>(new GetTotalMetricsReq(), HandleGetTotalMetrics);

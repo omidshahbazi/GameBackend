@@ -15,13 +15,26 @@ namespace Backend.Admin
 			connection.OnConnectionFailed += Connection_OnConnectionFailed;
 
 			InitializeComponent();
+
+			UpdateLastConnectionUI();
+
+			UpdateConnectionListUI();
+
+			cancelButton.Enabled = false;
 		}
 
-		protected override void OnLoad(EventArgs e)
+		private void ConnectButton_Click(object sender, EventArgs e)
 		{
-			base.OnLoad(e);
+			UpdateLastConnection();
 
-			Connect();
+			connection.OnConnected += Connection_OnConnected;
+
+			ProfileInfo.Connection con = Configurations.Instance.Profile.LastConnection;
+
+			connection.Connect(con.Protocol, con.Host, con.Port);
+
+			connectButton.Enabled = false;
+			cancelButton.Enabled = true;
 		}
 
 		protected override void OnClosed(EventArgs e)
@@ -31,20 +44,15 @@ namespace Backend.Admin
 			connection.OnConnectionFailed += Connection_OnConnectionFailed;
 		}
 
-		private void Connect()
-		{
-			connection.OnConnected += Connection_OnConnected;
-
-			ProfileInfo.Connection con = Configurations.Instance.Profile.LastConnection;
-
-			connection.Connect(con.Protocol, con.Host, con.Port);
-		}
-
-		private void CancelConnect()
+		private void CancelButton_Click(object sender, EventArgs e)
 		{
 			connection.OnConnected -= Connection_OnConnected;
 
 			connection.Disconnect();
+
+			connectButton.Enabled = true;
+			cancelButton.Enabled = false;
+
 		}
 
 		private void Connection_OnConnected(Connection Connection)
@@ -64,6 +72,45 @@ namespace Backend.Admin
 
 		private void Connection_OnConnectionFailed(Connection Connection)
 		{
+			connectButton.Enabled = true;
+			cancelButton.Enabled = false;
+		}
+
+		private void UpdateLastConnection()
+		{
+			ProfileInfo.Connection con = new ProfileInfo.Connection();
+			con.Name = loginInfo.ConnectionName;
+			con.Protocol = loginInfo.Protocol;
+			con.Host = loginInfo.Host;
+			con.Port = loginInfo.Port;
+			con.Username = loginInfo.Username;
+			con.Password = loginInfo.Password;
+
+			Configurations.Instance.Profile.LastConnection = con;
+
+			Configurations.Instance.Save();
+		}
+
+		private void UpdateLastConnectionUI()
+		{
+			ProfileInfo.Connection con = Configurations.Instance.Profile.LastConnection;
+			loginInfo.ConnectionName = con.Name;
+			loginInfo.Protocol = con.Protocol;
+			loginInfo.Host = con.Host;
+			loginInfo.Port = con.Port;
+			loginInfo.Username = con.Username;
+			loginInfo.Password = con.Password;
+		}
+
+		private void UpdateConnectionListUI()
+		{
+			connectionList.Items.Clear();
+
+			ProfileInfo profileInfo = Configurations.Instance.Profile;
+
+			if (profileInfo.Connections != null)
+				for (int i = 0; i < profileInfo.Connections.Length; ++i)
+					connectionList.Items.Add(profileInfo.Connections[i].Name);
 		}
 	}
 }
