@@ -74,6 +74,12 @@
     <Compile Include="DetailedMetricForm.Designer.cs">
       <DependentUpon>DetailedMetricForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileManager.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FileManager.Designer.cs">
+      <DependentUpon>FileManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +124,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DetailedMetricForm.resx">
       <DependentUpon>DetailedMetricForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FileManager.resx">
+      <DependentUpon>FileManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>

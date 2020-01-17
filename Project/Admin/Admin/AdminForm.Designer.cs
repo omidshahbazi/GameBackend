@@ -38,8 +38,10 @@
 			this.updateIntervalBox = new System.Windows.Forms.ComboBox();
 			this.totalMetricCharts1 = new Backend.Admin.TotalMetricCharts();
 			this.fileManagerTab = new System.Windows.Forms.TabPage();
+			this.fileManager1 = new Backend.Admin.FileManager();
 			this.mainTab.SuspendLayout();
 			this.dashboardTab.SuspendLayout();
+			this.fileManagerTab.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// mainTab
@@ -151,11 +153,20 @@
 			// fileManagerTab
 			// 
 			this.fileManagerTab.BackColor = System.Drawing.SystemColors.Control;
+			this.fileManagerTab.Controls.Add(this.fileManager1);
 			this.fileManagerTab.Location = new System.Drawing.Point(4, 22);
 			this.fileManagerTab.Name = "fileManagerTab";
 			this.fileManagerTab.Size = new System.Drawing.Size(1000, 703);
 			this.fileManagerTab.TabIndex = 1;
 			this.fileManagerTab.Text = "File Manager";
+			// 
+			// fileManager1
+			// 
+			this.fileManager1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.fileManager1.Location = new System.Drawing.Point(0, 0);
+			this.fileManager1.Name = "fileManager1";
+			this.fileManager1.Size = new System.Drawing.Size(1000, 703);
+			this.fileManager1.TabIndex = 0;
 			// 
 			// AdminForm
 			// 
@@ -171,6 +182,7 @@
 			this.mainTab.ResumeLayout(false);
 			this.dashboardTab.ResumeLayout(false);
 			this.dashboardTab.PerformLayout();
+			this.fileManagerTab.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -187,5 +199,6 @@
 		private System.Windows.Forms.Button requestsStasButton;
 		private System.Windows.Forms.Button shutdownButton;
 		private System.Windows.Forms.Button restartButton;
+		private FileManager fileManager1;
 	}
 }
