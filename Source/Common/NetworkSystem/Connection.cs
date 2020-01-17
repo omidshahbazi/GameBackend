@@ -1,5 +1,4 @@
 ﻿// Copyright 2019. All Rights Reserved.
-using Backend.Common;
 using GameFramework.BinarySerializer;
 using GameFramework.Networking;
 using System;
@@ -15,7 +14,7 @@ namespace Backend.Common.NetworkSystem
 
 		public bool IsConnected
 		{
-			get { return socket.IsConnected; }
+			get { return (socket == null ? false : socket.IsConnected); }
 		}
 
 		public event ConnectionEventHandler OnConnected;
@@ -48,6 +47,9 @@ namespace Backend.Common.NetworkSystem
 
 		public void Disconnect()
 		{
+			if (socket == null)
+				return;
+
 			socket.Disconnect();
 
 			socket.OnConnected -= Socket_OnConnected;

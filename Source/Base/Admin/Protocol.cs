@@ -4,6 +4,31 @@ using System.Net.Sockets;
 
 namespace Backend.Base.Admin
 {
+	public class Metric
+	{
+		public ulong IncomingTraffic;
+		public ulong OutgoingTraffic;
+
+		public ulong IncomingMessageCount;
+		public ulong OutgoingMessageCount;
+		public ulong IncomingInvalidMessageCount;
+		public ulong IncomingFailedMessageCount;
+
+		public float AverageProcessTime;
+	}
+
+	public class SocketMetric : Metric
+	{
+		public ProtocolType Protocol;
+		public ushort Port;
+		public uint ClientCount;
+	}
+
+	public class RequestMetric : Metric
+	{
+		public string Type;
+	}
+
 	public class LoginReq
 	{
 		public string Username;
@@ -15,7 +40,7 @@ namespace Backend.Base.Admin
 		public bool Result;
 	}
 
-	public class Logout
+	public class LogoutReq
 	{
 	}
 
@@ -32,31 +57,54 @@ namespace Backend.Base.Admin
 		public Server Config;
 	}
 
-	public class GetMetricsReq
+	public class FetchFilesReq
 	{
 	}
 
-	public class GetMetricsRes
+	public class FetchFilesRes
 	{
-		public class SocketMetric
-		{
-			public ProtocolType Protocol;
-			public ushort Port;
+		public string[] FilePaths;
+	}
 
-			public ulong IncomingTraffic;
-			public ulong OutgoingTraffic;
+	public class UploadFileReq
+	{
+		public string FilePath;
+		public byte[] Content;
+	}
 
-			public uint ClientCount;
+	public class DeleteFileReq
+	{
+		public string FilePath;
+	}
 
-			public ulong IncomingMessageCount;
-			public ulong OutgoingMessageCount;
-			public ulong IncomingInvalidMessageCount;
-			public ulong IncomingFailedMessageCount;
-		}
+	public class GetTotalMetricsReq
+	{
+	}
 
+	public class GetTotalMetricsRes
+	{
 		public float CPUUsage;
 		public float MemoryUsage;
+		public double UpTime;
+		public uint ClientCount;
+		public Metric TotalMetric;
+	}
 
+	public class GetDetailedSocketMetricsReq
+	{
+	}
+
+	public class GetDetailedSocketMetricsRes
+	{
 		public SocketMetric[] SocketsMetric;
+	}
+
+	public class GetDetailedRequestMetricsReq
+	{
+	}
+
+	public class GetDetailedRequestMetricsRes
+	{
+		public RequestMetric[] RequestsMetric;
 	}
 }

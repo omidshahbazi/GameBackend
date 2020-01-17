@@ -4,6 +4,7 @@ using Backend.Common.NetworkSystem;
 using Backend.Core.LogSystem;
 using GameFramework.BinarySerializer;
 using GameFramework.Common.MemoryManagement;
+using GameFramework.Common.Timing;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,13 +16,14 @@ namespace Backend.Core.NetworkSystem
 		private class RequestMap : Dictionary<uint, Action<Client, uint, object>>
 		{ }
 
-		private class StatisticsMap : Dictionary<uint, RequestsStatistics>
+		private class SocketStatisticsMap : Dictionary<uint, RequestsStatistics>
 		{ }
 
 		private RequestMap handlers = null;
-		private StatisticsMap statistics = null;
+		private SocketStatisticsMap socketStatistics = null;
+		private RequestStatisticsMap requestStatistics = null;
 
-		public RequestsStatistics[] Statistics
+		public RequestsStatistics[] SocketStatistics
 		{
 			get
 			{
@@ -31,19 +33,29 @@ namespace Backend.Core.NetworkSystem
 				for (int i = 0; i < sockets.Length; ++i)
 				{
 					SocketInfo info = sockets[i];
-					RequestsStatistics originStat = statistics[Client.GetSocketInfoHash(info.LocalEndPoint, info.Protocol)];
+					RequestsStatistics originStat = socketStatistics[Client.GetSocketInfoHash(info.LocalEndPoint, info.Protocol)];
 
 					RequestsStatistics stat = stats[i] = new RequestsStatistics();
+
+					stat.IncomingTraffic = info.IncomingTraffic;
+					stat.OutgoingTraffic = info.OutgoingTraffic;
 
 					stat.IncomingMessageCount = originStat.IncomingMessageCount;
 					stat.OutgoingMessageCount = originStat.OutgoingMessageCount;
 
 					stat.IncomingInvalidMessageCount = originStat.IncomingInvalidMessageCount;
 					stat.IncomingFailedMessageCount = originStat.IncomingFailedMessageCount;
+
+					stat.TotalProcessTime = originStat.TotalProcessTime;
 				}
 
 				return stats;
 			}
+		}
+
+		public RequestStatisticsMap RequestStatistics
+		{
+			get { return new RequestStatisticsMap(requestStatistics); }
 		}
 
 		private ServerRequestManager()
@@ -54,20 +66,22 @@ namespace Backend.Core.NetworkSystem
 		{
 			handlers = new RequestMap();
 
-			statistics = new StatisticsMap();
+			socketStatistics = new SocketStatisticsMap();
 			SocketInfo[] sockets = NetworkManager.Instance.Sockets;
 			for (int i = 0; i < sockets.Length; ++i)
 			{
 				SocketInfo info = sockets[i];
 
-				statistics[Client.GetSocketInfoHash(info.LocalEndPoint, info.Protocol)] = new RequestsStatistics();
+				socketStatistics[Client.GetSocketInfoHash(info.LocalEndPoint, info.Protocol)] = new RequestsStatistics();
 			}
+
+			requestStatistics = new RequestStatisticsMap();
 		}
 
 		public void Shutdown()
 		{
 			handlers.Clear();
-			statistics.Clear();
+			socketStatistics.Clear();
 		}
 
 		public void Service()
@@ -77,13 +91,18 @@ namespace Backend.Core.NetworkSystem
 		public void RegisterHandler<ArgT>(Action<Client, ArgT> Handler)
 			where ArgT : class
 		{
+			requestStatistics[typeof(ArgT)] = new RequestsStatistics();
+
 			uint typeID = MessageCreator.Instance.Register<ArgT>();
 
 			handlers[typeID] = (Client, ID, Argument) =>
 			{
 				Handler(Client, (ArgT)Argument);
 
-				SendInternal(Client, ID, typeID, (object)null);
+				SendInternal<ArgT>(Client, ID, typeID, (object)null);
+
+				RequestsStatistics stats = GetSocketStatistics(Client);
+				++stats.OutgoingMessageCount;
 			};
 		}
 
@@ -91,6 +110,8 @@ namespace Backend.Core.NetworkSystem
 			where ArgT : class
 			where ResT : class
 		{
+			requestStatistics[typeof(ArgT)] = new RequestsStatistics();
+
 			uint typeID = MessageCreator.Instance.Register<ArgT>();
 			typeID += MessageCreator.Instance.Register<ResT>();
 
@@ -98,22 +119,31 @@ namespace Backend.Core.NetworkSystem
 			{
 				ResT res = Handler(Client, (ArgT)Argument);
 
-				SendInternal(Client, ID, typeID, res);
+				SendInternal<ArgT>(Client, ID, typeID, res);
+
+				RequestsStatistics stats = GetSocketStatistics(Client);
+				++stats.OutgoingMessageCount;
 			};
 		}
 
-		public void Send<T>(Client Client, T Argument)
-			where T : class
+		public void Send<ArgT>(Client Client, ArgT Argument)
+			where ArgT : class
 		{
-			uint typeID = MessageCreator.Instance.Register<T>();
+			requestStatistics[typeof(ArgT)] = new RequestsStatistics();
 
-			SendInternal(Client, 0, typeID, Argument);
+			uint typeID = MessageCreator.Instance.Register<ArgT>();
+
+			SendInternal<ArgT>(Client, 0, typeID, Argument);
+
+			RequestsStatistics stats = GetSocketStatistics(Client);
+			++stats.OutgoingMessageCount;
 		}
 
 		public void DispatchBuffer(Client Client, BufferStream Buffer)
 		{
-			RequestsStatistics stats = GetStatistics(Client);
-			++stats.IncomingMessageCount;
+			RequestsStatistics sockStats = GetSocketStatistics(Client);
+
+			++sockStats.IncomingMessageCount;
 
 			uint id = 0;
 			uint requestTypeID = 0;
@@ -126,13 +156,20 @@ namespace Backend.Core.NetworkSystem
 
 			if (obj == null)
 			{
-				++stats.IncomingInvalidMessageCount;
+				++sockStats.IncomingInvalidMessageCount;
 
 				LogManager.Instance.WriteWarning("Client [{0}] sent an unknown packet, going to disconnect client", Client);
 
 				Client.Disconnect();
 
 				return;
+			}
+
+			RequestsStatistics reqStats = GetRequestStatistics(obj.GetType());
+			if (reqStats != null)
+			{
+				++reqStats.IncomingMessageCount;
+				reqStats.IncomingTraffic += Buffer.Size;
 			}
 
 			if (!handlers.ContainsKey(requestTypeID))
@@ -144,18 +181,27 @@ namespace Backend.Core.NetworkSystem
 
 			try
 			{
+				double startTime = Time.CurrentEpochTime;
+
 				handlers[requestTypeID](Client, id, obj);
+
+				double processTime = Time.CurrentEpochTime - startTime;
+				sockStats.TotalProcessTime += processTime;
+				if (reqStats != null)
+					reqStats.TotalProcessTime += processTime;
 			}
 			catch (Exception e)
 			{
-				++stats.IncomingFailedMessageCount;
+				++sockStats.IncomingFailedMessageCount;
+				if (reqStats != null)
+					++reqStats.IncomingFailedMessageCount;
 
 				LogManager.Instance.WriteException(e, "Dispatching [{0}] from [{1}] failed", obj.GetType(), Client);
 			}
 		}
 
-		private void SendInternal<T>(Client Client, uint ID, uint RequestTypeID, T Argument)
-			where T : class
+		private void SendInternal<ArgT>(Client Client, uint ID, uint RequestTypeID, object Argument)
+			where ArgT : class
 		{
 			BufferStream buffer = new BufferStream(new MemoryStream());
 
@@ -164,14 +210,23 @@ namespace Backend.Core.NetworkSystem
 
 			Client.WriteBuffer(buffer.Buffer, 0, buffer.Size);
 
-			RequestsStatistics stats = GetStatistics(Client);
+			RequestsStatistics stats = GetRequestStatistics(typeof(ArgT));
 			++stats.OutgoingMessageCount;
+			stats.OutgoingTraffic += buffer.Size;
 		}
 
-		private RequestsStatistics GetStatistics(Client Client)
+		private RequestsStatistics GetSocketStatistics(Client Client)
 		{
-			if (statistics.ContainsKey(Client.SocketHash))
-				return statistics[Client.SocketHash];
+			if (socketStatistics.ContainsKey(Client.SocketHash))
+				return socketStatistics[Client.SocketHash];
+
+			return null;
+		}
+
+		private RequestsStatistics GetRequestStatistics(Type RequestType)
+		{
+			if (requestStatistics.ContainsKey(RequestType))
+				return requestStatistics[RequestType];
 
 			return null;
 		}

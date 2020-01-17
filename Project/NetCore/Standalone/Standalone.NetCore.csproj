@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageId>Base.NetCore</PackageId>
-    <Authors>Base.NetCore</Authors>
-    <Company>Base.NetCore</Company>
-    <Product>Base.NetCore</Product>
-    <AssemblyName>Base.NetCore</AssemblyName>
-    <RootNamespace>Base.NetCore</RootNamespace>
+    <PackageId>Standalone.NetCore</PackageId>
+    <Authors>Standalone.NetCore</Authors>
+    <Company>Standalone.NetCore</Company>
+    <Product>Standalone.NetCore</Product>
+    <AssemblyName>Standalone.NetCore</AssemblyName>
+    <RootNamespace>Standalone.NetCore</RootNamespace>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
     <StartupObject />

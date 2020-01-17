@@ -48,10 +48,10 @@
 
   <ItemGroup>
     <Reference Include="BinarySerializerManaged">
-      <HintPath>..\..\..\..\Backend\Libraries\BinarySerializerManaged.dll</HintPath>
+      <HintPath>..\..\..\Libraries\BinarySerializerManaged.dll</HintPath>
     </Reference>
     <Reference Include="CommonManaged">
-      <HintPath>..\..\..\..\backend\Libraries\CommonManaged.dll</HintPath>
+      <HintPath>..\..\..\Libraries\CommonManaged.dll</HintPath>
     </Reference>
     <Reference Include="NetworkingManaged.NetCore">
       <HintPath>..\..\..\Libraries\NetworkingManaged.NetCore.dll</HintPath>

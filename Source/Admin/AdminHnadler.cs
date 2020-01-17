@@ -6,6 +6,10 @@ using Backend.Base.NetworkSystem;
 using System.Diagnostics;
 using System.Collections.Generic;
 using GameFramework.Common.Utilities;
+using System;
+using GameFramework.Common.FileLayer;
+using System.IO;
+using GameFramework.Common.Timing;
 #if NET_FRAMEWORK
 using Microsoft.VisualBasic.Devices;
 #endif
@@ -13,16 +17,6 @@ using Microsoft.VisualBasic.Devices;
 namespace Backend.Admin
 {
 	//https://www.digitalocean.com/community/tutorials/an-introduction-to-metrics-monitoring-and-alerting
-	//CPU
-	//Memory
-	//Disk space
-	//Processes
-	//Performance and latency of responses
-	//Connectivity
-	//Error rates and packet loss
-	//Latency
-	//Bandwidth utilization
-
 	class AdminHnadler : IModule
 	{
 		private class AuditClientMap : Dictionary<uint, Client>
@@ -38,8 +32,12 @@ namespace Backend.Admin
 		private ComputerInfo computerInfo = null;
 #endif
 
+		private double startTime = 0;
+
 		public void Initialize(IContext Context, object Config)
 		{
+			startTime = Time.CurrentEpochTime;
+
 			context = Context;
 
 			if (Config == null)
@@ -62,7 +60,12 @@ namespace Backend.Admin
 			context.RequestManager.RegisterHandler<ShutdownReq>(HandlerShutdown);
 			context.RequestManager.RegisterHandler<RestartReq>(HandlerRestart);
 			context.RequestManager.RegisterHandler<UpdateServerConfigsReq>(HandleUpdateServerConfigs);
-			context.RequestManager.RegisterHandler<GetMetricsReq, GetMetricsRes>(HandleGetMetrics);
+			context.RequestManager.RegisterHandler<FetchFilesReq, FetchFilesRes>(HandleFetchFiles);
+			context.RequestManager.RegisterHandler<DeleteFileReq>(HandleDeleteFile);
+			context.RequestManager.RegisterHandler<UploadFileReq>(HandleUploadFile);
+			context.RequestManager.RegisterHandler<GetTotalMetricsReq, GetTotalMetricsRes>(HandleGetTotalMetrics);
+			context.RequestManager.RegisterHandler<GetDetailedSocketMetricsReq, GetDetailedSocketMetricsRes>(HandleGetDetailedSocketMetrics);
+			context.RequestManager.RegisterHandler<GetDetailedRequestMetricsReq, GetDetailedRequestMetricsRes>(HandleGetDetailedRequestMetrics);
 		}
 
 		public void Service()
@@ -97,7 +100,7 @@ namespace Backend.Admin
 				{
 					Client client = auditClients[hash];
 
-					context.RequestManager.Send(client, new Logout());
+					context.RequestManager.Send(client, new LogoutReq());
 				}
 
 				auditClients[hash] = Client;
@@ -130,12 +133,54 @@ namespace Backend.Admin
 			context.ConfigManager.SaveConfig(Data.Config);
 		}
 
-		private GetMetricsRes HandleGetMetrics(Client Client, GetMetricsReq Data)
+		private FetchFilesRes HandleFetchFiles(Client Client, FetchFilesReq Data)
 		{
 			if (!CheckAuditClient(Client))
 				return null;
 
-			GetMetricsRes res = new GetMetricsRes();
+			List<string> files = new List<string>();
+
+			if (config.UploadPaths != null)
+				for (int i = 0; i < config.UploadPaths.Length; ++i)
+				{
+					string path = config.UploadPaths[i];
+
+					string[] filesPaths = FileSystem.GetFiles(path, "*.*", SearchOption.AllDirectories);
+
+					files.AddRange(filesPaths);
+				}
+
+			return new FetchFilesRes() { FilePaths = files.ToArray() };
+		}
+
+		private void HandleDeleteFile(Client Client, DeleteFileReq Data)
+		{
+			if (!CheckAuditClient(Client))
+				return;
+
+			if (!IsFileInGrantedDirectories(Data.FilePath))
+				return;
+			
+			FileSystem.DeleteFile(Data.FilePath);
+		}
+
+		private void HandleUploadFile(Client Client, UploadFileReq Data)
+		{
+			if (!CheckAuditClient(Client))
+				return;
+
+			if (!IsFileInGrantedDirectories(Data.FilePath))
+				return;
+
+			FileSystem.Write(Data.FilePath, Data.Content);
+		}
+
+		private GetTotalMetricsRes HandleGetTotalMetrics(Client Client, GetTotalMetricsReq Data)
+		{
+			if (!CheckAuditClient(Client))
+				return null;
+
+			GetTotalMetricsRes res = new GetTotalMetricsRes();
 
 			res.CPUUsage = cpuUsageCounter.NextValue() / 100;
 
@@ -143,31 +188,101 @@ namespace Backend.Admin
 			res.MemoryUsage = 1 - (computerInfo.AvailablePhysicalMemory / (float)computerInfo.TotalPhysicalMemory);
 #endif
 
-			SocketInfo[] sockets = context.NetworkManager.Sockets;
-			RequestsStatistics[] stats = context.RequestManager.Statistics;
-			res.SocketsMetric = new GetMetricsRes.SocketMetric[stats.Length];
+			res.UpTime = Time.CurrentEpochTime - startTime;
 
-			for (int i = 0; i < stats.Length; ++i)
+			Metric totalMetric = res.TotalMetric = new Metric();
+
+			SocketInfo[] sockets = context.NetworkManager.Sockets;
+			for (int i = 0; i < sockets.Length; ++i)
 			{
 				SocketInfo socket = sockets[i];
-				RequestsStatistics stat = stats[i];
-				GetMetricsRes.SocketMetric metric = res.SocketsMetric[i] = new GetMetricsRes.SocketMetric();
+
+				res.ClientCount += socket.ClientCount;
+			}
+
+			RequestsStatistics[] socketStats = context.RequestManager.SocketStatistics;
+			double totalProcessTime = 0;
+			for (int i = 0; i < socketStats.Length; ++i)
+			{
+				RequestsStatistics socketStat = socketStats[i];
+
+				AddMetric(totalMetric, socketStat);
+
+				totalProcessTime += socketStat.TotalProcessTime;
+			}
+
+			if (totalMetric.IncomingMessageCount != 0)
+				totalMetric.AverageProcessTime = (float)(totalProcessTime / totalMetric.IncomingMessageCount);
+
+			return res;
+		}
+
+		private GetDetailedSocketMetricsRes HandleGetDetailedSocketMetrics(Client Client, GetDetailedSocketMetricsReq Data)
+		{
+			if (!CheckAuditClient(Client))
+				return null;
+
+			GetDetailedSocketMetricsRes res = new GetDetailedSocketMetricsRes();
+
+			SocketInfo[] sockets = context.NetworkManager.Sockets;
+			RequestsStatistics[] socketStats = context.RequestManager.SocketStatistics;
+			res.SocketsMetric = new SocketMetric[socketStats.Length];
+			double totalProcessTime = 0;
+			for (int i = 0; i < socketStats.Length; ++i)
+			{
+				SocketInfo socket = sockets[i];
+				RequestsStatistics socketStat = socketStats[i];
+				SocketMetric metric = res.SocketsMetric[i] = new SocketMetric();
 
 				metric.Protocol = socket.Protocol;
 				metric.Port = (ushort)socket.LocalEndPoint.Port;
 
-				metric.IncomingTraffic = socket.IncomingTraffic;
-				metric.OutgoingTraffic = socket.OutgoingTraffic;
-
 				metric.ClientCount = socket.ClientCount;
 
-				metric.IncomingMessageCount = stat.IncomingMessageCount;
-				metric.OutgoingMessageCount = stat.OutgoingMessageCount;
-				metric.IncomingInvalidMessageCount = stat.IncomingInvalidMessageCount;
-				metric.IncomingFailedMessageCount = stat.IncomingFailedMessageCount;
+				AddMetric(metric, socketStat);
+
+				totalProcessTime += socketStat.TotalProcessTime;
 			}
 
 			return res;
+		}
+
+		private GetDetailedRequestMetricsRes HandleGetDetailedRequestMetrics(Client Client, GetDetailedRequestMetricsReq Data)
+		{
+			if (!CheckAuditClient(Client))
+				return null;
+
+			GetDetailedRequestMetricsRes res = new GetDetailedRequestMetricsRes();
+
+			RequestStatisticsMap requestStats = context.RequestManager.RequestStatistics;
+			res.RequestsMetric = new RequestMetric[requestStats.Count];
+
+			RequestStatisticsMap.Enumerator requestStatIt = requestStats.GetEnumerator();
+			int i = 0;
+			while (requestStatIt.MoveNext())
+			{
+				RequestMetric metric = res.RequestsMetric[i++] = new RequestMetric();
+
+				metric.Type = requestStatIt.Current.Key.Name;
+
+				AddMetric(metric, requestStatIt.Current.Value);
+			}
+
+			return res;
+		}
+
+		private void AddMetric(Metric Metric, RequestsStatistics Stats)
+		{
+			Metric.IncomingTraffic += Stats.IncomingTraffic;
+			Metric.OutgoingTraffic += Stats.OutgoingTraffic;
+
+			Metric.IncomingMessageCount += Stats.IncomingMessageCount;
+			Metric.OutgoingMessageCount += Stats.OutgoingMessageCount;
+			Metric.IncomingInvalidMessageCount += Stats.IncomingInvalidMessageCount;
+			Metric.IncomingFailedMessageCount += Stats.IncomingFailedMessageCount;
+
+			if (Stats.IncomingMessageCount != 0)
+				Metric.AverageProcessTime += (float)(Stats.TotalProcessTime / Stats.IncomingMessageCount);
 		}
 
 		private bool CheckAuditClient(Client Client)
@@ -182,6 +297,28 @@ namespace Backend.Admin
 			}
 
 			return isAudit;
+		}
+
+		private bool IsFileInGrantedDirectories(string FilePath)
+		{
+			if (config.UploadPaths == null)
+				return false;
+
+			string path = Path.GetDirectoryName(FilePath).Replace('\\', '/');
+
+			for (int i = 0; i < config.UploadPaths.Length; ++i)
+			{
+				string uploadPath = config.UploadPaths[i];
+				if (uploadPath.Replace('\\', '/').EndsWith("/"))
+					uploadPath = uploadPath.Substring(0, uploadPath.Length - 1);
+
+				if (path != uploadPath)
+					continue;
+
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

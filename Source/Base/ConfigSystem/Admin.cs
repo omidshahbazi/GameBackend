@@ -10,5 +10,6 @@ namespace Backend.Base.ConfigSystem
 		}
 
 		public User[] Users;
+		public string[] UploadPaths;
 	}
 }
