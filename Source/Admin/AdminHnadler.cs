@@ -61,6 +61,7 @@ namespace Backend.Admin
 			context.RequestManager.RegisterHandler<RestartReq>(HandlerRestart);
 			context.RequestManager.RegisterHandler<UpdateServerConfigsReq>(HandleUpdateServerConfigs);
 			context.RequestManager.RegisterHandler<FetchFilesReq, FetchFilesRes>(HandleFetchFiles);
+			context.RequestManager.RegisterHandler<DeleteFileReq>(HandleDeleteFile);
 			context.RequestManager.RegisterHandler<UploadFileReq>(HandleUploadFile);
 			context.RequestManager.RegisterHandler<GetTotalMetricsReq, GetTotalMetricsRes>(HandleGetTotalMetrics);
 			context.RequestManager.RegisterHandler<GetDetailedSocketMetricsReq, GetDetailedSocketMetricsRes>(HandleGetDetailedSocketMetrics);
@@ -152,30 +153,23 @@ namespace Backend.Admin
 			return new FetchFilesRes() { FilePaths = files.ToArray() };
 		}
 
+		private void HandleDeleteFile(Client Client, DeleteFileReq Data)
+		{
+			if (!CheckAuditClient(Client))
+				return;
+
+			if (!IsFileInGrantedDirectories(Data.FilePath))
+				return;
+			
+			FileSystem.DeleteFile(Data.FilePath);
+		}
+
 		private void HandleUploadFile(Client Client, UploadFileReq Data)
 		{
 			if (!CheckAuditClient(Client))
 				return;
 
-			if (config.UploadPaths == null)
-				return;
-
-			string path = Path.GetDirectoryName(Data.FilePath).Replace('\\', '/');
-			bool found = false;
-			for (int i = 0; i < config.UploadPaths.Length; ++i)
-			{
-				string uploadPath = config.UploadPaths[i];
-				if (uploadPath.Replace('\\', '/').EndsWith("/"))
-					uploadPath = uploadPath.Substring(0, uploadPath.Length - 1);
-
-				if (path != uploadPath)
-					continue;
-
-				found = true;
-				break;
-			}
-
-			if (!found)
+			if (!IsFileInGrantedDirectories(Data.FilePath))
 				return;
 
 			FileSystem.Write(Data.FilePath, Data.Content);
@@ -303,6 +297,28 @@ namespace Backend.Admin
 			}
 
 			return isAudit;
+		}
+
+		private bool IsFileInGrantedDirectories(string FilePath)
+		{
+			if (config.UploadPaths == null)
+				return false;
+
+			string path = Path.GetDirectoryName(FilePath).Replace('\\', '/');
+
+			for (int i = 0; i < config.UploadPaths.Length; ++i)
+			{
+				string uploadPath = config.UploadPaths[i];
+				if (uploadPath.Replace('\\', '/').EndsWith("/"))
+					uploadPath = uploadPath.Substring(0, uploadPath.Length - 1);
+
+				if (path != uploadPath)
+					continue;
+
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

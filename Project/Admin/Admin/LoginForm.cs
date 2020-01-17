@@ -24,8 +24,6 @@ namespace Backend.Admin
 			SetDisconnectedStateUI();
 
 			SetErrorMessage("");
-
-			ConnectButton_Click(null, null);
 		}
 
 		protected override void OnClosed(EventArgs e)
@@ -123,7 +121,7 @@ namespace Backend.Admin
 
 		private void Connection_OnConnected(Connection Connection)
 		{
-			ProfileInfo.Connection con = Configurations.Instance.Profile.LastConnection;
+			ProfileInfo.Connection con = loginInfo.Connection;
 
 			connection.Send<LoginReq, LoginRes>(new LoginReq() { Username = con.Username, Password = con.Password }, (Data) =>
 			{
@@ -151,6 +149,7 @@ namespace Backend.Admin
 		private void UpdateLastConnection()
 		{
 			Configurations.Instance.Profile.LastConnection = loginInfo.Connection;
+			Configurations.Instance.Profile.LastConnection.Password = "";
 
 			Configurations.Instance.Save();
 		}
@@ -179,6 +178,8 @@ namespace Backend.Admin
 			addButton.Enabled = false;
 			deleteButton.Enabled = false;
 
+			loginInfo.Enabled = false;
+
 			SetErrorMessage("");
 		}
 
@@ -191,6 +192,8 @@ namespace Backend.Admin
 			editButton.Enabled = true;
 			addButton.Enabled = true;
 			deleteButton.Enabled = true;
+
+			loginInfo.Enabled = true;
 		}
 
 		void SetErrorMessage(string Message)

@@ -72,6 +72,11 @@ namespace Backend.Base.Admin
 		public byte[] Content;
 	}
 
+	public class DeleteFileReq
+	{
+		public string FilePath;
+	}
+
 	public class GetTotalMetricsReq
 	{
 	}

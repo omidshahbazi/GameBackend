@@ -1,5 +1,6 @@
 ﻿using Backend.Base.Admin;
 using Backend.Common.NetworkSystem;
+using System;
 using System.IO;
 using System.Windows.Forms;
 
@@ -92,12 +93,19 @@ namespace Backend.Admin
 			AddPath(Path.Substring(index), root.Nodes);
 		}
 
-		private void DeleteButton_Click(object sender, System.EventArgs e)
+		private void DeleteButton_Click(object sender, EventArgs e)
 		{
+			TreeNode node = filesTree.SelectedNode;
 
+			string filePath = GetSelectedRemoteDirectory() + node.Text;
+
+			connection.Send(new DeleteFileReq() { FilePath = filePath }, () =>
+			{
+				filesTree.Nodes.Remove(node);
+			});
 		}
 
-		private void UploadButton_Click(object sender, System.EventArgs e)
+		private void UploadButton_Click(object sender, EventArgs e)
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 			ofd.CheckPathExists = true;
@@ -123,7 +131,7 @@ namespace Backend.Admin
 		private void FilesTree_AfterSelect(object sender, TreeViewEventArgs e)
 		{
 			uploadButton.Enabled = true;
-			deleteButton.Enabled = true;
+			deleteButton.Enabled = (!e.Node.Text.EndsWith("/"));
 		}
 
 		private string GetSelectedRemoteDirectory()
