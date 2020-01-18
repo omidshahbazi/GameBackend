@@ -7,6 +7,7 @@ namespace Backend.Standalone
 {
 	public static class Program
 	{
+		//EmailClient
 		public static void Main(string[] Args)
 		{
 			Application application = Application.Instance;
