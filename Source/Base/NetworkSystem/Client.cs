@@ -22,15 +22,18 @@ namespace Backend.Base.NetworkSystem
 			get { return GetSocketInfoHash(socket.LocalEndPoint, (socket.Type == Protocols.TCP ? ProtocolType.Tcp : ProtocolType.Udp)); }
 		}
 
-		public uint ClientHash
+		public uint ID
 		{
-			get { return GetClientHash(socket, client); }
+			get;
+			private set;
 		}
 
 		public Client(ServerSocket Socket, NativeClient Client)
 		{
 			socket = Socket;
 			client = Client;
+
+			ID = GetClientHash(socket, client);
 		}
 
 		public void Disconnect()
