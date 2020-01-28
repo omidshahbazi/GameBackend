@@ -7,5 +7,6 @@ namespace Backend.Base.ConfigSystem
 		public ushort SMTPPort;
 		public string Username;
 		public string Password;
+		public bool SSL;
 	}
 }
