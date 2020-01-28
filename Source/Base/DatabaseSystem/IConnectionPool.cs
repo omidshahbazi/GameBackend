@@ -1,5 +1,5 @@
 // Copyright 2019. All Rights Reserved.
-namespace Backend.Base.ConnectionManager
+namespace Backend.Base.DatabaseSystem
 {
 	public interface IConnectionPool
 	{

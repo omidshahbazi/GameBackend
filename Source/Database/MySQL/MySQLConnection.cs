@@ -1,7 +1,8 @@
 // Copyright 2019. All Rights Reserved.
-using Backend.Base.ConnectionManager;
+using Backend.Base.DatabaseSystem;
 using GameFramework.ASCIISerializer;
 using System.Data;
+
 using NativeConnection = GameFramework.DatabaseManaged.MySQLDatabase;
 
 namespace Backend.Database.MySQL
