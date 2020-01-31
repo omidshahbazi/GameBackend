@@ -1,11 +1,11 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base;
 using Backend.Base.ConfigSystem;
-using Backend.Base.ConnectionManager;
+using Backend.Base.DatabaseSystem;
+using Backend.Base.EMailSystem;
 using Backend.Base.LogSystem;
 using Backend.Base.NetworkSystem;
 using Backend.Base.ScheduleSystem;
-using Backend.Core.ConfigSystem;
 using Backend.Core.LogSystem;
 using Backend.Core.ModuleSystem;
 using Backend.Core.NetworkSystem;
@@ -83,6 +83,12 @@ namespace Backend.Core
 		}
 
 		public IConnectionPool Database
+		{
+			get;
+			set;
+		}
+
+		public IEmailManager EMailManager
 		{
 			get;
 			set;

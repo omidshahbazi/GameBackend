@@ -3,7 +3,7 @@ using GameFramework.ASCIISerializer;
 using System;
 using System.Data;
 
-namespace Backend.Base.ConnectionManager
+namespace Backend.Base.DatabaseSystem
 {
 	public interface IConnection : IDisposable
 	{

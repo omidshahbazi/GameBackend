@@ -7,9 +7,19 @@ namespace Backend.Client
 {
 	public class ServerConnection : Connection
 	{
-		public void RegisterInChatService(string PlayerID, Action<RegisterRes> OnComplete = null)
+		public void RegisterChatReceivedFromClientHandler(Action<ChatReceivedFromClientReq> Handler)
 		{
-			Send(new RegisterReq() { PlayerID = PlayerID }, OnComplete);
+			RegisterHandler(Handler);
+		}
+
+		public void RegisterInChatService(Action OnComplete = null)
+		{
+			Send(new RegisterReq(), OnComplete);
+		}
+
+		public void SendChatToClient(uint ClientID, string Content)
+		{
+			Send(new SendChatToClientReq() { ID = ClientID, Content = Content });
 		}
 	}
 }
