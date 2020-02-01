@@ -70,6 +70,12 @@ namespace Backend.Database
 			if (Message.BodyEncoding == null)
 				Message.BodyEncoding = Encoding.UTF8;
 
+			if (string.IsNullOrEmpty(Message.From.Address))
+				Message.From.Address = config.Username;
+
+			if (string.IsNullOrEmpty(Message.Sender.Address))
+				Message.Sender.Address = config.Username;
+
 			MailMessage message = new MailMessage();
 
 			message.From = CreateMailAddress(Message.From);
@@ -85,16 +91,15 @@ namespace Backend.Database
 			message.Body = Message.Body;
 			message.BodyEncoding = Message.BodyEncoding;
 
+			message.IsBodyHtml = Message.IsHTML;
+
 			client.Send(message);
 		}
 
 		private MailAddress CreateMailAddress(EMailAddress Address)
 		{
-			if (string.IsNullOrEmpty(Address.Address))
-				Address.Address = config.Username;
-
 			if (string.IsNullOrEmpty(Address.DisplayName))
-				Address.DisplayName = config.Username;
+				Address.DisplayName = Address.Address;
 
 			if (Address.Encoding == null)
 				Address.Encoding = Encoding.UTF8;
