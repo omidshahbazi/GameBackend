@@ -88,7 +88,7 @@ namespace Backend.Core
 			set;
 		}
 
-		public IEmailManager EMailManager
+		public IEMailManager EMailManager
 		{
 			get;
 			set;

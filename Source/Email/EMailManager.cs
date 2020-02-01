@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Database
 {
-	class EMailManager : IModule, IEmailManager
+	class EMailManager : IModule, IEMailManager
 	{
 		private Base.ConfigSystem.EMail config;
 
@@ -21,6 +21,35 @@ namespace Backend.Database
 			}
 
 			config = (Base.ConfigSystem.EMail)Config;
+
+			Context.EMailManager = this;
+		}
+
+		public void Shutdown()
+		{
+		}
+
+		public void Service()
+		{
+		}
+
+		public void Send(string To, string Message)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public void Send(string To, string Title, string Message)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public void Send(string From, string To, string Title, string Message)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public void Send(EMailMessage Message)
+		{
 
 			SmtpClient client = new SmtpClient(config.Host, config.SMTPPort);
 			client.UseDefaultCredentials = false;
@@ -38,15 +67,6 @@ namespace Backend.Database
 			mail.SubjectEncoding = Encoding.UTF8;
 			client.Send(mail);
 
-			Context.EMailManager = this;
-		}
-
-		public void Shutdown()
-		{
-		}
-
-		public void Service()
-		{
 		}
 
 		private static MailAddress CreateMailAddress(string DisplayName, string Address)

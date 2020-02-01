@@ -47,7 +47,7 @@ namespace Backend.Base
 			set;
 		}
 
-		IEmailManager EMailManager
+		IEMailManager EMailManager
 		{
 			get;
 			set;

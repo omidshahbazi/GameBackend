@@ -28,7 +28,7 @@
     <Compile Include="..\..\..\Source\Base\ConfigSystem\Server.cs" Link="ConfigSystem\Server.cs" />
     <Compile Include="..\..\..\Source\Base\DatabaseSystem\IConnection.cs" Link="DatabaseSystem\IConnection.cs" />
     <Compile Include="..\..\..\Source\Base\DatabaseSystem\IConnectionPool.cs" Link="DatabaseSystem\IConnectionPool.cs" />
-    <Compile Include="..\..\..\Source\Base\EMailSystem\IEmailManager.cs" Link="EMailSystem\IEmailManager.cs" />
+    <Compile Include="..\..\..\Source\Base\EMailSystem\IEMailManager.cs" Link="EMailSystem\IEMailManager.cs" />
     <Compile Include="..\..\..\Source\Base\IContext.cs" Link="IContext.cs" />
     <Compile Include="..\..\..\Source\Base\LogSystem\ILogger.cs" Link="LogSystem\ILogger.cs" />
     <Compile Include="..\..\..\Source\Base\MasterBalancer\Protocol.cs" Link="MasterBalancer\Protocol.cs" />
