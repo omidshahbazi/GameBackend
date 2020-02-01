@@ -2,6 +2,7 @@
 using Backend.Base;
 using Backend.Base.EMailSystem;
 using Backend.Base.ModuleSystem;
+using System;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -11,6 +12,7 @@ namespace Backend.Database
 	class EMailManager : IModule, IEMailManager
 	{
 		private Base.ConfigSystem.EMail config;
+		private SmtpClient client = null;
 
 		public void Initialize(IContext Context, object Config)
 		{
@@ -21,6 +23,12 @@ namespace Backend.Database
 			}
 
 			config = (Base.ConfigSystem.EMail)Config;
+
+			client = new SmtpClient(config.Host, config.SMTPPort);
+			client.EnableSsl = config.SSL;
+			client.UseDefaultCredentials = false;
+			client.Credentials = new NetworkCredential(config.Username, config.Password);
+			client.DeliveryMethod = SmtpDeliveryMethod.Network;
 
 			Context.EMailManager = this;
 		}
@@ -33,45 +41,65 @@ namespace Backend.Database
 		{
 		}
 
-		public void Send(string To, string Message)
+		public void Send(string To, string Body)
 		{
-			throw new System.NotImplementedException();
+			Send(new EMailMessage() { To = new EMailAddress[] { new EMailAddress() { Address = To } }, Body = Body });
 		}
 
-		public void Send(string To, string Title, string Message)
+		public void Send(string To, string Subject, string Body)
 		{
-			throw new System.NotImplementedException();
+			Send(new EMailMessage() { To = new EMailAddress[] { new EMailAddress() { Address = To } }, Subject = Subject, Body = Body });
 		}
 
-		public void Send(string From, string To, string Title, string Message)
+		public void Send(string From, string To, string Subject, string Body)
 		{
-			throw new System.NotImplementedException();
+			Send(new EMailMessage() { From = new EMailAddress() { Address = From }, To = new EMailAddress[] { new EMailAddress() { Address = To } }, Subject = Subject, Body = Body });
 		}
 
 		public void Send(EMailMessage Message)
 		{
+			if (Message.To == null || string.IsNullOrEmpty(Message.To[0].Address))
+				throw new ArgumentException("Doesn't provided or is empty", "Message.To");
 
-			SmtpClient client = new SmtpClient(config.Host, config.SMTPPort);
-			client.UseDefaultCredentials = false;
-			client.EnableSsl = config.SSL;
-			client.Credentials = new NetworkCredential(config.Username, config.Password);
-			client.DeliveryMethod = SmtpDeliveryMethod.Network;
+			if (string.IsNullOrEmpty(Message.Body))
+				throw new ArgumentException("Doesn't provided or is empty", "Message.Body");
 
-			MailMessage mail = new MailMessage();
-			mail.To.Add(CreateMailAddress("Omid Shahbazi", "sh.omid.m@gmail.com"));
-			mail.From = CreateMailAddress("Omid Shahbazi", "sh.omid.m@gmail.com");
-			mail.Body = "سلام";
-			mail.BodyEncoding = Encoding.UTF8;
-			mail.Sender = CreateMailAddress("Omid Shahbazi", "sh.omid.m@gmail.com"); ;
-			mail.Priority = MailPriority.High;
-			mail.SubjectEncoding = Encoding.UTF8;
-			client.Send(mail);
+			if (Message.SubjectEncoding == null)
+				Message.SubjectEncoding = Encoding.UTF8;
 
+			if (Message.BodyEncoding == null)
+				Message.BodyEncoding = Encoding.UTF8;
+
+			MailMessage message = new MailMessage();
+
+			message.From = CreateMailAddress(Message.From);
+
+			for (int i = 0; i < Message.To.Length; ++i)
+				message.To.Add(CreateMailAddress(Message.To[i]));
+
+			message.Sender = CreateMailAddress(Message.Sender);
+
+			message.Subject = Message.Subject;
+			message.SubjectEncoding = Message.SubjectEncoding;
+
+			message.Body = Message.Body;
+			message.BodyEncoding = Message.BodyEncoding;
+
+			client.Send(message);
 		}
 
-		private static MailAddress CreateMailAddress(string DisplayName, string Address)
+		private MailAddress CreateMailAddress(EMailAddress Address)
 		{
-			return new MailAddress(Address, DisplayName, Encoding.UTF8);
+			if (string.IsNullOrEmpty(Address.Address))
+				Address.Address = config.Username;
+
+			if (string.IsNullOrEmpty(Address.DisplayName))
+				Address.DisplayName = config.Username;
+
+			if (Address.Encoding == null)
+				Address.Encoding = Encoding.UTF8;
+
+			return new MailAddress(Address.Address, Address.DisplayName, Address.Encoding);
 		}
 	}
 }
