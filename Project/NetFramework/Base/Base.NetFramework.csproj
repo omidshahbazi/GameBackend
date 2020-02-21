@@ -77,8 +77,8 @@
     <Compile Include="..\..\..\Source\Base\DatabaseSystem\IConnectionPool.cs">
       <Link>DatabasSystem\IConnectionPool.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Source\Base\EMailSystem\IEmailManager.cs">
-      <Link>EMailSystem\IEmailManager.cs</Link>
+    <Compile Include="..\..\..\Source\Base\EMailSystem\IEMailManager.cs">
+      <Link>EMailSystem\IEMailManager.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Source\Base\IContext.cs">
       <Link>IContext.cs</Link>
