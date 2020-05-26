@@ -1,6 +1,7 @@
 ﻿// Copyright 2019. All Rights Reserved.
 using Backend.Client;
 using Backend.Common;
+using Backend.Common.Chat;
 using Backend.Common.NetworkSystem;
 using ServerTest;
 using System;
@@ -20,6 +21,8 @@ namespace ClientTest
 			connection.OnConnectionFailed += Connection_OnConnectionFailed;
 			connection.OnDisconnected += Connection_OnDisconnected;
 
+			connection.RegisterChatReceivedFromClientHandler(ChatReceivedFromClientHandler);
+
 			connection.Connect(ProtocolTypes.TCP, "::1", 5000);
 
 			while (true)
@@ -34,7 +37,10 @@ namespace ClientTest
 		{
 			Console.WriteLine("Connected");
 
-			connection.RegisterInChatService("TestID");
+			connection.RegisterInChatService(() =>
+			{
+				connection.SendChatToClient(1, "sss");
+			});
 
 			//connection.Send<GetInitialDataReq, GetInitialDataRes>(new GetInitialDataReq(), OnGetInitialData);
 		}
@@ -49,9 +55,14 @@ namespace ClientTest
 			Console.WriteLine("Disconnected");
 		}
 
-		private static void OnGetInitialData(GetInitialDataRes Res)
+		private static void OnGetInitialData(GetInitialDataRes Data)
 		{
 			Console.WriteLine("respond");
+		}
+
+		private static void ChatReceivedFromClientHandler(ChatReceivedFromClientReq Data)
+		{
+			Console.WriteLine(Data.ID + " " + Data.Content);
 		}
 	}
 }

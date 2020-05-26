@@ -1,10 +1,11 @@
 // Copyright 2019. All Rights Reserved.
 using Backend.Base.NetworkSystem;
-using Backend.Base.ConnectionManager;
+using Backend.Base.DatabaseSystem;
 using Backend.Base.LogSystem;
 using GameFramework.Common.Utilities;
 using Backend.Base.ScheduleSystem;
 using Backend.Base.ConfigSystem;
+using Backend.Base.EMailSystem;
 
 namespace Backend.Base
 {
@@ -41,6 +42,12 @@ namespace Backend.Base
 		}
 
 		IConnectionPool Database
+		{
+			get;
+			set;
+		}
+
+		IEMailManager EMailManager
 		{
 			get;
 			set;
