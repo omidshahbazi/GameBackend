@@ -75,7 +75,16 @@ namespace Backend.Core.ConfigSystem
 
 			typePaths[configType] = FilePath;
 
-			Config = (T)Creator.Bind(configType, configData);
+			try
+			{
+				Config = (T)Creator.Bind(configType, configData);
+			}
+			catch
+			{
+				ConsoleHelper.WriteError("Server config [{0}] is invalid", FILE_PATH);
+
+				return false;
+			}
 
 			return true;
 		}
