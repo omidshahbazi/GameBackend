@@ -21,7 +21,7 @@ namespace ClientTest
 			connection.OnConnectionFailed += Connection_OnConnectionFailed;
 			connection.OnDisconnected += Connection_OnDisconnected;
 
-			connection.RegisterChatReceivedFromClientHandler(ChatReceivedFromClientHandler);
+			//connection.RegisterChatReceivedFromClientHandler(ChatReceivedFromClientHandler);
 
 			connection.Connect(ProtocolTypes.TCP, "::1", 5000);
 
@@ -37,10 +37,10 @@ namespace ClientTest
 		{
 			Console.WriteLine("Connected");
 
-			connection.RegisterInChatService(() =>
-			{
-				connection.SendChatToClient(1, "sss");
-			});
+			//connection.RegisterInChatService(() =>
+			//{
+			//	connection.SendChatToClient(1, "sss");
+			//});
 
 			//connection.Send<GetInitialDataReq, GetInitialDataRes>(new GetInitialDataReq(), OnGetInitialData);
 		}

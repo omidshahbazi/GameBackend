@@ -83,7 +83,7 @@ namespace Backend.Common.NetworkSystem
 			requestManager.Send(Argument, OnComplete);
 		}
 
-		public void WriteBuffer(byte[] Buffer, uint Index, uint Length)
+		internal void WriteBuffer(byte[] Buffer, uint Index, uint Length)
 		{
 			if (socket.Type == Protocols.TCP)
 				((TCPClientSocket)socket).Send(Buffer, Index, Length);
