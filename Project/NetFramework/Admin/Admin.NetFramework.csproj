@@ -34,8 +34,8 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Source\Admin\AdminHnadler.cs">
-      <Link>AdminHnadler.cs</Link>
+    <Compile Include="..\..\..\Source\Admin\AdminHandler.cs">
+      <Link>AdminHandler.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

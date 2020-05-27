@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\Source\Admin\AdminHnadler.cs" Link="AdminHnadler.cs" />
+    <Compile Include="..\..\..\Source\Admin\AdminHandler.cs" Link="AdminHandler.cs" />
   </ItemGroup>
 
   <ItemGroup>
