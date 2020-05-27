@@ -41,10 +41,10 @@ namespace Backend.Base.NetworkSystem
 			get;
 		}
 
-		void RegisterHandler<ArgT>(Action<Client, ArgT> Handler) where ArgT : class;
+		void RegisterHandler<ArgT>(Action<IClient, ArgT> Handler) where ArgT : class;
 
-		void RegisterHandler<ArgT, ResT>(Func<Client, ArgT, ResT> Handler) where ArgT : class where ResT : class;
+		void RegisterHandler<ArgT, ResT>(Func<IClient, ArgT, ResT> Handler) where ArgT : class where ResT : class;
 
-		void Send<T>(Client Client, T Argument) where T : class;
+		void Send<T>(IClient Client, T Argument) where T : class;
 	}
 }

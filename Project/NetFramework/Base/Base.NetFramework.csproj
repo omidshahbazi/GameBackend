@@ -92,8 +92,8 @@
     <Compile Include="..\..\..\Source\Base\ModuleSystem\IModule.cs">
       <Link>ModuleSystem\IModule.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Source\Base\NetworkSystem\Client.cs">
-      <Link>NetworkSystem\Client.cs</Link>
+    <Compile Include="..\..\..\Source\Base\NetworkSystem\IClient.cs">
+      <Link>NetworkSystem\IClient.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Source\Base\NetworkSystem\INetworkManager.cs">
       <Link>NetworkSystem\INetworkManager.cs</Link>

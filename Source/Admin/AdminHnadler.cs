@@ -19,7 +19,7 @@ namespace Backend.Admin
 	//https://www.digitalocean.com/community/tutorials/an-introduction-to-metrics-monitoring-and-alerting
 	class AdminHnadler : IModule
 	{
-		private class AuditClientMap : Dictionary<uint, Client>
+		private class AuditClientMap : Dictionary<uint, IClient>
 		{ }
 
 		private IContext context = null;
@@ -76,7 +76,7 @@ namespace Backend.Admin
 		{
 		}
 
-		private LoginRes HandleLogin(Client Client, LoginReq Data)
+		private LoginRes HandleLogin(IClient Client, LoginReq Data)
 		{
 			LoginRes res = new LoginRes();
 			res.Result = false;
@@ -98,7 +98,7 @@ namespace Backend.Admin
 
 				if (auditClients.ContainsKey(hash))
 				{
-					Client client = auditClients[hash];
+					IClient client = auditClients[hash];
 
 					context.RequestManager.Send(client, new LogoutReq());
 				}
@@ -109,7 +109,7 @@ namespace Backend.Admin
 			return res;
 		}
 
-		private void HandlerShutdown(Client Client, ShutdownReq Data)
+		private void HandlerShutdown(IClient Client, ShutdownReq Data)
 		{
 			if (!CheckAuditClient(Client))
 				return;
@@ -117,7 +117,7 @@ namespace Backend.Admin
 			context.ScheduleForShutdown();
 		}
 
-		private void HandlerRestart(Client Client, RestartReq Data)
+		private void HandlerRestart(IClient Client, RestartReq Data)
 		{
 			if (!CheckAuditClient(Client))
 				return;
@@ -125,7 +125,7 @@ namespace Backend.Admin
 			context.ScheduleForRestart();
 		}
 
-		private void HandleUpdateServerConfigs(Client Client, UpdateServerConfigsReq Data)
+		private void HandleUpdateServerConfigs(IClient Client, UpdateServerConfigsReq Data)
 		{
 			if (!CheckAuditClient(Client))
 				return;
@@ -133,7 +133,7 @@ namespace Backend.Admin
 			context.ConfigManager.SaveConfig(Data.Config);
 		}
 
-		private FetchFilesRes HandleFetchFiles(Client Client, FetchFilesReq Data)
+		private FetchFilesRes HandleFetchFiles(IClient Client, FetchFilesReq Data)
 		{
 			if (!CheckAuditClient(Client))
 				return null;
@@ -153,7 +153,7 @@ namespace Backend.Admin
 			return new FetchFilesRes() { FilePaths = files.ToArray() };
 		}
 
-		private void HandleDeleteFile(Client Client, DeleteFileReq Data)
+		private void HandleDeleteFile(IClient Client, DeleteFileReq Data)
 		{
 			if (!CheckAuditClient(Client))
 				return;
@@ -164,7 +164,7 @@ namespace Backend.Admin
 			FileSystem.DeleteFile(Data.FilePath);
 		}
 
-		private void HandleUploadFile(Client Client, UploadFileReq Data)
+		private void HandleUploadFile(IClient Client, UploadFileReq Data)
 		{
 			if (!CheckAuditClient(Client))
 				return;
@@ -175,7 +175,7 @@ namespace Backend.Admin
 			FileSystem.Write(Data.FilePath, Data.Content);
 		}
 
-		private GetTotalMetricsRes HandleGetTotalMetrics(Client Client, GetTotalMetricsReq Data)
+		private GetTotalMetricsRes HandleGetTotalMetrics(IClient Client, GetTotalMetricsReq Data)
 		{
 			if (!CheckAuditClient(Client))
 				return null;
@@ -217,7 +217,7 @@ namespace Backend.Admin
 			return res;
 		}
 
-		private GetDetailedSocketMetricsRes HandleGetDetailedSocketMetrics(Client Client, GetDetailedSocketMetricsReq Data)
+		private GetDetailedSocketMetricsRes HandleGetDetailedSocketMetrics(IClient Client, GetDetailedSocketMetricsReq Data)
 		{
 			if (!CheckAuditClient(Client))
 				return null;
@@ -247,7 +247,7 @@ namespace Backend.Admin
 			return res;
 		}
 
-		private GetDetailedRequestMetricsRes HandleGetDetailedRequestMetrics(Client Client, GetDetailedRequestMetricsReq Data)
+		private GetDetailedRequestMetricsRes HandleGetDetailedRequestMetrics(IClient Client, GetDetailedRequestMetricsReq Data)
 		{
 			if (!CheckAuditClient(Client))
 				return null;
@@ -285,7 +285,7 @@ namespace Backend.Admin
 				Metric.AverageProcessTime += (float)(Stats.TotalProcessTime / Stats.IncomingMessageCount);
 		}
 
-		private bool CheckAuditClient(Client Client)
+		private bool CheckAuditClient(IClient Client)
 		{
 			bool isAudit = auditClients.ContainsValue(Client);
 

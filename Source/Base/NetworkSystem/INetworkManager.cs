@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace Backend.Base.NetworkSystem
 {
-	public delegate void ClientConnectionEventHandler(Client Client);
+	public delegate void ClientConnectionEventHandler(IClient Client);
 
 	public class SocketInfo
 	{

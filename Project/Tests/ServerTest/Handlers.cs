@@ -24,7 +24,7 @@ namespace ServerTest
 		{
 		}
 
-		private GetInitialDataRes GetInitialData(Client Client, GetInitialDataReq Arg)
+		private GetInitialDataRes GetInitialData(IClient Client, GetInitialDataReq Arg)
 		{
 
 			return new GetInitialDataRes() { Data = "xxxxxxxxxxxxxxxxxxxxxxxxxx" };

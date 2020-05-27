@@ -22,13 +22,13 @@ namespace Backend.MasterBalancer
 				private set;
 			}
 
-			public Client Client
+			public IClient Client
 			{
 				get;
 				private set;
 			}
 
-			public NodeInfo(Process Process, Client Client)
+			public NodeInfo(Process Process, IClient Client)
 			{
 				this.Process = Process;
 				this.Client = Client;
@@ -77,7 +77,7 @@ namespace Backend.MasterBalancer
 			//Process.Start("Standalone.NetFramework.exe", arguments.Content);
 		}
 
-		private void NetworkManager_OnClientDisconnected(Client Client)
+		private void NetworkManager_OnClientDisconnected(IClient Client)
 		{
 			NodeInfo node = FindNode(Client);
 
@@ -103,7 +103,7 @@ namespace Backend.MasterBalancer
 		{
 		}
 
-		private void ServerNodeIntroduction(Client Client, ServerNodeIntrodunctionReq Request)
+		private void ServerNodeIntroduction(IClient Client, ServerNodeIntrodunctionReq Request)
 		{
 			Process process = null;
 			try
@@ -125,7 +125,7 @@ namespace Backend.MasterBalancer
 			context.Logger.WriteInfo("Node [{0}] under process {1} connected", node.Client, node.Process.Id);
 		}
 
-		private NodeInfo FindNode(Client Client)
+		private NodeInfo FindNode(IClient Client)
 		{
 			for (int i = 0; i < nodes.Count; ++i)
 			{

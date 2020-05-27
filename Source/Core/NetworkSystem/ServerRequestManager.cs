@@ -88,7 +88,7 @@ namespace Backend.Core.NetworkSystem
 		{
 		}
 
-		public void RegisterHandler<ArgT>(Action<Client, ArgT> Handler)
+		public void RegisterHandler<ArgT>(Action<IClient, ArgT> Handler)
 			where ArgT : class
 		{
 			requestStatistics[typeof(ArgT)] = new RequestsStatistics();
@@ -106,7 +106,7 @@ namespace Backend.Core.NetworkSystem
 			};
 		}
 
-		public void RegisterHandler<ArgT, ResT>(Func<Client, ArgT, ResT> Handler)
+		public void RegisterHandler<ArgT, ResT>(Func<IClient, ArgT, ResT> Handler)
 			where ArgT : class
 			where ResT : class
 		{
@@ -126,16 +126,16 @@ namespace Backend.Core.NetworkSystem
 			};
 		}
 
-		public void Send<ArgT>(Client Client, ArgT Argument)
+		public void Send<ArgT>(IClient Client, ArgT Argument)
 			where ArgT : class
 		{
 			requestStatistics[typeof(ArgT)] = new RequestsStatistics();
 
 			uint typeID = MessageCreator.Instance.Register<ArgT>();
 
-			SendInternal<ArgT>(Client, 0, typeID, Argument);
+			SendInternal<ArgT>((Client)Client, 0, typeID, Argument);
 
-			RequestsStatistics stats = GetSocketStatistics(Client);
+			RequestsStatistics stats = GetSocketStatistics((Client)Client);
 			++stats.OutgoingMessageCount;
 		}
 
