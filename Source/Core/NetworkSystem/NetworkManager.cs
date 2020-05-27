@@ -156,7 +156,7 @@ namespace Backend.Core.NetworkSystem
 
 		private void OnClientConnectedHandler(ServerSocket Socket, NativeClient Client)
 		{
-			uint hash = Core.NetworkSystem.Client.GetClientHash(Socket, Client);
+			uint hash = NetworkSystem.Client.GetClientHash(Socket, Client);
 
 			if (clients.ContainsKey(hash))
 				LogManager.Instance.WriteWarning("Redundant client [{0}] connected", Client.EndPoint);
@@ -171,7 +171,7 @@ namespace Backend.Core.NetworkSystem
 
 		private void OnClientDisconnectedHandler(ServerSocket Socket, NativeClient Client)
 		{
-			uint hash = Core.NetworkSystem.Client.GetClientHash(Socket, Client);
+			uint hash = NetworkSystem.Client.GetClientHash(Socket, Client);
 
 			if (!clients.ContainsKey(hash))
 			{
