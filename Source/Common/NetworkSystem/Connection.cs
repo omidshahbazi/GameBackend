@@ -12,6 +12,18 @@ namespace Backend.Common.NetworkSystem
 		private ClientSocket socket = null;
 		private ClientRequestManager requestManager = null;
 
+		public bool FindOptimumMTU
+		{
+			get;
+			set;
+		}
+
+		public uint MTU
+		{
+			get;
+			set;
+		}
+
 		public bool IsConnected
 		{
 			get { return (socket == null ? false : socket.IsConnected); }
@@ -24,6 +36,8 @@ namespace Backend.Common.NetworkSystem
 		public Connection()
 		{
 			requestManager = new ClientRequestManager(this);
+
+			MTU = new UDPClientSocket().MTU;
 		}
 
 		public void Connect(ProtocolTypes Protocol, string Host, ushort Port)
@@ -31,7 +45,14 @@ namespace Backend.Common.NetworkSystem
 			if (Protocol == ProtocolTypes.TCP)
 				socket = new TCPClientSocket();
 			else if (Protocol == ProtocolTypes.UDP)
-				socket = new UDPClientSocket();
+			{
+				UDPClientSocket udpSocket = new UDPClientSocket();
+
+				udpSocket.FindOptimumMTU = FindOptimumMTU;
+				udpSocket.MTU = MTU;
+
+				socket = udpSocket;
+			}
 
 			socket.MultithreadedCallbacks = false;
 			socket.MultithreadedReceive = false;
