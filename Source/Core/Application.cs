@@ -18,7 +18,8 @@ namespace Backend.Core
 {
 	public class Application : Singleton<Application>, IContext, IService
 	{
-		private const string ARGUMENT_WORKING_DIRECTORY = "directory";
+		private const string ARGUMENT_DIRECTORY = "directory";
+		private const string ARGUMENT_PROMPT_STARTUP = "prompt-startup";
 
 		private List<IService> services = null;
 
@@ -101,7 +102,13 @@ namespace Backend.Core
 
 		public void Initialize()
 		{
-			WorkingDirectory = Arguments.Get<string>(ARGUMENT_WORKING_DIRECTORY);
+			WorkingDirectory = Arguments.Get<string>(ARGUMENT_DIRECTORY);
+
+			if (Arguments.Get(ARGUMENT_PROMPT_STARTUP, false))
+			{
+				ConsoleHelper.WriteWarning("This is a prompt in startup, waiting for Enter key");
+				Console.ReadLine();
+			}
 
 			IsRunning = true;
 
