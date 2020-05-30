@@ -50,6 +50,8 @@ namespace Backend.Core.ModuleSystem
 			LoadLibraries();
 
 			LoadModules();
+
+			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 		}
 
 		public void Shutdown()
@@ -116,6 +118,8 @@ namespace Backend.Core.ModuleSystem
 			for (int i = 0; i < files.Length; ++i)
 				LoadAssembly(files[i].FilePath);
 		}
+
+
 
 		private Assembly LoadAssembly(string FilePath)
 		{
