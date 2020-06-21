@@ -59,13 +59,31 @@ namespace Backend.Core.ModuleSystem
 			// We do not clear loaded assemblys, because we cannot unload them, so will face to type confilicts and/or mismatch in cast
 
 			for (int i = 0; i < modules.Count; ++i)
-				modules[i].Shutdown();
+			{
+				try
+				{
+					modules[i].Shutdown();
+				}
+				catch (Exception e)
+				{
+					LogManager.Instance.WriteException(e, "Shuting down of [{0}] failed", modules[i].GetType());
+				}
+			}
 		}
 
 		public void Service()
 		{
 			for (int i = 0; i < modules.Count; ++i)
-				modules[i].Service();
+			{
+				try
+				{
+					modules[i].Service();
+				}
+				catch (Exception e)
+				{
+					LogManager.Instance.WriteException(e, "Servicing of [{0}] failed", modules[i].GetType());
+				}
+			}
 		}
 
 		private void InitializeAssemblyCache()
@@ -118,8 +136,6 @@ namespace Backend.Core.ModuleSystem
 			for (int i = 0; i < files.Length; ++i)
 				LoadAssembly(files[i].FilePath);
 		}
-
-
 
 		private Assembly LoadAssembly(string FilePath)
 		{
