@@ -34,6 +34,7 @@ namespace Backend.Common.NetworkSystem
 			};
 		}
 
+		//TODO: Add OnFailed
 		public void Send<ArgT>(ArgT Argument, Action OnCompleted = null)
 			where ArgT : class
 		{
