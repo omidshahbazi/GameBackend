@@ -31,14 +31,14 @@ namespace Backend.Database.MySQL
 			return connection.ExecuteInsert(Query, Parameters);
 		}
 
-		public DataTable ExecuteWithReturnDataTable(string Query, params object[] Parameters)
+		public DataTable QueryDataTable(string Query, params object[] Parameters)
 		{
-			return connection.ExecuteWithReturnDataTable(Query, Parameters);
+			return connection.QueryDataTable(Query, Parameters);
 		}
 
-		public ISerializeArray ExeeecuteWithReturnDataTable(string Query, params object[] Parameters)
+		public ISerializeArray QueryISerializeArray(string Query, params object[] Parameters)
 		{
-			return connection.ExecuteWithReturnISerializeArray(Query, Parameters);
+			return connection.QueryISerializeArray(Query, Parameters);
 		}
 
 		private void FillConnection(Base.ConfigSystem.Database Config)

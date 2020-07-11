@@ -11,8 +11,8 @@ namespace Backend.Base.DatabaseSystem
 
 		int ExecuteInsert(string Query, params object[] Parameters);
 
-		DataTable ExecuteWithReturnDataTable(string Query, params object[] Parameters);
+		DataTable QueryDataTable(string Query, params object[] Parameters);
 
-		ISerializeArray ExeeecuteWithReturnDataTable(string Query, params object[] Parameters);
+		ISerializeArray QueryISerializeArray(string Query, params object[] Parameters);
 	}
 }
