@@ -52,8 +52,8 @@
     <Compile Include="..\..\..\Source\Common\Chat\Protocol.cs">
       <Link>Protocol\Protocol.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Source\Common\Enums.cs">
-      <Link>Enums.cs</Link>
+    <Compile Include="..\..\..\Source\Common\Constants.cs">
+      <Link>Constants.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Source\Common\NetworkSystem\ClientRequestManager.cs">
       <Link>NetworkSystem\ClientRequestManager.cs</Link>

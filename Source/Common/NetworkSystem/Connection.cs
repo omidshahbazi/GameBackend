@@ -29,6 +29,18 @@ namespace Backend.Common.NetworkSystem
 			get { return (socket == null ? false : socket.IsConnected); }
 		}
 
+		public uint ReceiveBufferSize
+		{
+			get;
+			set;
+		}
+
+		public uint SendBufferSize
+		{
+			get;
+			set;
+		}
+
 		public event ConnectionEventHandler OnConnected;
 		public event ConnectionEventHandler OnConnectionFailed;
 		public event ConnectionEventHandler OnDisconnected;
@@ -53,6 +65,16 @@ namespace Backend.Common.NetworkSystem
 
 				socket = udpSocket;
 			}
+
+			if (ReceiveBufferSize != 0)
+				socket.ReceiveBufferSize = ReceiveBufferSize;
+			else
+				ReceiveBufferSize = socket.ReceiveBufferSize;
+
+			if (SendBufferSize != 0)
+				socket.SendBufferSize = SendBufferSize;
+			else
+				SendBufferSize = socket.SendBufferSize;
 
 			socket.MultithreadedCallbacks = false;
 			socket.MultithreadedReceive = false;

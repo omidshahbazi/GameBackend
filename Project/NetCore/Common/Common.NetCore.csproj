@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <Compile Include="..\..\..\Source\Common\Chat\Protocol.cs" Link="Chat\Protocol.cs" />
-    <Compile Include="..\..\..\Source\Common\Enums.cs" Link="Enums.cs" />
+    <Compile Include="..\..\..\Source\Common\Constants.cs" Link="Constants.cs" />
     <Compile Include="..\..\..\Source\Common\NetworkSystem\ClientRequestManager.cs" Link="NetworkSystem\ClientRequestManager.cs" />
     <Compile Include="..\..\..\Source\Common\NetworkSystem\Connection.cs" Link="NetworkSystem\Connection.cs" />
     <Compile Include="..\..\..\Source\Common\NetworkSystem\MessageCreator.cs" Link="NetworkSystem\MessageCreator.cs" />
